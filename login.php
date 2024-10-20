@@ -20,12 +20,13 @@ $_SESSION['captcha'] = rand(10000, 99999);
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
 
     <style>
         body {
@@ -115,7 +116,6 @@ $_SESSION['captcha'] = rand(10000, 99999);
             font-weight: bold;
             font-size: 18px;
             border-radius: 20%;
-            /* Rounded borders */
             color: red;
             width: 100px;
             text-align: center;
@@ -137,6 +137,38 @@ $_SESSION['captcha'] = rand(10000, 99999);
             /* Sesuaikan persentase sesuai kebutuhan */
             border-radius: 8px;
             margin-left: 14%;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .popup-logo {
+            width: 10%;
+            /* Adjust size as needed */
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .popup-image {
+            text-align: center;
+            width: 70%;
+            /* Adjust size as needed */
+            margin-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .popup-footer {
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+            margin-top: 20px;
+        }
+
+        .swal2-popup.swal2-full-popup {
+            max-width: 90%;
+            width: 90%;
+            /* Hampir seluruh lebar halaman */
+            height: auto;
         }
     </style>
 
@@ -161,7 +193,7 @@ $_SESSION['captcha'] = rand(10000, 99999);
                                 <div class="text-center mt-1">
                                     <a href="#" class="btn btn-link custom-link">Buku Panduan</a> |
                                     <a href="#" class="btn btn-link custom-link">Hubungi Kami</a> |
-                                    <a href="#" class="btn btn-link custom-link">Tim Pengembang</a>
+                                    <a href="#" class="btn btn-link custom-link" id="developerTeam">Tim Pengembang</a>
                                 </div>
                                 <div class="text-center mt-2">
                                     <p class="small-text">Hak Cipta @Sipelita 2024</p>
@@ -170,14 +202,14 @@ $_SESSION['captcha'] = rand(10000, 99999);
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 mb-5 custom-heading">Sistem Informasi Pelaporan Latihan Kegiatan</h1>
+                                        <h1 class="h4 mb-5 custom-heading">Portal Masuk Sipelita</h1>
                                     </div>
-                                    <form class="user" method="post" action="index.php">
+                                    <form class="user" method="post" action="index.php" id="loginForm">
 
                                         <span class="bold-black-text">Nama Pengguna</span>
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
+                                            <input type="text" class="form-control form-control-user"
+                                                id="exampleInputText" aria-describedby="textHelp"
                                                 placeholder="Masukkan Nama Pengguna..." required>
                                         </div>
 
@@ -191,7 +223,7 @@ $_SESSION['captcha'] = rand(10000, 99999);
                                         <span class="bold-black-text">CAPTCHA</span>
                                         <div class="form-group captcha-row">
                                             <div class="captcha-box"><?php echo $_SESSION['captcha']; ?></div>
-                                            <input type="text" class="form-control form-control-user captcha-input" placeholder="Masukkan CAPTCHA..." name="captcha_input">
+                                            <input type="text" class="form-control form-control-user captcha-input" placeholder="Masukkan CAPTCHA..." name="captcha_input" required>
                                         </div>
 
                                         <button type="submit" class="btn btn-primary btn-user btn-block custom-button">
@@ -223,6 +255,58 @@ $_SESSION['captcha'] = rand(10000, 99999);
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- SweetAlert2 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+
+
+    <script>
+        document.getElementById("developerTeam").addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent default action of the link
+
+            Swal.fire({
+                title: 'Tim Pengembang',
+                html: `
+                <div class="popup-content">
+                    <!-- Logo at the center -->
+                    <img src="./img/sipelita.jpg" alt="Logo" class="popup-logo">
+                    <hr>
+
+                    <!-- Developer team image -->
+                    <img src="./img/developer.jpg" alt="Tim Pengembang" class="popup-image">
+                    
+                    <!-- Footer content with "Tutup" button -->
+                    <div class="popup-footer">
+                        <button class="swal2-confirm swal2-styled" onclick="Swal.close()">Tutup</button>
+                    </div>
+                </div>
+            `,
+                showConfirmButton: false, // Hide default confirm button
+                showCloseButton: true, // Enable the "X" close button
+                customClass: {
+                    popup: 'swal2-full-popup', // Custom class untuk memperbesar popup
+                }
+            });
+        });
+    </script>
+
+
+    <!-- Script to trigger SweetAlert2 on form submit -->
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Anda Berhasil Masuk",
+                showConfirmButton: false,
+                timer: 2000
+            }).then(() => {
+                // After the alert, you can proceed with form submission if needed
+                this.submit();
+            });
+        });
+    </script>
 
 </body>
 
