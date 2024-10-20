@@ -1,6 +1,6 @@
 <!-- KONEKSI -->
 <?php include 'koneksi.php'; ?>
-<?php include 'loader.php'; ?>
+
 
 <?php
 date_default_timezone_set('Asia/Jakarta'); // Sesuaikan timezone jika diperlukan
@@ -66,7 +66,7 @@ $total_rejected = $row_rejected['total_rejected'];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>Dashboard</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -171,7 +171,7 @@ $total_rejected = $row_rejected['total_rejected'];
             style="background-color: rgb(25, 25, 112);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img src="./img/sipelita.jpg" alt="Logo" class="img-fluid">
                 </div>
@@ -183,7 +183,7 @@ $total_rejected = $row_rejected['total_rejected'];
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>BERANDA</span></a>
             </li>
@@ -200,62 +200,14 @@ $total_rejected = $row_rejected['total_rejected'];
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                    <i class="fas fa-fw fa-file-alt"></i>
+                    <span>Pengajuan</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Utilities</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Colors</a>
-                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                TAMBAHAN
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.php">Login</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
+                        <h6 class="collapse-header">Pilih Opsi:</h6>
+                        <a class="collapse-item" href="add_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
+                        <a class="collapse-item" href="add_pengajuan_lpj.php">Pengajuan LPJ</a>
                     </div>
                 </div>
             </li>
@@ -264,14 +216,35 @@ $total_rejected = $row_rejected['total_rejected'];
             <li class="nav-item">
                 <a class="nav-link" href="charts.html">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
+                    <span>Rekapitulasi</span></a>
             </li>
 
-            <!-- Nav Item - Tables -->
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                MENU PENGATURAN
+            </div>
+
+
+            <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Pengatuan</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Pilih Opsi:</h6>
+                        <a class="collapse-item" href="utilities-color.html">Colors</a>
+                        <a class="collapse-item" href="utilities-border.html">Borders</a>
+                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
+                        <a class="collapse-item" href="utilities-other.html">Other</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Divider -->
@@ -508,7 +481,7 @@ $total_rejected = $row_rejected['total_rejected'];
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Beranda</h1>
-                        <a href="add_pengajuan.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                        <a href="add_pengajuan_pelatihan.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                             <i class="fas fa-plus fa-sm text-white-50"></i>&nbsp;Buat Pengajuan?
                         </a>
                     </div>
@@ -516,12 +489,50 @@ $total_rejected = $row_rejected['total_rejected'];
                     <div class="profile-container">
                         <img src="img/undraw_profile_1.svg" alt="Profile Picture" class="profile-img">
                         <div class="profile-text">
-                            <h4><?php echo $greeting; ?>, <?php echo "hellow world" ?>!</h4>
+                            <h4><?php echo $greeting; ?>, <?php echo "Hellow World" ?>!</h4>
                             <p id="timeDisplay">
+                                <!-- Tampilkan waktu awal dengan PHP -->
                                 <?php echo getIndonesianDayName(date('l')) . ', ' . date('j F Y') . ', ' . date('H:i:s'); ?>
                             </p>
                         </div>
                     </div>
+
+                    <script>
+                        function updateClock() {
+                            // Buat objek tanggal baru
+                            var now = new Date();
+
+                            // Ambil elemen untuk menampilkan waktu
+                            var timeDisplay = document.getElementById("timeDisplay");
+
+                            // Array untuk nama hari dalam bahasa Indonesia
+                            var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+                            // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
+                            var day = dayNames[now.getDay()];
+                            var date = now.getDate();
+                            var month = now.toLocaleString('id-ID', {
+                                month: 'long'
+                            }); // Nama bulan dalam bahasa Indonesia
+                            var year = now.getFullYear();
+                            var hours = now.getHours().toString().padStart(2, '0');
+                            var minutes = now.getMinutes().toString().padStart(2, '0');
+                            var seconds = now.getSeconds().toString().padStart(2, '0');
+
+                            // Format waktu
+                            var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' + minutes + ':' + seconds;
+
+                            // Update elemen HTML dengan waktu terbaru
+                            timeDisplay.textContent = formattedTime;
+                        }
+
+                        // Jalankan updateClock setiap detik
+                        setInterval(updateClock, 1000);
+
+                        // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
+                        updateClock();
+                    </script>
+
 
                     <!-- Content Row -->
                     <div class="row">
@@ -818,92 +829,92 @@ $total_rejected = $row_rejected['total_rejected'];
                                     </div>
                                 </div>
                             </div>
-                            </div>
                         </div>
-                        <!-- /.container-fluid -->
+                    </div>
+                    <!-- /.container-fluid -->
 
-                        <!-- Inisialisasi DataTables dan Bootstrap Tab -->
-                        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-                        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-                        <script>
-                            $(document).ready(function() {
-                                // Inisialisasi DataTables di awal
-                                $('#pengajuanTable').DataTable();
+                    <!-- Inisialisasi DataTables dan Bootstrap Tab -->
+                    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+                    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+                    <script>
+                        $(document).ready(function() {
+                            // Inisialisasi DataTables di awal
+                            $('#pengajuanTable').DataTable();
 
-                                // Saat tab pelaporan diklik, inisialisasi DataTables di tabel pelaporan
-                                $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-                                    var target = $(e.target).attr("data-bs-target");
+                            // Saat tab pelaporan diklik, inisialisasi DataTables di tabel pelaporan
+                            $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                                var target = $(e.target).attr("data-bs-target");
 
-                                    if (target === '#pelaporan') {
-                                        $('#pelaporanTable').DataTable();
-                                    }
-                                });
+                                if (target === '#pelaporan') {
+                                    $('#pelaporanTable').DataTable();
+                                }
                             });
-                        </script>
+                        });
+                    </script>
 
 
-                    </div>
-                    <!-- End of Main Content -->
-
-                    <!-- Footer -->
-                    <footer class="sticky-footer bg-white">
-                        <div class="container my-auto">
-                            <div class="copyright text-center my-auto">
-                                <span>Hak Cipta &copy;Sipelita 2024</span>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- End of Footer -->
                 </div>
-                <!-- End of Content Wrapper -->
+                <!-- End of Main Content -->
 
-            </div>
-            <!-- End of Page Wrapper -->
-
-            <!-- Scroll to Top Button-->
-            <a class="scroll-to-top rounded" href="#page-top">
-                <i class="fas fa-angle-up"></i>
-            </a>
-
-            <!-- Logout Modal-->
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                            <button class="close" type="button" data-dismiss="modal"
-                                aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Select "Logout" below if you are ready to end your
-                            current session.</div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button"
-                                data-dismiss="modal">Cancel</button>
-                            <a class="btn btn-primary" href="login.php">Logout</a>
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Hak Cipta &copy;Sipelita 2024</span>
                         </div>
                     </div>
+                </footer>
+                <!-- End of Footer -->
+            </div>
+            <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your
+                        current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button"
+                            data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="login.php">Logout</a>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Bootstrap core JavaScript-->
-            <script src="vendor/jquery/jquery.min.js"></script>
-            <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-            <!-- Core plugin JavaScript-->
-            <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-            <!-- Custom scripts for all pages-->
-            <script src="js/sb-admin-2.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
 
-            <!-- Page level plugins -->
-            <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-            <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+        <!-- Page level plugins -->
+        <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+        <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-            <!-- Page level custom scripts -->
-            <script src="js/demo/datatables-demo.js"></script>
+        <!-- Page level custom scripts -->
+        <script src="js/demo/datatables-demo.js"></script>
 
 </body>
 
