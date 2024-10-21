@@ -158,6 +158,53 @@ $total_rejected = $row_rejected['total_rejected'];
         color: red !important;
         font-weight: 700;
     }
+
+    /*status button pada tabel*/
+    .status-button {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    /* Diterima - Hijau */
+    .accepted {
+        background-color: #e6f4ea;
+        color: #28a745;
+        border: 1px solid #28a745;
+    }
+
+    /* Ditolak - Merah */
+    .rejected {
+        background-color: #fce8e6;
+        color: #dc3545;
+        border: 1px solid #dc3545;
+    }
+
+    /* Diproses - Biru */
+    .in-process {
+        background-color: #e7f3fe;
+        color: #007bff;
+        border: 1px solid #007bff;
+    }
+
+    /* Detail - Cyan */
+    .detail {
+        background-color: #e0f7fa;
+        color: #00bcd4;
+        border: 1px solid #00bcd4;
+    }
+
+    .status-button .dot {
+        height: 10px;
+        width: 10px;
+        background-color: currentColor;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+    }
 </style>
 
 
@@ -185,7 +232,7 @@ $total_rejected = $row_rejected['total_rejected'];
             <li class="nav-item active">
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>BERANDA</span></a>
+                    <span>Beranda</span></a>
             </li>
 
             <!-- Divider -->
@@ -214,7 +261,7 @@ $total_rejected = $row_rejected['total_rejected'];
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="rekapitulasi_lpj.php">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Rekapitulasi</span></a>
             </li>
@@ -451,20 +498,20 @@ $total_rejected = $row_rejected['total_rejected'];
                                 aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
+                                    Profil
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
+                                    Pengaturan
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
+                                    Aktivitas
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
+                                    Keluar
                                 </a>
                             </div>
                         </li>
@@ -760,7 +807,12 @@ $total_rejected = $row_rejected['total_rejected'];
                                                             <td>Edinburgh</td>
                                                             <td>61</td>
                                                             <td>2011/04/25</td>
-                                                            <td>$320,800</td>
+                                                            <td>
+                                                                <span class="status-button in-process">
+                                                                    <span class="dot"></span>
+                                                                    Diproses
+                                                                </span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Garrett Winters</td>
@@ -768,23 +820,25 @@ $total_rejected = $row_rejected['total_rejected'];
                                                             <td>Tokyo</td>
                                                             <td>63</td>
                                                             <td>2011/07/25</td>
-                                                            <td>$170,750</td>
+                                                            <td>
+                                                                <span class="status-button accepted">
+                                                                    <span class="dot"></span>
+                                                                    Diterima
+                                                                </span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Garrett Winters</td>
-                                                            <td>Accountant</td>
-                                                            <td>Tokyo</td>
-                                                            <td>63</td>
-                                                            <td>2011/07/25</td>
-                                                            <td>$170,750</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Garrett Winters</td>
-                                                            <td>Accountant</td>
-                                                            <td>Tokyo</td>
-                                                            <td>63</td>
-                                                            <td>2011/07/25</td>
-                                                            <td>$170,750</td>
+                                                            <td>Ashton Cox</td>
+                                                            <td>Junior Technical Author</td>
+                                                            <td>San Francisco</td>
+                                                            <td>66</td>
+                                                            <td>2009/01/12</td>
+                                                            <td>
+                                                                <span class="status-button rejected">
+                                                                    <span class="dot"></span>
+                                                                    Ditolak
+                                                                </span>
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -806,21 +860,44 @@ $total_rejected = $row_rejected['total_rejected'];
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                    <tr>
+                                                            <td>Tiger Nixon</td>
+                                                            <td>System Architect</td>
+                                                            <td>Edinburgh</td>
+                                                            <td>61</td>
+                                                            <td>2011/04/25</td>
+                                                            <td>
+                                                                <span class="status-button in-process">
+                                                                    <span class="dot"></span>
+                                                                    Diproses
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Garrett Winters</td>
+                                                            <td>Accountant</td>
+                                                            <td>Tokyo</td>
+                                                            <td>63</td>
+                                                            <td>2011/07/25</td>
+                                                            <td>
+                                                                <span class="status-button accepted">
+                                                                    <span class="dot"></span>
+                                                                    Diterima
+                                                                </span>
+                                                            </td>
+                                                        </tr>
                                                         <tr>
                                                             <td>Ashton Cox</td>
                                                             <td>Junior Technical Author</td>
                                                             <td>San Francisco</td>
                                                             <td>66</td>
                                                             <td>2009/01/12</td>
-                                                            <td>$86,000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Cedric Kelly</td>
-                                                            <td>Senior Javascript Developer</td>
-                                                            <td>Edinburgh</td>
-                                                            <td>22</td>
-                                                            <td>2012/03/29</td>
-                                                            <td>$433,060</td>
+                                                            <td>
+                                                                <span class="status-button rejected">
+                                                                    <span class="dot"></span>
+                                                                    Ditolak
+                                                                </span>
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -882,18 +959,18 @@ $total_rejected = $row_rejected['total_rejected'];
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Yakin Untuk Keluar?</h5>
                         <button class="close" type="button" data-dismiss="modal"
                             aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your
-                        current session.</div>
+                    <div class="modal-body">Pilih "Keluar" di bawah jika Anda siap untuk mengakhiri
+                        sesi Anda saat ini.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button"
-                            data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.php">Logout</a>
+                            data-dismiss="modal">Batal</button>
+                        <a class="btn btn-primary" href="login.php">Keluar</a>
                     </div>
                 </div>
             </div>
