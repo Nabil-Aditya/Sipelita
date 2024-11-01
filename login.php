@@ -216,8 +216,9 @@ $_SESSION['captcha'] = rand(10000, 99999);
                                         <span class="bold-black-text">Kata Sandi</span>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Masukkan Kata Sandi..." required>
+                                                id="exampleInputPassword" placeholder="Masukkan Kata Sandi..." minlength="6" required>
                                         </div>
+
 
                                         <!-- CAPTCHA Section with Two Columns -->
                                         <span class="bold-black-text">CAPTCHA</span>
