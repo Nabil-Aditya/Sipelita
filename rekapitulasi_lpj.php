@@ -222,18 +222,26 @@ $total_rejected = $row_rejected['total_rejected'];
                 Menu Utama
             </div>
 
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" href="add_pengajuan_pelatihan.php">
+                    <i class="fas fa-fw fa-file-import"></i>
+                    <span>Buat Pengajuan Pelatihan</span></a>
+            </li>
+
+
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-file-alt"></i>
-                    <span>Pengajuan</span>
+                    <span>Data Pengajuan</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pilih Opsi:</h6>
-                        <a class="collapse-item" href="add_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
-                        <a class="collapse-item" href="add_pengajuan_lpj.php">Pengajuan LPJ</a>
+                        <a class="collapse-item" href="view_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
+                        <a class="collapse-item" href="view_pengajuan_lpj.php">Pengajuan LPJ</a>
                     </div>
                 </div>
             </li>
