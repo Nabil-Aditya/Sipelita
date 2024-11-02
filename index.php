@@ -20,7 +20,7 @@ function getIndonesianDayName($dayName)
     return $dayNames[$dayName];
 }
 
-// Get current hour
+// Dapatkan jam saat ini
 $currentHour = date('H');
 
 $greeting = "Selamat Pagi";
@@ -68,19 +68,19 @@ $total_rejected = $row_rejected['total_rejected'];
 
     <title>Dashboard</title>
 
-    <!-- Custom fonts for this template -->
+   <!-- Font khusus untuk templat ini -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- Font khusus untuk templat ini -->
     <link href="css/sb-admin-2.minn.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
-    <!-- Custom styles for this page -->
+    <!-- Font khusus untuk templat ini -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <!-- Memastikan DataTables.js sudah di-link -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
@@ -207,7 +207,6 @@ $total_rejected = $row_rejected['total_rejected'];
     }
 </style>
 
-
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -250,7 +249,6 @@ $total_rejected = $row_rejected['total_rejected'];
                     <span>Buat Pengajuan Pelatihan</span></a>
             </li>
 
-
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -281,7 +279,6 @@ $total_rejected = $row_rejected['total_rejected'];
             <div class="sidebar-heading">
                 MENU PENGATURAN
             </div>
-
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
@@ -335,7 +332,6 @@ $total_rejected = $row_rejected['total_rejected'];
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-
 
                     <!-- Topbar Search -->
                     <form
@@ -529,7 +525,6 @@ $total_rejected = $row_rejected['total_rejected'];
                 </nav>
                 <!-- End of Topbar -->
 
-
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
@@ -587,7 +582,6 @@ $total_rejected = $row_rejected['total_rejected'];
                         // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
                         updateClock();
                     </script>
-
 
                     <!-- Content Row -->
                     <div class="row">
@@ -768,7 +762,6 @@ $total_rejected = $row_rejected['total_rejected'];
                             </div>
                         </div>
 
-
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
 
@@ -936,7 +929,6 @@ $total_rejected = $row_rejected['total_rejected'];
                             });
                         });
                     </script>
-
 
                 </div>
                 <!-- End of Main Content -->
