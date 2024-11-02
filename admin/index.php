@@ -502,9 +502,9 @@ $total_rejected = $row_rejected['total_rejected'];
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Rekapitulasi</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                         <a href="add_pengajuan_pelatihan.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                            <i class="fas fa-plus fa-sm text-white-50"></i>&nbsp;Buat Pengajuan?
+                            <i class="fas fa-plus fa-sm text-white-50"></i>&nbsp;Tambah Supervisor?
                         </a>
                     </div>
 
@@ -558,61 +558,61 @@ $total_rejected = $row_rejected['total_rejected'];
                     <!-- Content Row -->
                     <div class="row">
 
-                        <!-- Earnings (Monthly) Card Example -->
+                        <!-- Earnings (jumlah supervisor) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                DATA PELAPORAN</div>
+                                                JUMLAH SUPERVISOR</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 <?php echo $total_pending; ?>
-                                                <!-- Mengambil jumlah pengajuan diproses dari PHP -->
+                                                <!-- Mengambil jumlah supervisor dari PHP -->
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-file fa-2x text-gray-300"></i>
+                                            <i class="fas fa-users fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Earnings (Pengajuan Diproses) Card Example -->
+                        <!-- Earnings (jumlah akun supervisor) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                PELAPORAN DIPROSES</div>
+                                                JUMLAH AKUN</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 <?php echo $total_pending; ?>
-                                                <!-- Mengambil jumlah pengajuan diproses dari PHP -->
+                                                <!-- Mengambil jumlah akun supervisor dari PHP -->
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-file-import fa-2x text-gray-300"></i>
+                                            <i class="fas fa-user fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Earnings (Pengajuan Diterima) Card Example -->
+                        <!-- Earnings (akun aktif supervisor) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                PELAPORAN DITERIMA</div>
+                                                AKUN AKTIF</div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
                                                         <?php echo $total_approved; ?>
-                                                        <!-- Mengambil jumlah pengajuan diterima dari PHP -->
+                                                        <!-- Mengambil jumlah akun yang aktif dari PHP -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -625,17 +625,17 @@ $total_rejected = $row_rejected['total_rejected'];
                             </div>
                         </div>
 
-                        <!-- Pending Requests (Pengajuan Ditolak) Card Example -->
+                        <!-- Pending Requests (akun mati supervisor) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-danger shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                PELAPORAN DITOLAK</div>
+                                                AKUN MATI</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 <?php echo $total_rejected; ?>
-                                                <!-- Mengambil jumlah pengajuan ditolak dari PHP -->
+                                                <!-- Mengambil jumlah akun yang mati dari PHP -->
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -650,12 +650,12 @@ $total_rejected = $row_rejected['total_rejected'];
                         <div class="container-fluid">
 
                             <!-- Page Heading -->
-                            <h1 class="h3 mt-4 mb-2 text-gray-800">Rekapitulasi LPJ</h1>
+                            <h1 class="h3 mt-4 mb-2 text-gray-800">Data Supervisor</h1>
 
                             <!-- DataTales Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Data Rekapitulasi LPJ</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Data Supervisor</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
