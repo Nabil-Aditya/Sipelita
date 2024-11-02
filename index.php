@@ -53,7 +53,6 @@ $row_rejected = mysqli_fetch_assoc($result_rejected);
 $total_rejected = $row_rejected['total_rejected'];
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,7 +64,7 @@ $total_rejected = $row_rejected['total_rejected'];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard</title>
+    <title>Dashboard Pegawai</title>
     <link rel="icon" type="image/x-icon" href="./img/icon-tittle-sipelita.jpg">
 
     <!-- Font khusus untuk templat ini -->
