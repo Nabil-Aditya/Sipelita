@@ -12,7 +12,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Add Pengajuan LPJ</title>
+    <link rel="icon" type="image/x-icon" href="./img/icon-tittle-sipelita.jpg">
 
     <!-- Font khusus untuk templat ini -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
