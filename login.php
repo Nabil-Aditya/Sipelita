@@ -16,7 +16,8 @@ $_SESSION['captcha'] = rand(10000, 99999);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>Halaman Login</title>
+    <link rel="icon" type="image/x-icon" href="./img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -219,7 +220,6 @@ $_SESSION['captcha'] = rand(10000, 99999);
                                                 id="exampleInputPassword" placeholder="Masukkan Kata Sandi..." minlength="6" required>
                                         </div>
 
-
                                         <!-- CAPTCHA Section with Two Columns -->
                                         <span class="bold-black-text">CAPTCHA</span>
                                         <div class="form-group captcha-row">
@@ -240,11 +240,8 @@ $_SESSION['captcha'] = rand(10000, 99999);
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
     <!-- Bootstrap core JavaScript-->
@@ -259,7 +256,6 @@ $_SESSION['captcha'] = rand(10000, 99999);
 
     <!-- SweetAlert2 JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
-
 
     <script>
         document.getElementById("developerTeam").addEventListener("click", function(event) {
@@ -290,7 +286,6 @@ $_SESSION['captcha'] = rand(10000, 99999);
             });
         });
     </script>
-
 
     <!-- Script to trigger SweetAlert2 on form submit -->
     <script>
