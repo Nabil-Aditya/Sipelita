@@ -9,7 +9,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Add Pengajuan </title>
+    <link rel="icon" type="image/x-icon" href="./img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -361,8 +362,6 @@
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">Buat Pengajuan</h1>
-
-
 
   <!-- Basic Card Example -->
   <div class="card shadow mb-4">
