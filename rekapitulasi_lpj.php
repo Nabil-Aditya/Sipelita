@@ -1,7 +1,6 @@
 <!-- KONEKSI -->
 <?php include 'koneksi.php'; ?>
 
-
 <?php
 date_default_timezone_set('Asia/Jakarta'); // Sesuaikan timezone jika diperlukan
 
@@ -54,7 +53,6 @@ $row_rejected = mysqli_fetch_assoc($result_rejected);
 $total_rejected = $row_rejected['total_rejected'];
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -66,7 +64,8 @@ $total_rejected = $row_rejected['total_rejected'];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard</title>
+    <title>Rekapitulasi LPJ</title>
+    <link rel="icon" type="image/x-icon" href="./img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -79,13 +78,10 @@ $total_rejected = $row_rejected['total_rejected'];
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <!-- Memastikan DataTables.js sudah di-link -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-
-
 
 </head>
 
@@ -113,7 +109,6 @@ $total_rejected = $row_rejected['total_rejected'];
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         /* Efek timbul pada teks */
     }
-
 
     .profile-container {
         display: flex;
@@ -186,7 +181,6 @@ $total_rejected = $row_rejected['total_rejected'];
     }
 </style>
 
-
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -229,7 +223,6 @@ $total_rejected = $row_rejected['total_rejected'];
                     <span>Buat Pengajuan Pelatihan</span></a>
             </li>
 
-
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -260,7 +253,6 @@ $total_rejected = $row_rejected['total_rejected'];
             <div class="sidebar-heading">
                 MENU PENGATURAN
             </div>
-
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
@@ -314,7 +306,6 @@ $total_rejected = $row_rejected['total_rejected'];
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-
 
                     <!-- Topbar Search -->
                     <form
@@ -502,12 +493,10 @@ $total_rejected = $row_rejected['total_rejected'];
                                 </a>
                             </div>
                         </li>
-
                     </ul>
 
                 </nav>
                 <!-- End of Topbar -->
-
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -566,7 +555,6 @@ $total_rejected = $row_rejected['total_rejected'];
                         // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
                         updateClock();
                     </script>
-
 
                     <!-- Content Row -->
                     <div class="row">
@@ -746,7 +734,6 @@ $total_rejected = $row_rejected['total_rejected'];
                                 </div>
                             </div>
                         </div>
-
 
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
