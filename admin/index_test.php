@@ -179,6 +179,17 @@ $total_rejected = $row_rejected['total_rejected'];
         display: inline-block;
         margin-right: 5px;
     }
+
+    .status-aktif {
+    color: green;
+    font-weight: bold;
+}
+
+.status-mati {
+    color: red;
+    font-weight: bold;
+}
+
 </style>
 
 <body id="page-top">
@@ -219,35 +230,9 @@ $total_rejected = $row_rejected['total_rejected'];
             <!-- Nav Item - Charts -->
             <li class="nav-item">
                 <a class="nav-link" href="add_pengajuan_pelatihan.php">
-                    <i class="fas fa-fw fa-file-import"></i>
-                    <span>Buat Pengajuan Pelatihan</span></a>
+                    <i class="fas fa-users fa-file-import"></i>
+                    <span>Tambah Supervisor</span></a>
             </li>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-file-alt"></i>
-                    <span>Data Pengajuan</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Pilih Opsi:</h6>
-                        <a class="collapse-item" href="view_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
-                        <a class="collapse-item active" href="view_pengajuan_lpj.php">Pengajuan LPJ</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="rekapitulasi_lpj.php">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Rekapitulasi</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
 
             <!-- Heading -->
             <div class="sidebar-heading">
@@ -259,7 +244,7 @@ $total_rejected = $row_rejected['total_rejected'];
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Pengatuan</span>
+                    <span>Pengaturan</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
@@ -662,21 +647,19 @@ $total_rejected = $row_rejected['total_rejected'];
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                             <thead>
                                                 <tr>
-                                                    <th>Name</th>
-                                                    <th>Position</th>
-                                                    <th>Office</th>
-                                                    <th>Age</th>
-                                                    <th>Start date</th>
-                                                    <th>Salary</th>
+                                                    <th>No</th>
+                                                    <th>Username</th>
+                                                    <th>NIP</th>
+                                                    <th>Status</th>
+                                                    <th>Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                     <td>Tiger Nixon</td>
                                                     <td>System Architect</td>
-                                                    <td>Edinburgh</td>
-                                                    <td>61</td>
-                                                    <td>2011/04/25</td>
+                                                    <td>82657722385</td>
+                                                    <td><span class="status-aktif">Aktif</span></td>
                                                     <td>
                                                         <span class="status-button detail">
                                                             <span class="dot"></span>
@@ -687,9 +670,8 @@ $total_rejected = $row_rejected['total_rejected'];
                                                 <tr>
                                                     <td>Garrett Winters</td>
                                                     <td>Accountant</td>
-                                                    <td>Tokyo</td>
-                                                    <td>63</td>
-                                                    <td>2011/07/25</td>
+                                                    <td>64810573646</td>
+                                                    <td><span class="status-mati">Mati</span></td>
                                                     <td>
                                                         <span class="status-button detail">
                                                             <span class="dot"></span>
@@ -700,9 +682,8 @@ $total_rejected = $row_rejected['total_rejected'];
                                                 <tr>
                                                     <td>Ashton Cox</td>
                                                     <td>Junior Technical Author</td>
-                                                    <td>San Francisco</td>
-                                                    <td>66</td>
-                                                    <td>2009/01/12</td>
+                                                    <td>12345678910</td>
+                                                    <td><span class="status-aktif">Aktif</span></td>
                                                     <td>
                                                         <span class="status-button detail">
                                                             <span class="dot"></span>
@@ -713,9 +694,8 @@ $total_rejected = $row_rejected['total_rejected'];
                                                 <tr>
                                                     <td>Cedric Kelly</td>
                                                     <td>Senior Javascript Developer</td>
-                                                    <td>Edinburgh</td>
-                                                    <td>22</td>
-                                                    <td>2012/03/29</td>
+                                                    <td>57295610048</td>
+                                                    <td><span class="status-aktif">Aktif</span></td>
                                                     <td>
                                                         <span class="status-button detail">
                                                             <span class="dot"></span>
