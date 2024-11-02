@@ -1,7 +1,6 @@
 <!-- KONEKSI -->
 <?php include 'koneksi.php'; ?>
 
-
 <?php
 date_default_timezone_set('Asia/Jakarta'); // Sesuaikan timezone jika diperlukan
 
@@ -67,8 +66,9 @@ $total_rejected = $row_rejected['total_rejected'];
     <meta name="author" content="">
 
     <title>Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="./img/icon-tittle-sipelita.jpg">
 
-   <!-- Font khusus untuk templat ini -->
+    <!-- Font khusus untuk templat ini -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -79,12 +79,10 @@ $total_rejected = $row_rejected['total_rejected'];
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
     <!-- Font khusus untuk templat ini -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <!-- Memastikan DataTables.js sudah di-link -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-
 
 
 </head>
