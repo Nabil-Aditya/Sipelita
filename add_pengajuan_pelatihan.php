@@ -1,7 +1,6 @@
 <!-- KONEKSI -->
 <?php include 'koneksi.php'; ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +12,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Add Pengajuan Pelatihan</title>
+    <link rel="icon" type="image/x-icon" href="./img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -51,7 +51,6 @@
         /* Efek timbul pada teks */
     }
 </style>
-
 
 <body id="page-top">
 
@@ -95,7 +94,6 @@
                     <span>Buat Pengajuan Pelatihan</span></a>
             </li>
 
-
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -126,7 +124,6 @@
             <div class="sidebar-heading">
                 MENU PENGATURAN
             </div>
-
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
@@ -166,7 +163,6 @@
         </ul>
         <!-- End of Sidebar -->
 
-
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 
@@ -181,7 +177,6 @@
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-
 
                     <!-- Topbar Search -->
                     <form
@@ -517,7 +512,6 @@
                     });
                 </script>
 
-
                 <script>
                     $(document).ready(function() {
                         // Ketika tombol "Buat" ditekan, mencegah form submit otomatis dan munculkan modal
@@ -604,7 +598,6 @@
                     </div>
                 </div>
 
-
                 <!-- Bootstrap core JavaScript-->
                 <script src="vendor/jquery/jquery.min.js"></script>
                 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -621,7 +614,6 @@
 
                 <!-- Page level custom scripts -->
                 <script src="js/demo/datatables-demo.js"></script>
-
 
 </body>
 
