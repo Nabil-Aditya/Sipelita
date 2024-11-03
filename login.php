@@ -85,7 +85,7 @@ if (isset($_POST['login'])) {
                                         <span class="bold-black-text">Kata Sandi</span>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user" name="password"
-                                                id="exampleInputPassword" placeholder="Masukkan Kata Sandi..." minlength="6" required>
+                                                id="exampleInputPassword" placeholder="Masukkan Kata Sandi..." minlength="3" required>
                                         </div>
 
                                         <!-- CAPTCHA Section with Two Columns -->
