@@ -1,5 +1,8 @@
 <!-- KONEKSI -->
 <?php include 'koneksi.php'; ?>
+<?php include 'loader.php'; ?>
+
+
 
 <?php
 date_default_timezone_set('Asia/Jakarta'); // Sesuaikan timezone jika diperlukan
@@ -73,8 +76,11 @@ $total_rejected = $row_rejected['total_rejected'];
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Font khusus untuk templat ini -->
+    <!-- bawaan untuk templat ini -->
     <link href="css/sb-admin-2.minn.css" rel="stylesheet">
+    <!-- custom khusus untuk templat ini -->
+    <link href="css/pegawai/index-pegawai.css" rel="stylesheet">
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -85,124 +91,6 @@ $total_rejected = $row_rejected['total_rejected'];
 
 
 </head>
-
-<style>
-    .nav-tabs .nav-link.active {
-        background-color: #4e73df !important;
-        color: white !important;
-    }
-
-    .sidebar-brand-icon img {
-        max-width: 60px;
-        height: auto;
-        border-radius: 5px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        /* Efek bayangan lembut */
-    }
-
-    .sipelita-text {
-        font-size: 1.3rem;
-        /* Ukuran font */
-        font-weight: bold;
-        /* Membuat teks tebal */
-        color: #ffffff;
-        /* Warna teks */
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        /* Efek timbul pada teks */
-    }
-
-
-    .profile-container {
-        display: flex;
-        align-items: center;
-        /* Vertikal rata tengah */
-        margin-bottom: 15px;
-    }
-
-    .profile-img {
-        max-width: 70px;
-        /* Sesuaikan ukuran gambar */
-        width: 100%;
-        height: auto;
-        /* Menjaga proporsi gambar */
-        margin-right: 20px;
-        /* Spasi antara gambar dan teks */
-    }
-
-    .profile-text {
-        display: flex;
-        flex-direction: column;
-        /* Agar h2 dan p berbaris secara vertikal */
-    }
-
-    h3,
-    #timeDisplay {
-        margin: 0;
-        /* Menghapus margin default pada h3 dan p */
-    }
-
-    .status-pending {
-        color: blue !important;
-        font-weight: 700;
-    }
-
-    .status-approved {
-        color: green !important;
-        font-weight: 700;
-    }
-
-    .status-rejected {
-        color: red !important;
-        font-weight: 700;
-    }
-
-    /*status button pada tabel*/
-    .status-button {
-        display: inline-block;
-        padding: 5px 15px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    /* Diterima - Hijau */
-    .accepted {
-        background-color: #e6f4ea;
-        color: #28a745;
-        border: 1px solid #28a745;
-    }
-
-    /* Ditolak - Merah */
-    .rejected {
-        background-color: #fce8e6;
-        color: #dc3545;
-        border: 1px solid #dc3545;
-    }
-
-    /* Diproses - Biru */
-    .in-process {
-        background-color: #e7f3fe;
-        color: #007bff;
-        border: 1px solid #007bff;
-    }
-
-    /* Detail - Cyan */
-    .detail {
-        background-color: #e0f7fa;
-        color: #00bcd4;
-        border: 1px solid #00bcd4;
-    }
-
-    .status-button .dot {
-        height: 10px;
-        width: 10px;
-        background-color: currentColor;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 5px;
-    }
-</style>
 
 <body id="page-top">
 
