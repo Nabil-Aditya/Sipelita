@@ -21,36 +21,12 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="css/pegawai/add-pengajuan-pelatihan.css" rel="stylesheet">
 
 </head>
 
 </head>
-
-<style>
-    .nav-tabs .nav-link.active {
-        background-color: #4e73df !important;
-        color: white !important;
-    }
-
-    .sidebar-brand-icon img {
-        max-width: 60px;
-        height: auto;
-        border-radius: 5px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        /* Efek bayangan lembut */
-    }
-
-    .sipelita-text {
-        font-size: 1.3rem;
-        /* Ukuran font */
-        font-weight: bold;
-        /* Membuat teks tebal */
-        color: #ffffff;
-        /* Warna teks */
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        /* Efek timbul pada teks */
-    }
-</style>
 
 <body id="page-top">
 
