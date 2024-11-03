@@ -1,5 +1,14 @@
 <!-- KONEKSI -->
-<?php include '../koneksi.php'; ?>
+<?php include '../koneksi.php'; 
+
+
+//nasyith
+include 'function.php';
+
+$jumlah_jurusan = get_jumlah_jurusan();
+$jurusan = getall_jurusan();
+
+?>
 
 <?php
 date_default_timezone_set('Asia/Jakarta'); // Sesuaikan timezone jika diperlukan
@@ -83,7 +92,8 @@ $total_rejected = $row_rejected['total_rejected'];
     <!-- Custom styles for this page -->
     <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <!-- Memastikan DataTables.js sudah di-link -->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js">
+    </script>
 
 </head>
 
@@ -433,39 +443,40 @@ $total_rejected = $row_rejected['total_rejected'];
                     </div>
 
                     <script>
-                        function updateClock() {
-                            // Buat objek tanggal baru
-                            var now = new Date();
+                    function updateClock() {
+                        // Buat objek tanggal baru
+                        var now = new Date();
 
-                            // Ambil elemen untuk menampilkan waktu
-                            var timeDisplay = document.getElementById("timeDisplay");
+                        // Ambil elemen untuk menampilkan waktu
+                        var timeDisplay = document.getElementById("timeDisplay");
 
-                            // Array untuk nama hari dalam bahasa Indonesia
-                            var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                        // Array untuk nama hari dalam bahasa Indonesia
+                        var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-                            // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
-                            var day = dayNames[now.getDay()];
-                            var date = now.getDate();
-                            var month = now.toLocaleString('id-ID', {
-                                month: 'long'
-                            }); // Nama bulan dalam bahasa Indonesia
-                            var year = now.getFullYear();
-                            var hours = now.getHours().toString().padStart(2, '0');
-                            var minutes = now.getMinutes().toString().padStart(2, '0');
-                            var seconds = now.getSeconds().toString().padStart(2, '0');
+                        // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
+                        var day = dayNames[now.getDay()];
+                        var date = now.getDate();
+                        var month = now.toLocaleString('id-ID', {
+                            month: 'long'
+                        }); // Nama bulan dalam bahasa Indonesia
+                        var year = now.getFullYear();
+                        var hours = now.getHours().toString().padStart(2, '0');
+                        var minutes = now.getMinutes().toString().padStart(2, '0');
+                        var seconds = now.getSeconds().toString().padStart(2, '0');
 
-                            // Format waktu
-                            var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' + minutes + ':' + seconds;
+                        // Format waktu
+                        var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' +
+                            minutes + ':' + seconds;
 
-                            // Update elemen HTML dengan waktu terbaru
-                            timeDisplay.textContent = formattedTime;
-                        }
+                        // Update elemen HTML dengan waktu terbaru
+                        timeDisplay.textContent = formattedTime;
+                    }
 
-                        // Jalankan updateClock setiap detik
-                        setInterval(updateClock, 1000);
+                    // Jalankan updateClock setiap detik
+                    setInterval(updateClock, 1000);
 
-                        // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
-                        updateClock();
+                    // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
+                    updateClock();
                     </script>
 
                     <!-- Content Row -->
@@ -480,7 +491,7 @@ $total_rejected = $row_rejected['total_rejected'];
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 JUMLAH JURUSAN</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_pending; ?>
+                                                <?= $jumlah_jurusan ?>
                                                 <!-- Mengambil jumlah supervisor dari PHP -->
                                             </div>
                                         </div>
@@ -514,9 +525,11 @@ $total_rejected = $row_rejected['total_rejected'];
                                                 </tr>
                                             </thead>
                                             <tbody>
+
+                                                <?php $i = 0; $i++; foreach ($jurusan as $data) { ?>
                                                 <tr>
-                                                    <td>Tiger Nixon</td>
-                                                    <td>System Architect</td>
+                                                    <td><?=$i?></td>
+                                                    <td><?=$data['jurusan']?></td>
                                                     <td>
                                                         <span class="status-button detail">
                                                             <span class="dot"></span>
@@ -524,36 +537,7 @@ $total_rejected = $row_rejected['total_rejected'];
                                                         </span>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>Garrett Winters</td>
-                                                    <td>Accountant</td>
-                                                    <td>
-                                                        <span class="status-button detail">
-                                                            <span class="dot"></span>
-                                                            Detail
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Ashton Cox</td>
-                                                    <td>Junior Technical Author</td>
-                                                    <td>
-                                                        <span class="status-button detail">
-                                                            <span class="dot"></span>
-                                                            Detail
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Cedric Kelly</td>
-                                                    <td>Senior Javascript Developer</td>
-                                                    <td>
-                                                        <span class="status-button detail">
-                                                            <span class="dot"></span>
-                                                            Detail
-                                                        </span>
-                                                    </td>
-                                                </tr>
+                                                <?php }?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -584,22 +568,20 @@ $total_rejected = $row_rejected['total_rejected'];
             </a>
 
             <!-- Logout Modal-->
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Yakin Untuk Keluar?</h5>
-                            <button class="close" type="button" data-dismiss="modal"
-                                aria-label="Close">
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
                         <div class="modal-body">Pilih "Keluar" di bawah jika Anda siap untuk mengakhiri
                             sesi Anda saat ini.</div>
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button"
-                                data-dismiss="modal">Batal</button>
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
                             <a class="btn btn-primary" href="../login.php">Keluar</a>
                         </div>
                     </div>

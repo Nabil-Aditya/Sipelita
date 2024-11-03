@@ -1,5 +1,15 @@
 <!-- KONEKSI -->
-<?php include '../koneksi.php'; ?>
+<?php 
+
+include '../koneksi.php'; 
+include 'function.php'; 
+
+// nasyith
+$get_pegawai = get_pegawai();
+
+
+
+?>
 
 <?php
 date_default_timezone_set('Asia/Jakarta'); // Sesuaikan timezone jika diperlukan
@@ -560,12 +570,10 @@ $total_rejected = $row_rejected['total_rejected'];
                         </div>
 
                         <!-- Begin Page Content -->
-                        <div class="container-fluid">
+                        <!-- <div class="container-fluid">
 
-                            <!-- Page Heading -->
                             <h1 class="h3 mt-4 mb-2 text-gray-800">Data Supervisor</h1>
 
-                            <!-- DataTales Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Data Supervisor</h6>
@@ -641,7 +649,136 @@ $total_rejected = $row_rejected['total_rejected'];
                                     </div>
                                 </div>
                             </div>
+                        </div> -->
+
+
+
+
+                        <div class="container-fluid">
+
+                            <!-- Page Heading -->
+                            <h1 class="h3 mt-4 mb-2 text-gray-800">Riwayat</h1>
+
+                            <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="pengajuan-tab" data-bs-toggle="tab"
+                                                data-bs-target="#pengajuan" type="button" role="tab"
+                                                aria-controls="pengajuan" aria-selected="true">PEGAWAI</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="pelaporan-tab" data-bs-toggle="tab"
+                                                data-bs-target="#pelaporan" type="button" role="tab"
+                                                aria-controls="pelaporan" aria-selected="false">SUPERVISOR</button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="tab-content" id="myTabContent">
+                                        <!-- Tabel Pegawai -->
+                                        <div class="tab-pane fade show active" id="pengajuan" role="tabpanel" aria-labelledby="pengajuan-tab">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="pengajuanTable" width="100%" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>NIP</th>
+                                                            <th>Nama</th>
+                                                            <th>Alamat</th>
+                                                            <th>Age</th>
+                                                            <th>Start date</th>
+                                                            <th>Salary</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php foreach ($get_pegawai as $data) { ?>
+                                                        <tr>
+                                                            <td><?=$data['nip']?></td>
+                                                            <td><?=$data['nama']?></td>
+                                                            <td>Edinburgh</td>
+                                                            <td>61</td>
+                                                            <td>2011/04/25</td>
+                                                            <td>
+                                                                <span class="status-button in-process">
+                                                                    <span class="dot"></span>
+                                                                    Diproses
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <?php }?>
+
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tabel Pelaporan -->
+                                        <div class="tab-pane fade" id="pelaporan" role="tabpanel" aria-labelledby="pelaporan-tab">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="pelaporanTable" width="100%" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Position</th>
+                                                            <th>Office</th>
+                                                            <th>Age</th>
+                                                            <th>Start date</th>
+                                                            <th>Salary</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Tiger Nixon</td>
+                                                            <td>System Architect</td>
+                                                            <td>Edinburgh</td>
+                                                            <td>61</td>
+                                                            <td>2011/04/25</td>
+                                                            <td>
+                                                                <span class="status-button in-process">
+                                                                    <span class="dot"></span>
+                                                                    Diproses
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Garrett Winters</td>
+                                                            <td>Accountant</td>
+                                                            <td>Tokyo</td>
+                                                            <td>63</td>
+                                                            <td>2011/07/25</td>
+                                                            <td>
+                                                                <span class="status-button accepted">
+                                                                    <span class="dot"></span>
+                                                                    Diterima
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Ashton Cox</td>
+                                                            <td>Junior Technical Author</td>
+                                                            <td>San Francisco</td>
+                                                            <td>66</td>
+                                                            <td>2009/01/12</td>
+                                                            <td>
+                                                                <span class="status-button rejected">
+                                                                    <span class="dot"></span>
+                                                                    Ditolak
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+
                     </div>
                     <!-- End of Main Content -->
 
