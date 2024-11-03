@@ -88,9 +88,16 @@
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="rekapitulasi_lpj.php">
+                <a class="nav-link" href="jurusan.php">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Rekapitulasi</span></a>
+                    <span>Jurusan</span></a>
+            </li>
+
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" href="prodi.php">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Prodi</span></a>
             </li>
 
             <!-- Divider -->
