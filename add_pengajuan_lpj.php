@@ -21,56 +21,12 @@
 
     <!-- Font khusus untuk templat ini -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Font khusus untuk templat ini -->
+    <link href="css/pegawai/add-pengajuan-lpj.css" rel="stylesheet">
 
 </head>
 
 </head>
-
-<style>
-    .nav-tabs .nav-link.active {
-        background-color: #4e73df !important;
-        color: white !important;
-    }
-
-    .sidebar-brand-icon img {
-        max-width: 60px;
-        height: auto;
-        border-radius: 5px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        /* Efek bayangan lembut */
-    }
-
-    .sipelita-text {
-        font-size: 1.3rem;
-        /* Ukuran font */
-        font-weight: bold;
-        /* Membuat teks tebal */
-        color: #ffffff;
-        /* Warna teks */
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        /* Efek timbul pada teks */
-    }
-
-    /* Agar label responsif dan menangani teks panjang */
-    .custom-file-label {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        /* Tambahkan ... di ujung jika teks terlalu panjang */
-        display: block;
-        width: 100%;
-        /* Sesuaikan dengan lebar parent */
-        padding-right: 10px;
-        /* Ruang untuk teks tidak mepet */
-        box-sizing: border-box;
-    }
-
-    /* Warna biru untuk nama file yang dipilih */
-    .custom-file-label.selected {
-        color: blue;
-
-    }
-</style>
 
 <body id="page-top">
 
