@@ -1,8 +1,8 @@
 <!-- KONEKSI -->
-<?php 
+<?php
 
-include '../koneksi.php'; 
-include 'function.php'; 
+include '../koneksi.php';
+include 'function.php';
 
 // nasyith
 $get_pegawai = get_pegawai();
@@ -689,27 +689,27 @@ $total_rejected = $row_rejected['total_rejected'];
                                                             <th>Alamat</th>
                                                             <th>Age</th>
                                                             <th>Start date</th>
-                                                            <th>Salary</th>
+                                                            <th>Aksi</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php foreach ($get_pegawai as $data) { ?>
-                                                        <tr>
-                                                            <td><?=$data['nip']?></td>
-                                                            <td><?=$data['nama']?></td>
-                                                            <td>Edinburgh</td>
-                                                            <td>61</td>
-                                                            <td>2011/04/25</td>
-                                                            <td>
-                                                                <span class="status-button in-process">
-                                                                    <span class="dot"></span>
-                                                                    Diproses
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                        <?php }?>
+                                                            <tr>
+                                                                <td><?= $data['nip'] ?></td>
+                                                                <td><?= $data['nama'] ?></td>
+                                                                <td>Edinburgh</td>
+                                                                <td>61</td>
+                                                                <td>2011/04/25</td>
+                                                                <td>
+                                                                    <span class="status-button detail" onclick="window.location.href='view_profile.php'">
+                                                                        <span class="dot"></span>
+                                                                        Detail
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
 
-                                                        
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -737,9 +737,9 @@ $total_rejected = $row_rejected['total_rejected'];
                                                             <td>61</td>
                                                             <td>2011/04/25</td>
                                                             <td>
-                                                                <span class="status-button in-process">
+                                                                <span class="status-button detail" onclick="window.location.href='view_profile.php'">
                                                                     <span class="dot"></span>
-                                                                    Diproses
+                                                                    Detail
                                                                 </span>
                                                             </td>
                                                         </tr>
@@ -750,9 +750,9 @@ $total_rejected = $row_rejected['total_rejected'];
                                                             <td>63</td>
                                                             <td>2011/07/25</td>
                                                             <td>
-                                                                <span class="status-button accepted">
+                                                                <span class="status-button detail" onclick="window.location.href='view_profile.php'">
                                                                     <span class="dot"></span>
-                                                                    Diterima
+                                                                    Detail
                                                                 </span>
                                                             </td>
                                                         </tr>
@@ -763,9 +763,9 @@ $total_rejected = $row_rejected['total_rejected'];
                                                             <td>66</td>
                                                             <td>2009/01/12</td>
                                                             <td>
-                                                                <span class="status-button rejected">
+                                                                <span class="status-button detail" onclick="window.location.href='view_profile.php'">
                                                                     <span class="dot"></span>
-                                                                    Ditolak
+                                                                    Detail
                                                                 </span>
                                                             </td>
                                                         </tr>
