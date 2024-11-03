@@ -1,4 +1,5 @@
-  .nav-tabs .nav-link.active {
+
+    .nav-tabs .nav-link.active {
         background-color: #4e73df !important;
         color: white !important;
     }
@@ -65,41 +66,50 @@
         color: red !important;
         font-weight: 700;
     }
-    
-    /* Status button pada tabel */
-.status-button {
-    display: inline-block;
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    cursor: pointer; /* Mengubah kursor jadi pointer */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Animasi halus untuk perubahan warna */
-}
 
-/* Detail - Cyan */
-.detail {
-    background-color: #e0f7fa;
-    color: #00bcd4;
-    border: 1px solid #00bcd4;
-}
+    /*status button pada tabel*/
+    .status-button {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+    }
 
-/* Efek hover */
-.status-button:hover {
-    background-color: #00bcd4; /* Warna latar belakang saat hover */
-    color: #ffffff; /* Warna teks saat hover */
-}
+    /* Diterima - Hijau */
+    .accepted {
+        background-color: #e6f4ea;
+        color: #28a745;
+        border: 1px solid #28a745;
+    }
 
-/* Dot di dalam button */
-.status-button .dot {
-    height: 10px;
-    width: 10px;
-    background-color: currentColor;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 5px;
-    cursor: pointer; /* Mengubah kursor di area dot */
-}
+    /* Ditolak - Merah */
+    .rejected {
+        background-color: #fce8e6;
+        color: #dc3545;
+        border: 1px solid #dc3545;
+    }
 
-    
+    /* Diproses - Biru */
+    .in-process {
+        background-color: #e7f3fe;
+        color: #007bff;
+        border: 1px solid #007bff;
+    }
+
+    /* Detail - Cyan */
+    .detail {
+        background-color: #e0f7fa;
+        color: #00bcd4;
+        border: 1px solid #00bcd4;
+    }
+
+    .status-button .dot {
+        height: 10px;
+        width: 10px;
+        background-color: currentColor;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+    }
