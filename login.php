@@ -1,8 +1,18 @@
 <?php
 session_start();
 
+include 'function.php';
 // Generate random 5-digit number for CAPTCHA
 $_SESSION['captcha'] = rand(10000, 99999);
+
+
+
+//login
+if (isset($_POST['login'])) {
+    login($_POST);
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -63,36 +73,36 @@ $_SESSION['captcha'] = rand(10000, 99999);
                                     <div class="text-center">
                                         <h1 class="h4 mb-5 custom-heading">Portal Masuk Sipelita</h1>
                                     </div>
-                                    <form class="user" method="post" action="index.php" id="loginForm">
+                                    <form class="user" method="post"  id="loginForm">
 
                                         <span class="bold-black-text">Nama Pengguna</span>
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
-                                                id="exampleInputText" aria-describedby="textHelp"
+                                                id="exampleInputText" aria-describedby="textHelp" name="username"
                                                 placeholder="Masukkan Nama Pengguna..." required>
                                         </div>
 
                                         <span class="bold-black-text">Kata Sandi</span>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
+                                            <input type="password" class="form-control form-control-user" name="password"
                                                 id="exampleInputPassword" placeholder="Masukkan Kata Sandi..." minlength="6" required>
                                         </div>
 
                                         <!-- CAPTCHA Section with Two Columns -->
-                                        <span class="bold-black-text">CAPTCHA</span>
+                                        <!-- <span class="bold-black-text">CAPTCHA</span>
                                         <div class="form-group captcha-row">
                                             <div class="captcha-box"><?php echo $_SESSION['captcha']; ?></div>
                                             <input type="text" class="form-control form-control-user captcha-input" placeholder="Masukkan CAPTCHA..." name="captcha_input" required>
-                                        </div>
+                                        </div> -->
 
-                                        <button type="submit" class="btn btn-primary btn-user btn-block custom-button">
+                                        <button type="submit" name="login" class="btn btn-primary btn-user btn-block custom-button">
                                             Masuk
                                         </button>
                                     </form>
                                     <hr>
-                                    <div class="text-center">
+                                    <!-- <div class="text-center">
                                         <a class="custom-link" href="forgot-password.php">Lupa Kata Sandi?</a>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -146,7 +156,7 @@ $_SESSION['captcha'] = rand(10000, 99999);
     </script>
 
     <!-- Script to trigger SweetAlert2 on form submit -->
-    <script>
+    <!-- <script>
         document.getElementById("loginForm").addEventListener("submit", function(event) {
             event.preventDefault(); // Prevent form submission
             Swal.fire({
@@ -160,7 +170,7 @@ $_SESSION['captcha'] = rand(10000, 99999);
                 this.submit();
             });
         });
-    </script>
+    </script> -->
 
 </body>
 

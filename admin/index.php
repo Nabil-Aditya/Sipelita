@@ -6,6 +6,7 @@ include 'function.php';
 
 // nasyith
 $get_pegawai = get_pegawai();
+$get_supervisor = get_supervisor();
 
 
 
@@ -93,7 +94,8 @@ $total_rejected = $row_rejected['total_rejected'];
     <!-- Custom styles for this page -->
     <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <!-- Memastikan DataTables.js sudah di-link -->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js">
+    </script>
 
 </head>
 
@@ -443,39 +445,40 @@ $total_rejected = $row_rejected['total_rejected'];
                     </div>
 
                     <script>
-                        function updateClock() {
-                            // Buat objek tanggal baru
-                            var now = new Date();
+                    function updateClock() {
+                        // Buat objek tanggal baru
+                        var now = new Date();
 
-                            // Ambil elemen untuk menampilkan waktu
-                            var timeDisplay = document.getElementById("timeDisplay");
+                        // Ambil elemen untuk menampilkan waktu
+                        var timeDisplay = document.getElementById("timeDisplay");
 
-                            // Array untuk nama hari dalam bahasa Indonesia
-                            var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                        // Array untuk nama hari dalam bahasa Indonesia
+                        var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-                            // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
-                            var day = dayNames[now.getDay()];
-                            var date = now.getDate();
-                            var month = now.toLocaleString('id-ID', {
-                                month: 'long'
-                            }); // Nama bulan dalam bahasa Indonesia
-                            var year = now.getFullYear();
-                            var hours = now.getHours().toString().padStart(2, '0');
-                            var minutes = now.getMinutes().toString().padStart(2, '0');
-                            var seconds = now.getSeconds().toString().padStart(2, '0');
+                        // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
+                        var day = dayNames[now.getDay()];
+                        var date = now.getDate();
+                        var month = now.toLocaleString('id-ID', {
+                            month: 'long'
+                        }); // Nama bulan dalam bahasa Indonesia
+                        var year = now.getFullYear();
+                        var hours = now.getHours().toString().padStart(2, '0');
+                        var minutes = now.getMinutes().toString().padStart(2, '0');
+                        var seconds = now.getSeconds().toString().padStart(2, '0');
 
-                            // Format waktu
-                            var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' + minutes + ':' + seconds;
+                        // Format waktu
+                        var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' +
+                            minutes + ':' + seconds;
 
-                            // Update elemen HTML dengan waktu terbaru
-                            timeDisplay.textContent = formattedTime;
-                        }
+                        // Update elemen HTML dengan waktu terbaru
+                        timeDisplay.textContent = formattedTime;
+                    }
 
-                        // Jalankan updateClock setiap detik
-                        setInterval(updateClock, 1000);
+                    // Jalankan updateClock setiap detik
+                    setInterval(updateClock, 1000);
 
-                        // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
-                        updateClock();
+                    // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
+                    updateClock();
                     </script>
 
                     <!-- Content Row -->
@@ -679,34 +682,38 @@ $total_rejected = $row_rejected['total_rejected'];
                                 <div class="card-body">
                                     <div class="tab-content" id="myTabContent">
                                         <!-- Tabel Pegawai -->
-                                        <div class="tab-pane fade show active" id="pengajuan" role="tabpanel" aria-labelledby="pengajuan-tab">
+                                        <div class="tab-pane fade show active" id="pengajuan" role="tabpanel"
+                                            aria-labelledby="pengajuan-tab">
                                             <div class="table-responsive">
-                                                <table class="table table-bordered" id="pengajuanTable" width="100%" cellspacing="0">
+                                                <table class="table table-bordered" id="pengajuanTable" width="100%"
+                                                    cellspacing="0">
                                                     <thead>
                                                         <tr>
                                                             <th>NIP</th>
                                                             <th>Nama</th>
-                                                            <th>Alamat</th>
-                                                            <th>Age</th>
-                                                            <th>Start date</th>
+                                                            <th>Telp</th>
+                                                            <th>Email</th>
                                                             <th>Aksi</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php foreach ($get_pegawai as $data) { ?>
-                                                            <tr>
-                                                                <td><?= $data['nip'] ?></td>
-                                                                <td><?= $data['nama'] ?></td>
-                                                                <td>Edinburgh</td>
-                                                                <td>61</td>
-                                                                <td>2011/04/25</td>
-                                                                <td>
-                                                                    <span class="status-button detail" onclick="window.location.href='view_profile.php'">
+                                                        <tr>
+                                                            <td><?= $data['nip'] ?></td>
+                                                            <td><?= $data['nama'] ?></td>
+                                                            <td><?= $data['telp'] ?></td>
+                                                            <td><?= $data['email'] ?></td>
+
+                                                            <td>
+                                                                <a
+                                                                    href="view_profile.php?id_user=<?=$data['id_user']?>"><span
+                                                                        class="status-button detail">
                                                                         <span class="dot"></span>
                                                                         Detail
                                                                     </span>
-                                                                </td>
-                                                            </tr>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
                                                         <?php } ?>
 
 
@@ -716,59 +723,39 @@ $total_rejected = $row_rejected['total_rejected'];
                                         </div>
 
                                         <!-- Tabel Pelaporan -->
-                                        <div class="tab-pane fade" id="pelaporan" role="tabpanel" aria-labelledby="pelaporan-tab">
+                                        <div class="tab-pane fade" id="pelaporan" role="tabpanel"
+                                            aria-labelledby="pelaporan-tab">
                                             <div class="table-responsive">
-                                                <table class="table table-bordered" id="pelaporanTable" width="100%" cellspacing="0">
+                                                <table class="table table-bordered" id="pelaporanTable" width="100%"
+                                                    cellspacing="0">
                                                     <thead>
                                                         <tr>
-                                                            <th>Name</th>
-                                                            <th>Position</th>
-                                                            <th>Office</th>
-                                                            <th>Age</th>
-                                                            <th>Start date</th>
-                                                            <th>Salary</th>
+                                                            <th>NIP</th>
+                                                            <th>Nama</th>
+                                                            <th>Telp</th>
+                                                            <th>Email</th>
+                                                            <th>Aksi</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        <?php foreach ($get_supervisor as $data) { ?>
                                                         <tr>
-                                                            <td>Tiger Nixon</td>
-                                                            <td>System Architect</td>
-                                                            <td>Edinburgh</td>
-                                                            <td>61</td>
-                                                            <td>2011/04/25</td>
+                                                            <td><?= $data['nip'] ?></td>
+                                                            <td><?= $data['nama'] ?></td>
+                                                            <td><?= $data['telp'] ?></td>
+                                                            <td><?= $data['email'] ?></td>
+
                                                             <td>
-                                                                <span class="status-button detail" onclick="window.location.href='view_profile.php'">
-                                                                    <span class="dot"></span>
-                                                                    Detail
-                                                                </span>
+                                                                <a
+                                                                    href="view_profile.php?id_user=<?=$data['id_user']?>"><span
+                                                                        class="status-button detail">
+                                                                        <span class="dot"></span>
+                                                                        Detail
+                                                                    </span>
+                                                                </a>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>Garrett Winters</td>
-                                                            <td>Accountant</td>
-                                                            <td>Tokyo</td>
-                                                            <td>63</td>
-                                                            <td>2011/07/25</td>
-                                                            <td>
-                                                                <span class="status-button detail" onclick="window.location.href='view_profile.php'">
-                                                                    <span class="dot"></span>
-                                                                    Detail
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Ashton Cox</td>
-                                                            <td>Junior Technical Author</td>
-                                                            <td>San Francisco</td>
-                                                            <td>66</td>
-                                                            <td>2009/01/12</td>
-                                                            <td>
-                                                                <span class="status-button detail" onclick="window.location.href='view_profile.php'">
-                                                                    <span class="dot"></span>
-                                                                    Detail
-                                                                </span>
-                                                            </td>
-                                                        </tr>
+                                                        <?php } ?>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -803,22 +790,20 @@ $total_rejected = $row_rejected['total_rejected'];
             </a>
 
             <!-- Logout Modal-->
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Yakin Untuk Keluar?</h5>
-                            <button class="close" type="button" data-dismiss="modal"
-                                aria-label="Close">
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
                         <div class="modal-body">Pilih "Keluar" di bawah jika Anda siap untuk mengakhiri
                             sesi Anda saat ini.</div>
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button"
-                                data-dismiss="modal">Batal</button>
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
                             <a class="btn btn-primary" href="../login.php">Keluar</a>
                         </div>
                     </div>

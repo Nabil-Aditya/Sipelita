@@ -1,5 +1,19 @@
 <!-- KONEKSI -->
-<?php include '../koneksi.php'; ?>
+<?php 
+
+include '../koneksi.php'; 
+include 'function.php'; 
+
+//get form value
+$get_pegawai_byId = get_pegawai_byId($_GET['id_user']);
+
+
+//edit pegawai
+if (isset($_POST['edit_pegawai'])) {
+    edit_pegawai($_POST, $_GET['id_user']);
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -378,14 +392,17 @@
                             <h6 class="m-0 font-weight-bold text-primary">Data Profile</h6>
                         </div>
                         <div class="card-body">
+
+
                             <form method="post" enctype="multipart/form-data" id="pengajuanForm">
+
                                 <div class="row">
                                     <!-- Kolom Kiri -->
                                     <div class="col-md-12 mb-5">
                                         <div class="form-group d-flex justify-content-center">
-                                            <img src="../foto_pegawai/banu 1.jpg" alt="Foto"
+                                            <img src="../foto_pegawai/<?=$get_pegawai_byId['foto_profil']?>" alt="Foto"
                                                 class="img-fluid rounded-circle"
-                                                style="max-width: 200px; height: auto;">
+                                                style="width: 200px; height: 200px; object-fit: cover;">
                                         </div>
                                     </div>
 
@@ -396,42 +413,47 @@
                                         <div class="form-group">
                                             <label for="nip" class="font-weight-bold">NIP</label>
                                             <input type="text" class="form-control" id="nip" name="nip"
-                                                placeholder="Masukkan NIP">
+                                                value="<?=$get_pegawai_byId['nip']?>" placeholder="Masukkan NIP">
                                         </div>
                                         <div class="form-group">
                                             <label for="nama" class="font-weight-bold">Nama </label>
                                             <input type="text" class="form-control" id="nama" name="nama"
-                                                placeholder="Masukkan Nama">
+                                                value="<?=$get_pegawai_byId['nama']?>" placeholder="Masukkan Nama">
                                         </div>
                                         <div class="form-group">
                                             <label for="jabatan" class="font-weight-bold">Jabatan</label>
                                             <select class="form-control" id="jabatan" name="jabatan">
                                                 <option value="">Pilih Jabatan</option>
-                                                <option value="pegawai">Pegawai</option>
-                                                <option value="supervisor">Supervisor</option>
+                                                <option value="pegawai"
+                                                    <?= ($get_pegawai_byId['role'] == 'pegawai') ? 'selected' : '' ?>>
+                                                    Pegawai</option>
+                                                <option value="supervisor"
+                                                    <?= ($get_pegawai_byId['role'] == 'supervisor') ? 'selected' : '' ?>>
+                                                    Supervisor</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="email" class="font-weight-bold">Email </label>
                                             <input type="email" class="form-control" id="email" name="email"
-                                                placeholder="Masukkan Email">
+                                                value="<?=$get_pegawai_byId['email']?>" placeholder="Masukkan Email">
                                         </div>
                                         <div class="form-group">
                                             <label for="telp" class="font-weight-bold">Telp </label>
                                             <input type="text" class="form-control" id="telp" name="telp"
-                                                placeholder="Masukkan Telp">
+                                                value="<?=$get_pegawai_byId['telp']?>" placeholder="Masukkan Telp">
                                         </div>
                                         <div class="form-group">
                                             <label for="alamat" class="font-weight-bold">Alamat</label>
                                             <textarea class="form-control" id="alamat" name="alamat" rows="3"
-                                                placeholder="Masukkan Alamat"></textarea>
+                                                placeholder="Masukkan Alamat"><?=$get_pegawai_byId['alamat']?></textarea>
                                         </div>
 
                                         <label for="fileLaporan" class="font-weight-bold">Foto Profil</label>
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="fileLaporan"
-                                                    name="foto_profil" accept=".jpg, .jpeg, .png">
+                                                    value="<?=$get_pegawai_byId['foto_profil']?>" name="foto_profil"
+                                                    accept=".jpg, .jpeg, .png">
                                                 <label class="custom-file-label" for="fileLaporan">Pilih
                                                     file</label>
                                             </div>
@@ -443,16 +465,19 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="username" class="font-weight-bold">Username</label>
-                                            <input type="text" class="form-control" id="username" name="username">
+                                            <input type="text" class="form-control" id="username" name="username"
+                                                value="<?=$get_pegawai_byId['username']?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="password" class="font-weight-bold">Password</label>
-                                            <input type="password" class="form-control" id="password" name="password">
+                                            <input type="password" class="form-control" id="password" name="password"
+                                                value="<?=$get_pegawai_byId['password']?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="password2" class="font-weight-bold">Konfirmasi
                                                 Password</label>
-                                            <input type="password" class="form-control" id="password2" name="password2">
+                                            <input type="password" class="form-control" id="password2" name="password2"
+                                                value="<?=$get_pegawai_byId['password']?>">
                                         </div>
                                     </div>
                                 </div>
@@ -461,7 +486,7 @@
                                 <!-- Tombol Aksi -->
                                 <div class="d-flex justify-content-between mt-4">
                                     <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
-                                    <button type="submit" name="tambah_pegawai" class="btn btn-primary">Buat</button>
+                                    <button type="submit" name="edit_pegawai" class="btn btn-primary">Buat</button>
                                 </div>
                             </form>
                         </div>
@@ -469,37 +494,7 @@
                 </div>
                 <!-- /.container-fluid -->
 
-                <!-- Modal Konfirmasi Pengajuan -->
-                <div class="modal fade" id="konfirmasiModal" tabindex="-1" role="dialog"
-                    aria-labelledby="konfirmasiModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="m-0 font-weight-bold text-primary" id="konfirmasiModalLabel">Konfirmasi
-                                    Pengajuan Pelatihan</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p><strong>Lembaga / Institusi:</strong> <span id="confirmLembaga"></span></p>
-                                <p><strong>Program Studi:</strong> <span id="confirmProgramStudi"></span></p>
-                                <p><strong>Jurusan:</strong> <span id="confirmJurusan"></span></p>
-                                <p><strong>Nama Peserta:</strong> <span id="confirmNamaPeserta"></span></p>
-                                <p><strong>Alamat:</strong> <span id="confirmAlamat"></span></p>
-                                <p><strong>Tanggal Kegiatan:</strong> <span id="confirmTanggalKegiatan"></span></p>
-                                <p><strong>Tanggal Selesai:</strong> <span id="confirmTanggalSelesai"></span></p>
-                                <p><strong>Sumber Dana:</strong> <span id="confirmSumberDana"></span></p>
-                                <p><strong>Kompetensi:</strong> <span id="confirmKompetensi"></span></p>
-                                <p><strong>Target Kegiatan:</strong> <span id="confirmTargetKegiatan"></span></p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                                <button type="button" class="btn btn-primary" id="submitPengajuan">Kirim</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
 
                 <!-- Bootstrap JS -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -542,70 +537,7 @@
                 });
                 </script>
 
-                <script>
-                $(document).ready(function() {
-                    // Ketika tombol "Buat" ditekan, mencegah form submit otomatis dan munculkan modal
-                    $('#pengajuanForm').on('submit', function(event) {
-                        event.preventDefault(); // Mencegah submit form otomatis
 
-                        // Ambil data dari form
-                        const lembaga = $('#lembaga').val();
-                        const programStudi = $('#programStudi').val();
-                        const jurusan = $('#jurusan').val();
-                        const namaPeserta = $('#namaPeserta').val();
-                        const alamat = $('#alamat').val();
-                        const tanggalKegiatan = $('#tanggalKegiatan').val();
-                        const tanggalSelesai = $('#tanggalSelesai').val();
-                        const sumberDana = $('#sumberDana').val();
-                        const kompetensi = $('#kompetensi').val();
-                        const targetKegiatan = $('#targetKegiatan').val();
-
-                        // Cek apakah semua inputan tidak kosong
-                        if (!lembaga || !programStudi || !jurusan || !namaPeserta || !alamat || !
-                            tanggalKegiatan || !tanggalSelesai || !sumberDana || !kompetensi || !
-                            targetKegiatan) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Semua kolom harus diisi!'
-                            });
-                            return;
-                        }
-
-                        // Isi data di modal konfirmasi
-                        $('#confirmLembaga').text(lembaga);
-                        $('#confirmProgramStudi').text(programStudi);
-                        $('#confirmJurusan').text(jurusan);
-                        $('#confirmNamaPeserta').text(namaPeserta);
-                        $('#confirmAlamat').text(alamat);
-                        $('#confirmTanggalKegiatan').text(tanggalKegiatan);
-                        $('#confirmTanggalSelesai').text(tanggalSelesai);
-                        $('#confirmSumberDana').text(sumberDana);
-                        $('#confirmKompetensi').text(kompetensi);
-                        $('#confirmTargetKegiatan').text(targetKegiatan);
-
-                        // Munculkan modal
-                        $('#konfirmasiModal').modal('show');
-                    });
-
-                    // Ketika tombol "Kirim" di modal ditekan, tampilkan SweetAlert dan redirect ke halaman baru
-                    $('#submitPengajuan').on('click', function() {
-                        // Tutup modal
-                        $('#konfirmasiModal').modal('hide');
-
-                        // Tampilkan SweetAlert sukses
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Pengajuan Pelatihan Berhasil Diajukan',
-                            showConfirmButton: false,
-                            timer: 2500
-                        }).then(() => {
-                            // Redirect ke halaman baru setelah sukses
-                            window.location.href = 'index.php';
-                        });
-                    });
-                });
-                </script>
 
                 <!-- Logout Modal-->
                 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
