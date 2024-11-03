@@ -73,8 +73,10 @@ $total_rejected = $row_rejected['total_rejected'];
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- styles this template -->
     <link href="../css/sb-admin-2.minn.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="../css/admin/index-admin.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -84,102 +86,6 @@ $total_rejected = $row_rejected['total_rejected'];
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 
 </head>
-
-<style>
-    .nav-tabs .nav-link.active {
-        background-color: #4e73df !important;
-        color: white !important;
-    }
-
-    .sidebar-brand-icon img {
-        max-width: 60px;
-        height: auto;
-        border-radius: 5px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        /* Efek bayangan lembut */
-    }
-
-    .sipelita-text {
-        font-size: 1.3rem;
-        /* Ukuran font */
-        font-weight: bold;
-        /* Membuat teks tebal */
-        color: #ffffff;
-        /* Warna teks */
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        /* Efek timbul pada teks */
-    }
-
-    .profile-container {
-        display: flex;
-        align-items: center;
-        /* Vertikal rata tengah */
-        margin-bottom: 15px;
-    }
-
-    .profile-img {
-        max-width: 70px;
-        /* Sesuaikan ukuran gambar */
-        width: 100%;
-        height: auto;
-        /* Menjaga proporsi gambar */
-        margin-right: 20px;
-        /* Spasi antara gambar dan teks */
-    }
-
-    .profile-text {
-        display: flex;
-        flex-direction: column;
-        /* Agar h2 dan p berbaris secara vertikal */
-    }
-
-    h3,
-    #timeDisplay {
-        margin: 0;
-        /* Menghapus margin default pada h3 dan p */
-    }
-
-    .status-pending {
-        color: blue !important;
-        font-weight: 700;
-    }
-
-    .status-approved {
-        color: green !important;
-        font-weight: 700;
-    }
-
-    .status-rejected {
-        color: red !important;
-        font-weight: 700;
-    }
-
-    /*status button pada tabel*/
-    .status-button {
-        display: inline-block;
-        padding: 5px 15px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    /* Detail - Cyan */
-    .detail {
-        background-color: #e0f7fa;
-        color: #00bcd4;
-        border: 1px solid #00bcd4;
-    }
-
-    .status-button .dot {
-        height: 10px;
-        width: 10px;
-        background-color: currentColor;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 5px;
-    }
-</style>
 
 <body id="page-top">
 
@@ -202,7 +108,7 @@ $total_rejected = $row_rejected['total_rejected'];
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Beranda</span></a>
@@ -224,7 +130,7 @@ $total_rejected = $row_rejected['total_rejected'];
             </li>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-file-alt"></i>
@@ -503,8 +409,8 @@ $total_rejected = $row_rejected['total_rejected'];
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="add_pengajuan_pelatihan.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                            <i class="fas fa-plus fa-sm text-white-50"></i>&nbsp;Tambah Supervisor?
+                        <a href="add_pegawai.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <i class="fas fa-plus fa-sm text-white-50"></i>&nbsp;Tambah Pegawai?
                         </a>
                     </div>
 
@@ -769,7 +675,7 @@ $total_rejected = $row_rejected['total_rejected'];
                         <div class="modal-footer">
                             <button class="btn btn-secondary" type="button"
                                 data-dismiss="modal">Batal</button>
-                            <a class="btn btn-primary" href="login.php">Keluar</a>
+                            <a class="btn btn-primary" href="../login.php">Keluar</a>
                         </div>
                     </div>
                 </div>
