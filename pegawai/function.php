@@ -43,9 +43,10 @@ function pengajuan_pelatihan($data) {
     $no_dana = $_POST['no_dana'];
     $kompetensi = $_POST['kompetensi'];
     $target = $_POST['target'];
+    $status = 'Diproses';
 
-    $query = "INSERT INTO pelatihan (id_pegawai, institusi, id_prodi, id_jurusan, nama_peserta, alamat, tgl_start, tgl_end, no_dana, kompetensi, target) 
-              VALUES ('$id_pegawai', '$institusi', '$prodi', '$jurusan', '$nama_peserta', '$alamat', '$tgl_start', '$tgl_end', '$no_dana', '$kompetensi', '$target')";
+    $query = "INSERT INTO pelatihan (id_pegawai, institusi, id_prodi, id_jurusan, nama_peserta, alamat, tgl_start, tgl_end, no_dana, kompetensi, target, status) 
+              VALUES ('$id_pegawai', '$institusi', '$prodi', '$jurusan', '$nama_peserta', '$alamat', '$tgl_start', '$tgl_end', '$no_dana', '$kompetensi', '$target', '$status')";
 
     if (mysqli_query($koneksi, $query)) {
         // Jika data berhasil disimpan, tampilkan SweetAlert sukses
@@ -68,5 +69,37 @@ function pengajuan_pelatihan($data) {
         </script>";
     }
 }
+
+
+
+function getall_pelatihan(){
+    global $koneksi;
+    $id_pegawai = $_SESSION['id_user'];
+    $sql = mysqli_query($koneksi, "SELECT * FROM pelatihan WHERE id_pegawai = '$id_pegawai'");
+    $pelatihan = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pelatihan[] = $row;
+    }
+    return $pelatihan;
+}
+
+function getall_pelatihan_byId(){
+    global $koneksi;
+    $id_pelatihan = $_GET['id_pelatihan'];
+    
+    $sql = mysqli_query($koneksi, "
+        SELECT pelatihan.*, 
+               prodi.prodi, 
+               jurusan.jurusan
+        FROM pelatihan
+        JOIN prodi ON pelatihan.id_prodi = prodi.id_prodi
+        JOIN jurusan ON prodi.id_jurusan = jurusan.id_jurusan
+        WHERE pelatihan.id_pelatihan = '$id_pelatihan'
+    ");
+    
+    return mysqli_fetch_assoc($sql); // Mengembalikan satu baris saja
+}
+
+
 
 ?>
