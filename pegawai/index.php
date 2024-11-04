@@ -1,8 +1,8 @@
 <!-- KONEKSI -->
 <?php 
 include '../koneksi.php'; 
+include '../loader.php'; 
 include 'function.php'; 
-
 
 ?>
 
@@ -71,7 +71,7 @@ $total_rejected = $row_rejected['total_rejected'];
     <meta name="author" content="">
 
     <title>Dashboard Pegawai</title>
-    <link rel="icon" type="image/x-icon" href="./img/icon-tittle-sipelita.jpg">
+    <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Font khusus untuk templat ini -->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -444,7 +444,7 @@ $total_rejected = $row_rejected['total_rejected'];
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg" alt="...">
+                                        <img class="rounded-circle" src="../img/undraw_profile_1.svg" alt="...">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
                                     <div class="font-weight-bold">
@@ -455,7 +455,7 @@ $total_rejected = $row_rejected['total_rejected'];
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg" alt="...">
+                                        <img class="rounded-circle" src="../img/undraw_profile_2.svg" alt="...">
                                         <div class="status-indicator"></div>
                                     </div>
                                     <div>
@@ -466,7 +466,7 @@ $total_rejected = $row_rejected['total_rejected'];
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg" alt="...">
+                                        <img class="rounded-circle" src="../img/undraw_profile_3.svg" alt="...">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
                                     <div>
@@ -498,7 +498,7 @@ $total_rejected = $row_rejected['total_rejected'];
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="../img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -973,7 +973,7 @@ $total_rejected = $row_rejected['total_rejected'];
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button"
                             data-dismiss="modal">Batal</button>
-                        <a class="btn btn-primary" href="login.php">Keluar</a>
+                        <a class="btn btn-primary" href="../login.php">Keluar</a>
                     </div>
                 </div>
             </div>
