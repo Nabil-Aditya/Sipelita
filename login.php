@@ -5,8 +5,6 @@ include 'function.php';
 // Generate random 5-digit number for CAPTCHA
 $_SESSION['captcha'] = rand(10000, 99999);
 
-
-
 //login
 if (isset($_POST['login'])) {
     login($_POST);
@@ -37,9 +35,6 @@ if (isset($_POST['login'])) {
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="css/login.css" rel="stylesheet">
-
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
 
 </head>
 
@@ -121,56 +116,6 @@ if (isset($_POST['login'])) {
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- SweetAlert2 JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
-
-    <script>
-        document.getElementById("developerTeam").addEventListener("click", function(event) {
-            event.preventDefault(); // Prevent default action of the link
-
-            Swal.fire({
-                title: 'Tim Pengembang',
-                html: `
-                <div class="popup-content">
-                    <!-- Logo at the center -->
-                    <img src="./img/sipelita.jpg" alt="Logo" class="popup-logo">
-                    <hr>
-
-                    <!-- Developer team image -->
-                    <img src="./img/developer.jpg" alt="Tim Pengembang" class="popup-image">
-                    
-                    <!-- Footer content with "Tutup" button -->
-                    <div class="popup-footer">
-                        <button class="swal2-confirm swal2-styled" onclick="Swal.close()">Tutup</button>
-                    </div>
-                </div>
-            `,
-                showConfirmButton: false, // Hide default confirm button
-                showCloseButton: true, // Enable the "X" close button
-                customClass: {
-                    popup: 'swal2-full-popup', // Custom class untuk memperbesar popup
-                }
-            });
-        });
-    </script>
-
-    <!-- Script to trigger SweetAlert2 on form submit -->
-    <!-- <script>
-        document.getElementById("loginForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent form submission
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Anda Berhasil Masuk",
-                showConfirmButton: false,
-                timer: 2000
-            }).then(() => {
-                // After the alert, you can proceed with form submission if needed
-                this.submit();
-            });
-        });
-    </script> -->
 
 </body>
 
