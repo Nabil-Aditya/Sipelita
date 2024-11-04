@@ -1,59 +1,18 @@
-<!-- KONEKSI -->
-<?php include 'koneksi.php'; ?>
-<?php include 'loader.php'; ?>
-
-
-
 <?php
-date_default_timezone_set('Asia/Jakarta'); // Sesuaikan timezone jika diperlukan
+session_start();
 
-// Mengambil nama hari dalam Bahasa Indonesia
-function getIndonesianDayName($dayName)
-{
-    $dayNames = array(
-        'Sunday' => 'Minggu',
-        'Monday' => 'Senin',
-        'Tuesday' => 'Selasa',
-        'Wednesday' => 'Rabu',
-        'Thursday' => 'Kamis',
-        'Friday' => 'Jumat',
-        'Saturday' => 'Sabtu'
-    );
-    return $dayNames[$dayName];
+include 'function.php';
+// Generate random 5-digit number for CAPTCHA
+$_SESSION['captcha'] = rand(10000, 99999);
+
+
+
+//login
+if (isset($_POST['login'])) {
+    login($_POST);
 }
 
-// Dapatkan jam saat ini
-$currentHour = date('H');
 
-$greeting = "Selamat Pagi";
-
-if ($currentHour >= 0 && $currentHour < 12) {
-    $greeting = "Selamat Pagi";
-} elseif ($currentHour >= 12 && $currentHour < 18) {
-    $greeting = "Selamat Siang";
-} else {
-    $greeting = "Selamat Malam";
-}
-?>
-
-<?php
-// Query untuk menghitung jumlah pengajuan dengan status 'Pending'
-$query_pending = "SELECT COUNT(*) AS total_pending FROM tb_pengajuan_lpj WHERE status = 'Pending'";
-$result_pending = mysqli_query($koneksi, $query_pending);
-$row_pending = mysqli_fetch_assoc($result_pending);
-$total_pending = $row_pending['total_pending'];
-
-// Query untuk menghitung jumlah pengajuan dengan status 'Approved'
-$query_approved = "SELECT COUNT(*) AS total_approved FROM tb_pengajuan_lpj WHERE status = 'Approved'";
-$result_approved = mysqli_query($koneksi, $query_approved);
-$row_approved = mysqli_fetch_assoc($result_approved);
-$total_approved = $row_approved['total_approved'];
-
-// Query untuk menghitung jumlah pengajuan dengan status 'Rejected'
-$query_rejected = "SELECT COUNT(*) AS total_rejected FROM tb_pengajuan_lpj WHERE status = 'Rejected'";
-$result_rejected = mysqli_query($koneksi, $query_rejected);
-$row_rejected = mysqli_fetch_assoc($result_rejected);
-$total_rejected = $row_rejected['total_rejected'];
 ?>
 
 <!DOCTYPE html>
@@ -67,802 +26,151 @@ $total_rejected = $row_rejected['total_rejected'];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Pegawai</title>
+    <title>Halaman Login</title>
     <link rel="icon" type="image/x-icon" href="./img/icon-tittle-sipelita.jpg">
 
-    <!-- Font khusus untuk templat ini -->
+    <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    <!-- bawaan untuk templat ini -->
-    <link href="css/sb-admin-2.minn.css" rel="stylesheet">
-    <!-- custom khusus untuk templat ini -->
-    <link href="css/pegawai/index-pegawai.css" rel="stylesheet">
+    <!-- styles this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="css/login.css" rel="stylesheet">
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Font khusus untuk templat ini -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <!-- Memastikan DataTables.js sudah di-link -->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
 
 </head>
 
-<body id="page-top">
+<body class="bg-gradient-warning">
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
+    <div class="container">
 
-        <!-- Sidebar -->
-        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar"
-            style="background-color: rgb(25, 25, 112);">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
 
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-                <div class="sidebar-brand-icon">
-                    <img src="./img/sipelita.jpg" alt="Logo" class="img-fluid">
-                </div>
-                <div class="sidebar-brand-text mx-3 sipelita-text">Sipelita</div>
-            </a>
+            <div class="col-xl-10 col-lg-12 col-md-9">
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="index.php">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Beranda</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Menu Utama
-            </div>
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="add_pengajuan_pelatihan.php">
-                    <i class="fas fa-fw fa-file-import"></i>
-                    <span>Buat Pengajuan Pelatihan</span></a>
-            </li>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-file-alt"></i>
-                    <span>Data Pengajuan</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Pilih Opsi:</h6>
-                        <a class="collapse-item" href="view_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
-                        <a class="collapse-item" href="view_pengajuan_lpj.php">Pengajuan LPJ</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="rekapitulasi_lpj.php">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Rekapitulasi</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                MENU PENGATURAN
-            </div>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Pengatuan</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Pilih Opsi:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Colors</a>
-                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
-            <div class="sidebar-heading mt-4">
-                Version
-                <p>1.0 Build 15-10-2024</p>
-            </div>
-
-        </ul>
-        <!-- End of Sidebar -->
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) -->
-
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
+                <div class="card o-hidden border-0 custom-shadow my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block">
+                                <img src="./img/sipelita.jpg" alt="Logo" class="img-fluid"> V.1.0
+                                <img src="./img/login_img.jpg" alt="Login Image" class="login-image">
+                                <div class="text-center mt-1">
+                                    <a href="#" class="btn btn-link custom-link">Buku Panduan</a> |
+                                    <a href="#" class="btn btn-link custom-link">Hubungi Kami</a> |
+                                    <a href="#" class="btn btn-link custom-link" id="developerTeam">Tim Pengembang</a>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <p class="small-text">Hak Cipta @Sipelita 2024</p>
+                                </div>
                             </div>
-                        </li>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 mb-5 custom-heading">Portal Masuk Sipelita</h1>
+                                    </div>
+                                    <form class="user" method="post"  id="loginForm">
 
-                        <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Pemberitahuan
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
+                                        <span class="bold-black-text">Nama Pengguna</span>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="exampleInputText" aria-describedby="textHelp" name="username"
+                                                placeholder="Masukkan Nama Pengguna..." required>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
+
+                                        <span class="bold-black-text">Kata Sandi</span>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user" name="password"
+                                                id="exampleInputPassword" placeholder="Masukkan Kata Sandi..." minlength="3" required>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
-                        </li>
 
-                        <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Pesan
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg" alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                            problem I've been having.</div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg" alt="...">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">I have the photos that you ordered last month, how
-                                            would you like them sent to you?</div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg" alt="...">
-                                        <div class="status-indicator bg-warning"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Last month's report looks great, I am very happy with
-                                            the progress so far, keep up the good work!</div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                            alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                            told me that people say this to all dogs, even if they aren't good...</div>
-                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                            </div>
-                        </li>
+                                        <!-- CAPTCHA Section with Two Columns -->
+                                        <!-- <span class="bold-black-text">CAPTCHA</span>
+                                        <div class="form-group captcha-row">
+                                            <div class="captcha-box"><?php echo $_SESSION['captcha']; ?></div>
+                                            <input type="text" class="form-control form-control-user captcha-input" placeholder="Masukkan CAPTCHA..." name="captcha_input" required>
+                                        </div> -->
 
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profil
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Pengaturan
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Aktivitas
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Keluar
-                                </a>
-                            </div>
-                        </li>
-
-                    </ul>
-
-                </nav>
-                <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Beranda</h1>
-                        <a href="add_pengajuan_pelatihan.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                            <i class="fas fa-plus fa-sm text-white-50"></i>&nbsp;Buat Pengajuan?
-                        </a>
-                    </div>
-
-                    <div class="profile-container">
-                        <img src="img/undraw_profile_1.svg" alt="Profile Picture" class="profile-img">
-                        <div class="profile-text">
-                            <h4><?php echo $greeting; ?>, <?php echo "Hellow World" ?>!</h4>
-                            <p id="timeDisplay">
-                                <!-- Tampilkan waktu awal dengan PHP -->
-                                <?php echo getIndonesianDayName(date('l')) . ', ' . date('j F Y') . ', ' . date('H:i:s'); ?>
-                            </p>
-                        </div>
-                    </div>
-
-                    <script>
-                        function updateClock() {
-                            // Buat objek tanggal baru
-                            var now = new Date();
-
-                            // Ambil elemen untuk menampilkan waktu
-                            var timeDisplay = document.getElementById("timeDisplay");
-
-                            // Array untuk nama hari dalam bahasa Indonesia
-                            var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-
-                            // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
-                            var day = dayNames[now.getDay()];
-                            var date = now.getDate();
-                            var month = now.toLocaleString('id-ID', {
-                                month: 'long'
-                            }); // Nama bulan dalam bahasa Indonesia
-                            var year = now.getFullYear();
-                            var hours = now.getHours().toString().padStart(2, '0');
-                            var minutes = now.getMinutes().toString().padStart(2, '0');
-                            var seconds = now.getSeconds().toString().padStart(2, '0');
-
-                            // Format waktu
-                            var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' + minutes + ':' + seconds;
-
-                            // Update elemen HTML dengan waktu terbaru
-                            timeDisplay.textContent = formattedTime;
-                        }
-
-                        // Jalankan updateClock setiap detik
-                        setInterval(updateClock, 1000);
-
-                        // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
-                        updateClock();
-                    </script>
-
-                    <!-- Content Row -->
-                    <div class="row">
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                DATA PENGAJUAN LPJ</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_pending; ?>
-                                                <!-- Mengambil jumlah pengajuan diproses dari PHP -->
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-file fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
+                                        <button type="submit" name="login" class="btn btn-primary btn-user btn-block custom-button">
+                                            Masuk
+                                        </button>
+                                    </form>
+                                    <hr>
+                                    <!-- <div class="text-center">
+                                        <a class="custom-link" href="forgot-password.php">Lupa Kata Sandi?</a>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Earnings (Pengajuan Diproses) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                PENGAJUAN DIPROSES</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_pending; ?>
-                                                <!-- Mengambil jumlah pengajuan diproses dari PHP -->
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-file-import fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Pengajuan Diterima) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                PENGAJUAN DITERIMA</div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        <?php echo $total_approved; ?>
-                                                        <!-- Mengambil jumlah pengajuan diterima dari PHP -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-check fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pending Requests (Pengajuan Ditolak) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-danger shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                PENGAJUAN DITOLAK</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_rejected; ?>
-                                                <!-- Mengambil jumlah pengajuan ditolak dari PHP -->
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-times fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                DATA PELAPORAN</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_pending; ?>
-                                                <!-- Mengambil jumlah pengajuan diproses dari PHP -->
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-file fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Pengajuan Diproses) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                PELAPORAN DIPROSES</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_pending; ?>
-                                                <!-- Mengambil jumlah pengajuan diproses dari PHP -->
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-file-import fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Pengajuan Diterima) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                PELAPORAN DITERIMA</div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        <?php echo $total_approved; ?>
-                                                        <!-- Mengambil jumlah pengajuan diterima dari PHP -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-check fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pending Requests (Pengajuan Ditolak) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-danger shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                PELAPORAN DITOLAK</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_rejected; ?>
-                                                <!-- Mengambil jumlah pengajuan ditolak dari PHP -->
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-times fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Begin Page Content -->
-                        <div class="container-fluid">
-
-                            <!-- Page Heading -->
-                            <h1 class="h3 mt-4 mb-2 text-gray-800">Riwayat</h1>
-
-                            <!-- DataTales Example -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="pengajuan-tab" data-bs-toggle="tab"
-                                                data-bs-target="#pengajuan" type="button" role="tab"
-                                                aria-controls="pengajuan" aria-selected="true">PENGAJUAN</button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="pelaporan-tab" data-bs-toggle="tab"
-                                                data-bs-target="#pelaporan" type="button" role="tab"
-                                                aria-controls="pelaporan" aria-selected="false">PELAPORAN</button>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="card-body">
-                                    <div class="tab-content" id="myTabContent">
-                                        <!-- Tabel Pengajuan -->
-                                        <div class="tab-pane fade show active" id="pengajuan" role="tabpanel" aria-labelledby="pengajuan-tab">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered" id="pengajuanTable" width="100%" cellspacing="0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Name</th>
-                                                            <th>Position</th>
-                                                            <th>Office</th>
-                                                            <th>Age</th>
-                                                            <th>Start date</th>
-                                                            <th>Salary</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Tiger Nixon</td>
-                                                            <td>System Architect</td>
-                                                            <td>Edinburgh</td>
-                                                            <td>61</td>
-                                                            <td>2011/04/25</td>
-                                                            <td>
-                                                                <span class="status-button in-process">
-                                                                    <span class="dot"></span>
-                                                                    Diproses
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Garrett Winters</td>
-                                                            <td>Accountant</td>
-                                                            <td>Tokyo</td>
-                                                            <td>63</td>
-                                                            <td>2011/07/25</td>
-                                                            <td>
-                                                                <span class="status-button accepted">
-                                                                    <span class="dot"></span>
-                                                                    Diterima
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Ashton Cox</td>
-                                                            <td>Junior Technical Author</td>
-                                                            <td>San Francisco</td>
-                                                            <td>66</td>
-                                                            <td>2009/01/12</td>
-                                                            <td>
-                                                                <span class="status-button rejected">
-                                                                    <span class="dot"></span>
-                                                                    Ditolak
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-
-                                        <!-- Tabel Pelaporan -->
-                                        <div class="tab-pane fade" id="pelaporan" role="tabpanel" aria-labelledby="pelaporan-tab">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered" id="pelaporanTable" width="100%" cellspacing="0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Name</th>
-                                                            <th>Position</th>
-                                                            <th>Office</th>
-                                                            <th>Age</th>
-                                                            <th>Start date</th>
-                                                            <th>Salary</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Tiger Nixon</td>
-                                                            <td>System Architect</td>
-                                                            <td>Edinburgh</td>
-                                                            <td>61</td>
-                                                            <td>2011/04/25</td>
-                                                            <td>
-                                                                <span class="status-button in-process">
-                                                                    <span class="dot"></span>
-                                                                    Diproses
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Garrett Winters</td>
-                                                            <td>Accountant</td>
-                                                            <td>Tokyo</td>
-                                                            <td>63</td>
-                                                            <td>2011/07/25</td>
-                                                            <td>
-                                                                <span class="status-button accepted">
-                                                                    <span class="dot"></span>
-                                                                    Diterima
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Ashton Cox</td>
-                                                            <td>Junior Technical Author</td>
-                                                            <td>San Francisco</td>
-                                                            <td>66</td>
-                                                            <td>2009/01/12</td>
-                                                            <td>
-                                                                <span class="status-button rejected">
-                                                                    <span class="dot"></span>
-                                                                    Ditolak
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.container-fluid -->
-
-                    <!-- Inisialisasi DataTables dan Bootstrap Tab -->
-                    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-                    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-                    <script>
-                        $(document).ready(function() {
-                            // Inisialisasi DataTables di awal
-                            $('#pengajuanTable').DataTable();
-
-                            // Saat tab pelaporan diklik, inisialisasi DataTables di tabel pelaporan
-                            $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-                                var target = $(e.target).attr("data-bs-target");
-
-                                if (target === '#pelaporan') {
-                                    $('#pelaporanTable').DataTable();
-                                }
-                            });
-                        });
-                    </script>
-
-                </div>
-                <!-- End of Main Content -->
-
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>Hak Cipta &copy;Sipelita 2024</span>
-                        </div>
-                    </div>
-                </footer>
-                <!-- End of Footer -->
-            </div>
-            <!-- End of Content Wrapper -->
-
-        </div>
-        <!-- End of Page Wrapper -->
-
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
-
-        <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Yakin Untuk Keluar?</h5>
-                        <button class="close" type="button" data-dismiss="modal"
-                            aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Pilih "Keluar" di bawah jika Anda siap untuk mengakhiri
-                        sesi Anda saat ini.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button"
-                            data-dismiss="modal">Batal</button>
-                        <a class="btn btn-primary" href="login.php">Keluar</a>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
 
-        <!-- Page level plugins -->
-        <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-        <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- SweetAlert2 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
 
-        <!-- Page level custom scripts -->
-        <script src="js/demo/datatables-demo.js"></script>
+    <script>
+        document.getElementById("developerTeam").addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent default action of the link
+
+            Swal.fire({
+                title: 'Tim Pengembang',
+                html: `
+                <div class="popup-content">
+                    <!-- Logo at the center -->
+                    <img src="./img/sipelita.jpg" alt="Logo" class="popup-logo">
+                    <hr>
+
+                    <!-- Developer team image -->
+                    <img src="./img/developer.jpg" alt="Tim Pengembang" class="popup-image">
+                    
+                    <!-- Footer content with "Tutup" button -->
+                    <div class="popup-footer">
+                        <button class="swal2-confirm swal2-styled" onclick="Swal.close()">Tutup</button>
+                    </div>
+                </div>
+            `,
+                showConfirmButton: false, // Hide default confirm button
+                showCloseButton: true, // Enable the "X" close button
+                customClass: {
+                    popup: 'swal2-full-popup', // Custom class untuk memperbesar popup
+                }
+            });
+        });
+    </script>
+
+    <!-- Script to trigger SweetAlert2 on form submit -->
+    <!-- <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Anda Berhasil Masuk",
+                showConfirmButton: false,
+                timer: 2000
+            }).then(() => {
+                // After the alert, you can proceed with form submission if needed
+                this.submit();
+            });
+        });
+    </script> -->
 
 </body>
 
