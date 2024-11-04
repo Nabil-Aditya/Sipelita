@@ -1,8 +1,8 @@
 <!-- KONEKSI -->
-<?php 
-include '../koneksi.php'; 
-include '../loader.php'; 
-include 'function.php'; 
+<?php
+include '../koneksi.php';
+include '../loader.php';
+include 'function.php';
 
 ?>
 
@@ -801,7 +801,8 @@ $total_rejected = $row_rejected['total_rejected'];
                                                             <th>Office</th>
                                                             <th>Age</th>
                                                             <th>Start date</th>
-                                                            <th>Salary</th>
+                                                            <th>Status</th>
+                                                            <th>Aksi</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -817,6 +818,11 @@ $total_rejected = $row_rejected['total_rejected'];
                                                                     Diproses
                                                                 </span>
                                                             </td>
+                                                            <td class="text-center">
+                                                                <button class="btn btn-primary btn-sm" title="Lihat" onclick="window.open('https://contoh-halaman.com', '_blank')">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Garrett Winters</td>
@@ -830,6 +836,11 @@ $total_rejected = $row_rejected['total_rejected'];
                                                                     Diterima
                                                                 </span>
                                                             </td>
+                                                            <td class="text-center">
+                                                                <button class="btn btn-primary btn-sm" title="Lihat" onclick="window.open('https://contoh-halaman.com', '_blank')">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Ashton Cox</td>
@@ -842,6 +853,11 @@ $total_rejected = $row_rejected['total_rejected'];
                                                                     <span class="dot"></span>
                                                                     Ditolak
                                                                 </span>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <button class="btn btn-primary btn-sm" title="Lihat" onclick="window.open('https://contoh-halaman.com', '_blank')">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -860,7 +876,8 @@ $total_rejected = $row_rejected['total_rejected'];
                                                             <th>Office</th>
                                                             <th>Age</th>
                                                             <th>Start date</th>
-                                                            <th>Salary</th>
+                                                            <th>Status</th>
+                                                            <th>Aksi</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -987,7 +1004,7 @@ $total_rejected = $row_rejected['total_rejected'];
         <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
         <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
+        <script src="../js/sb-admin-2.min.js"></script>
 
         <!-- Page level plugins -->
         <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
