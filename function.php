@@ -74,10 +74,10 @@ function login($data)
                 exit;
             }
         } else {
-            echo "<script>Swal.fire('Error', 'Kata Sandi Salah', 'error');</script>";
+            echo "<script>Swal.fire('Proses Masuk Gagal', 'Kata Sandi Anda Salah', 'error');</script>";
         }
     } else {
-        echo "<script>Swal.fire('Error', 'Nama Pengguna Tidak Ditemukan', 'error');</script>";
+        echo "<script>Swal.fire('Proses Masuk Gagal', 'Nama Pengguna Tidak Ditemukan', 'error');</script>";
     }
 }
 
