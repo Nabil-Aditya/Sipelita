@@ -61,7 +61,7 @@ if (isset($_POST['login'])) {
                                 <img src="./img/login_img.jpg" alt="Login Image" class="login-image">
                                 <div class="text-center mt-1">
                                     <a href="#" class="btn btn-link custom-link">Buku Panduan</a> |
-                                    <a href="#" class="btn btn-link custom-link">Hubungi Kami</a> |
+                                    <a href="https://wa.me/6287842033231" class="btn btn-link custom-link" target="_blank">Hubungi Kami</a> |
                                     <a href="#" class="btn btn-link custom-link" id="developerTeam">Tim Pengembang</a>
                                 </div>
                                 <div class="text-center mt-2">
