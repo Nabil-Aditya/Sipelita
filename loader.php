@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="./img/icon-tittle-sipelita.jpg">
+    <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
     <!-- css loader -->
-    <link href="css/loader.css" rel="stylesheet">
+    <link href="../css/loader.css" rel="stylesheet">
 
 </head>
 
