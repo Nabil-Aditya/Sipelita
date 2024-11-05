@@ -156,14 +156,14 @@ $total_rejected = $row_rejected['total_rejected'];
             </li>
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="jurusan.php">
                     <i class="fas fa-fw fa-graduation-cap"></i>
                     <span>Jurusan</span></a>
             </li>
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="prodi.php">
                     <i class="fas fa-fw fa-graduation-cap"></i>
                     <span>Prodi</span></a>
