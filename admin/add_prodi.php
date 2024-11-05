@@ -104,7 +104,7 @@ $jurusan = getall_jurusan();
             </li>
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="prodi.php">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Prodi</span></a>
@@ -360,14 +360,18 @@ $jurusan = getall_jurusan();
                             <form method="post" id="pengajuanForm">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="jurusan" class="font-weight-bold">Jurusan</label>
-                                            <select name="jurusan" id="">
-                                                <?php foreach ($jurusan as $data) { ?>
-                                                <option value="<?=$data['id_jurusan']?>"><?=$data['jurusan']?></option>
-                                                <?php }?>
-                                            </select>
-                                        </div>
+
+
+                                    <div class="form-group">
+    <label for="jurusan" class="font-weight-bold">Jurusan</label>
+    <select class="form-control" id="jurusan" name="jurusan">
+        <option value="" disabled selected>Pilih Jurusan</option>
+        <?php foreach ($jurusan as $data) { ?>
+            <option value="<?=$data['id_jurusan']?>"><?=$data['jurusan']?></option>
+        <?php } ?>
+    </select>
+</div>
+
                                         <div class="form-group">
                                             <label for="jurusan" class="font-weight-bold">Prodi</label>
                                             <input type="text" class="form-control" id="prodi" name="prodi"
