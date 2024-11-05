@@ -27,8 +27,7 @@ function getall_prodi(){
 }
 
 
-
-
+//buat pelatihan
 function pengajuan_pelatihan($data) {
     global $koneksi;
 
@@ -70,6 +69,45 @@ function pengajuan_pelatihan($data) {
     }
 }
 
+//edit pelatihan
+function edit_pelatihan($data) {
+    global $koneksi;
+
+    $id_pelatihan = $_GET['id_pelatihan'];
+    $id_pegawai = $_SESSION['id_user'];
+    $institusi = $data['institusi'];
+    $prodi = $data['prodi'];
+    $jurusan = $data['jurusan'];
+    $nama_peserta = $data['nama_peserta'];
+    $alamat = $data['alamat'];
+    $tgl_start = $data['tgl_start'];
+    $tgl_end = $data['tgl_end'];
+    $no_dana = $data['no_dana'];
+    $kompetensi = $data['kompetensi'];
+    $target = $data['target'];
+    $status = 'Diproses';
+
+    $query = "UPDATE pelatihan 
+              SET institusi = '$institusi', id_prodi = '$prodi', id_jurusan = '$jurusan', nama_peserta = '$nama_peserta', 
+                  alamat = '$alamat', tgl_start = '$tgl_start', tgl_end = '$tgl_end', no_dana = '$no_dana', 
+                  kompetensi = '$kompetensi', target = '$target', status = '$status'
+              WHERE id_pelatihan = '$id_pelatihan'";
+
+    if (mysqli_query($koneksi, $query)) {
+        // Jika data berhasil diperbarui, tampilkan SweetAlert sukses
+        echo "<script>window.location.href = 'index.php';</script>";
+
+    } else {
+        // Jika terjadi kesalahan, tampilkan SweetAlert error
+        echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan',
+                text: '" . mysqli_error($koneksi) . "'
+            });
+        </script>";
+    }
+}
 
 
 function getall_pelatihan(){
@@ -100,6 +138,48 @@ function getall_pelatihan_byId(){
     return mysqli_fetch_assoc($sql); // Mengembalikan satu baris saja
 }
 
+
+
+// -----------------------------------------------LPJ
+
+function add_lpj($data) {
+    global $koneksi;
+
+    // Ambil data dari session dan GET
+    $id_pegawai = $_SESSION['id_user'];
+    $id_pelatihan = $_GET['id_pelatihan'];
+    
+    // Ambil informasi file yang diunggah
+    $berkas = $_FILES['berkas'];
+    
+    // Cek apakah file diunggah dengan benar
+    if ($berkas['error'] === UPLOAD_ERR_OK) {
+        // Dapatkan informasi file
+        $tmp_name = $berkas['tmp_name'];
+        $name = basename($berkas['name']);
+        
+        // Tentukan folder tujuan
+        $upload_dir = '../assets/berkas_lpj/';
+        $upload_file = $name;
+
+        // Pindahkan file ke folder yang dituju
+        if (move_uploaded_file($tmp_name, $upload_file)) {
+            $tgl = date('Y-m-d');
+
+            // Simpan ke database
+            $sql = mysqli_query($koneksi, "INSERT INTO pelaporan (id_pelatihan, berkas, tgl) VALUES ('$id_pelatihan', '$upload_file', '$tgl')");
+            if ($sql) {
+                echo "<script>alert('Berhasil')</script>";
+            } else {
+                echo "<script>alert('Gagal')</script>";
+            }
+        } else {
+            echo "<script>alert('Gagal mengunggah file.')</script>";
+        }
+    } else {
+        echo "<script>alert('Error saat mengunggah file.')</script>";
+    }
+}
 
 
 ?>

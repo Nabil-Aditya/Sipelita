@@ -6,6 +6,20 @@ include 'function.php';
 
 $pelatihan = getall_pelatihan_byId();
 
+$jurusan = getall_jurusan();
+$prodi = getall_prodi();
+
+
+//Jika pengajuan pelatihan di tolak, (edit kesalahan)
+if (isset($_POST['edit_pelatihan'])) {
+    edit_pelatihan($_POST);
+}
+
+
+//Jika pengajuan diterima (buat lpj)
+if (isset($_POST['buat_lpj'])) {
+    add_lpj($_POST);
+}
 
 ?>
 
@@ -25,7 +39,9 @@ $pelatihan = getall_pelatihan_byId();
 
     <!-- Font khusus untuk templat ini -->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Font khusus untuk templat ini -->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
@@ -161,7 +177,7 @@ $pelatihan = getall_pelatihan_byId();
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-                    
+
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
@@ -348,70 +364,297 @@ $pelatihan = getall_pelatihan_byId();
                             <h6 class="m-0 font-weight-bold text-primary">Formulir Pengajuan LPJ</h6>
                         </div>
                         <div class="card-body">
+
+                            <?php if ($pelatihan['status'] == 'Diproses'): ?>
+
                             <form id="pengajuanForm">
+                                <div class="alert alert-warning" role="alert">
+                                    <strong>Perhatian!</strong> Pengajuan anda sedang diproses, mohon menunggu beberapa
+                                    saat. Terimakasih
+                                </div>
+
                                 <div class="row">
                                     <!-- Kolom Kiri -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
-                                            <input type="text" class="form-control" id="lembaga" placeholder="Masukkan Lembaga / Institusi" value="<?=$pelatihan['institusi']?>">
+                                            <input type="text" class="form-control bg-light-200" id="lembaga"
+                                                placeholder="Masukkan Lembaga / Institusi"
+                                                value="<?=$pelatihan['institusi']?>" readonly>
                                         </div>
+
                                         <div class="form-group">
                                             <label for="programStudi" class="font-weight-bold">Program Studi</label>
-                                            <input type="text" class="form-control" id="programStudi" placeholder="Masukkan Program Studi" value="<?=$pelatihan['prodi']?>">
+                                            <input type="text" class="form-control bg-light-200" id="programStudi"
+                                                placeholder="Masukkan Program Studi" value="<?=$pelatihan['prodi']?>"
+                                                readonly>
                                         </div>
                                         <div class="form-group">
                                             <label for="jurusan" class="font-weight-bold">Jurusan</label>
-                                            <input type="text" class="form-control" id="jurusan" placeholder="Masukkan Jurusan" value="<?=$pelatihan['jurusan']?>">
+                                            <input type="text" class="form-control bg-light-200" id="jurusan"
+                                                placeholder="Masukkan Jurusan" value="<?=$pelatihan['jurusan']?>"
+                                                readonly>
                                         </div>
                                         <div class="form-group">
                                             <label for="namaPeserta" class="font-weight-bold">Nama Peserta</label>
-                                            <textarea class="form-control" id="namaPeserta" rows="2" placeholder="Masukkan Nama Peserta"><?=$pelatihan['nama_peserta']?></textarea>
+                                            <textarea class="form-control bg-light-200" id="namaPeserta" rows="2"
+                                                placeholder="Masukkan Nama Peserta"
+                                                readonly><?=$pelatihan['nama_peserta']?></textarea>
                                         </div>
+
                                         <div class="form-group">
                                             <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
-                                            <textarea class="form-control" id="alamat" rows="2" placeholder="Masukkan Tempat / Alamat"><?=$pelatihan['alamat']?></textarea>
+                                            <textarea class="form-control bg-light-200" id="alamat" rows="2"
+                                                placeholder="Masukkan Tempat / Alamat"
+                                                readonly><?=$pelatihan['alamat']?></textarea>
                                         </div>
                                     </div>
 
                                     <!-- Kolom Kanan -->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="tanggalKegiatan" class="font-weight-bold">Tanggal Kegiatan</label>
-                                            <input type="date" class="form-control" id="tanggalKegiatan" value="<?=$pelatihan['tgl_start']?>">
+                                            <label for="tanggalKegiatan" class="font-weight-bold">Tanggal
+                                                Kegiatan</label>
+                                            <input type="date" class="form-control bg-light-200" id="tanggalKegiatan"
+                                                value="<?=$pelatihan['tgl_start']?>" readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan Selesai</label>
-                                            <input type="date" class="form-control" id="tanggalSelesai" value="<?=$pelatihan['tgl_end']?>">
+                                            <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan
+                                                Selesai</label>
+                                            <input type="date" class="form-control bg-light-200" id="tanggalSelesai"
+                                                value="<?=$pelatihan['tgl_end']?>" readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual Account)</label>
-                                            <input type="number" class="form-control" id="sumberDana" placeholder="Masukkan Sumber Dana (Virtual Account)" value="<?=$pelatihan['no_dana']?>">
+                                            <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual
+                                                Account)</label>
+                                            <input type="number" class="form-control bg-light-200" id="sumberDana"
+                                                placeholder="Masukkan Sumber Dana (Virtual Account)"
+                                                value="<?=$pelatihan['no_dana']?>" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
-                                            <input type="text" class="form-control" id="kompetensi" placeholder="Masukkan Kompetensi" value="<?=$pelatihan['kompetensi']?>">
+                                            <input type="text" class="form-control bg-light-200" id="kompetensi"
+                                                placeholder="Masukkan Kompetensi" value="<?=$pelatihan['kompetensi']?>"
+                                                readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label for="targetKegiatan" class="font-weight-bold">Target yang ingin dicapai kegiatan</label>
-                                            <textarea class="form-control" id="targetKegiatan" rows="2" placeholder="Target yang ingin dicapai kegiatan"><?=$pelatihan['target']?></textarea>
+                                            <label for="targetKegiatan" class="font-weight-bold">Target yang ingin
+                                                dicapai kegiatan</label>
+                                            <textarea class="form-control bg-light-200" id="targetKegiatan" rows="2"
+                                                placeholder="Target yang ingin dicapai kegiatan"
+                                                readonly><?=$pelatihan['target']?></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <!-- Tombol Aksi -->
+                                <div class="d-flex justify-content-between mt-4">
+                                    <a href="index.php" class="btn btn-primary">Kembali</a>
+                                </div>
+
+                            </form>
+                            <?php endif; ?>
+
+
+                            <?php if ($pelatihan['status'] == 'Ditolak'): ?>
+                            <form method="post">
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>Perhatian!</strong> Pengajuan anda ditolak, mohon mengajukan kembali
+                                </div>
+                                <div class="row">
+                                    <!-- Kolom Kiri -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
+                                            <input type="text" class="form-control" id="lembaga" name="institusi"
+                                                placeholder="Masukkan Lembaga / Institusi"
+                                                value="<?=$pelatihan['institusi']?>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="programStudi" class="font-weight-bold">Program Studi</label>
+                                            <select class="form-control" id="programStudi" name="prodi">
+                                                <option value="" disabled>Pilih Prodi</option>
+                                                <?php foreach ($prodi as $data) { ?>
+                                                <option value="<?=$data['id_prodi']?>"
+                                                    <?= $data['id_prodi'] == $pelatihan['id_prodi'] ? 'selected' : '' ?>>
+                                                    <?=$data['prodi']?>
+                                                </option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="jurusan" class="font-weight-bold">Jurusan</label>
+                                            <select class="form-control" id="jurusan" name="jurusan">
+                                                <option value="" disabled>Pilih Jurusan</option>
+                                                <?php foreach ($jurusan as $data) { ?>
+                                                <option value="<?=$data['id_jurusan']?>"
+                                                    <?= $data['id_jurusan'] == $pelatihan['id_jurusan'] ? 'selected' : '' ?>>
+                                                    <?=$data['jurusan']?>
+                                                </option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="namaPeserta" class="font-weight-bold">Nama Peserta</label>
+                                            <textarea class="form-control" id="namaPeserta" rows="2"
+                                                placeholder="Masukkan Nama Peserta"
+                                                name="nama_peserta"><?=$pelatihan['nama_peserta']?></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
+                                            <textarea class="form-control" id="alamat" rows="2"
+                                                placeholder="Masukkan Tempat / Alamat"
+                                                name="alamat"><?=$pelatihan['alamat']?></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Kolom Kanan -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="tanggalKegiatan" class="font-weight-bold">Tanggal
+                                                Kegiatan</label>
+                                            <input type="date" class="form-control" id="tanggalKegiatan"
+                                                name="tgl_start" value="<?=$pelatihan['tgl_start']?>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan
+                                                Selesai</label>
+                                            <input type="date" class="form-control" id="tanggalSelesai" name="tgl_end"
+                                                value="<?=$pelatihan['tgl_end']?>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual
+                                                Account)</label>
+                                            <input type="number" class="form-control" id="sumberDana" name="no_dana"
+                                                placeholder="Masukkan Sumber Dana (Virtual Account)"
+                                                value="<?=$pelatihan['no_dana']?>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
+                                            <input type="text" class="form-control" id="kompetensi" name="kompetensi"
+                                                placeholder="Masukkan Kompetensi" value="<?=$pelatihan['kompetensi']?>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="targetKegiatan" class="font-weight-bold">Target yang ingin
+                                                dicapai kegiatan</label>
+                                            <textarea class="form-control" id="targetKegiatan" rows="2" name="target"
+                                                placeholder="Target yang ingin dicapai kegiatan"><?=$pelatihan['target']?></textarea>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <!-- Tombol Aksi -->
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
+                                    <button type="submit" name="edit_pelatihan" class="btn btn-primary">Buat</button>
+                                </div>
+                            </form>
+                            <?php endif; ?>
+
+
+
+
+
+                            <?php if ($pelatihan['status'] == 'Diterima'): ?>
+                            <form method="post" enctype="multipart/form-data">
+                                <div class="alert alert-success" role="alert">
+                                    <strong>Perhatian!</strong> Pengajuan anda diterima, mohon mengajukan LPJ
+                                </div>
+                                <div class="row">
+                                    <!-- Kolom Kiri -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
+                                            <input type="text" class="form-control bg-light-200" id="lembaga"
+                                                placeholder="Masukkan Lembaga / Institusi"
+                                                value="<?=$pelatihan['institusi']?>" readonly>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="programStudi" class="font-weight-bold">Program Studi</label>
+                                            <input type="text" class="form-control bg-light-200" id="programStudi"
+                                                placeholder="Masukkan Program Studi" value="<?=$pelatihan['prodi']?>"
+                                                readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="jurusan" class="font-weight-bold">Jurusan</label>
+                                            <input type="text" class="form-control bg-light-200" id="jurusan"
+                                                placeholder="Masukkan Jurusan" value="<?=$pelatihan['jurusan']?>"
+                                                readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="namaPeserta" class="font-weight-bold">Nama Peserta</label>
+                                            <textarea class="form-control bg-light-200" id="namaPeserta" rows="2"
+                                                placeholder="Masukkan Nama Peserta"
+                                                readonly><?=$pelatihan['nama_peserta']?></textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
+                                            <textarea class="form-control bg-light-200" id="alamat" rows="2"
+                                                placeholder="Masukkan Tempat / Alamat"
+                                                readonly><?=$pelatihan['alamat']?></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Kolom Kanan -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="tanggalKegiatan" class="font-weight-bold">Tanggal
+                                                Kegiatan</label>
+                                            <input type="date" class="form-control bg-light-200" id="tanggalKegiatan"
+                                                value="<?=$pelatihan['tgl_start']?>" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan
+                                                Selesai</label>
+                                            <input type="date" class="form-control bg-light-200" id="tanggalSelesai"
+                                                value="<?=$pelatihan['tgl_end']?>" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual
+                                                Account)</label>
+                                            <input type="number" class="form-control bg-light-200" id="sumberDana"
+                                                placeholder="Masukkan Sumber Dana (Virtual Account)"
+                                                value="<?=$pelatihan['no_dana']?>" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
+                                            <input type="text" class="form-control bg-light-200" id="kompetensi"
+                                                placeholder="Masukkan Kompetensi" value="<?=$pelatihan['kompetensi']?>"
+                                                readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="targetKegiatan" class="font-weight-bold">Target yang ingin
+                                                dicapai kegiatan</label>
+                                            <textarea class="form-control bg-light-200" id="targetKegiatan" rows="2"
+                                                placeholder="Target yang ingin dicapai kegiatan"
+                                                readonly><?=$pelatihan['target']?></textarea>
                                         </div>
 
                                         <div class="form-group">
                                             <!-- Teks dan link untuk template pelaporan -->
                                             <p class="mb-2">
                                                 <b>Template Pelaporan:</b>
-                                                <a href="Template_laporan.DOCX" download="Template_laporan.DOCX" class="text-primary">
+                                                <a href="../assets/template-LPJ.doc" download="template-LPJ.doc"
+                                                    class="text-primary">
                                                     Unduh Template Word
                                                 </a>
                                             </p>
 
                                             <!-- Input untuk unggah file PDF -->
-                                            <label for="fileLaporan" class="font-weight-bold text-danger">Unggah File Laporan (PDF)</label>
+                                            <label for="fileLaporan" class="font-weight-bold text-danger">Unggah File
+                                                Laporan (PDF)</label>
                                             <div class="input-group">
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="fileLaporan" accept="application/pdf">
-                                                    <label class="custom-file-label" for="fileLaporan">Pilih file</label>
+                                                    <input type="file" class="custom-file-input" id="fileLaporan"
+                                                        name="berkas" accept="application/pdf" required>
+                                                    <label class="custom-file-label" for="fileLaporan">Pilih
+                                                        file</label>
                                                 </div>
                                             </div>
                                             <small class="text-danger">
@@ -419,7 +662,8 @@ $pelatihan = getall_pelatihan_byId();
                                             </small>
                                         </div>
                                         <script>
-                                            document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+                                        document.querySelector('.custom-file-input').addEventListener('change',
+                                            function(e) {
                                                 var fileName = e.target.files[0].name;
                                                 var nextSibling = e.target.nextElementSibling;
 
@@ -435,20 +679,24 @@ $pelatihan = getall_pelatihan_byId();
                                 <!-- Tombol Aksi -->
                                 <div class="d-flex justify-content-between mt-4">
                                     <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
-                                    <button type="submit" class="btn btn-primary">Buat</button>
+                                    <button type="submit" class="btn btn-primary" name="buat_lpj">Buat</button>
                                 </div>
                             </form>
+                            <?php endif; ?>
+
                         </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
 
                 <!-- Modal Konfirmasi Pengajuan -->
-                <div class="modal fade" id="konfirmasiModal" tabindex="-1" role="dialog" aria-labelledby="konfirmasiModalLabel" aria-hidden="true">
+                <div class="modal fade" id="konfirmasiModal" tabindex="-1" role="dialog"
+                    aria-labelledby="konfirmasiModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="m-0 font-weight-bold text-primary" id="konfirmasiModalLabel">Konfirmasi Pengajuan Pelatihan</h5>
+                                <h5 class="m-0 font-weight-bold text-primary" id="konfirmasiModalLabel">Konfirmasi
+                                    Pengajuan Pelatihan</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -464,7 +712,8 @@ $pelatihan = getall_pelatihan_byId();
                                 <p><strong>Sumber Dana:</strong> <span id="confirmSumberDana"></span></p>
                                 <p><strong>Kompetensi:</strong> <span id="confirmKompetensi"></span></p>
                                 <p><strong>Target Kegiatan:</strong> <span id="confirmTargetKegiatan"></span></p>
-                                <p><strong>File Laporan:</strong> <a href="#" target="_blank" id="confirmFileLaporan">Lihat Laporan</a></p>
+                                <p><strong>File Laporan:</strong> <a href="#" target="_blank"
+                                        id="confirmFileLaporan">Lihat Laporan</a></p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
@@ -484,146 +733,144 @@ $pelatihan = getall_pelatihan_byId();
                 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
                 <script>
-                    // Event listener untuk tombol Reset
-                    $('#resetButton').on('click', function(event) {
-                        event.preventDefault(); // Mencegah form langsung di-reset
+                // Event listener untuk tombol Reset
+                $('#resetButton').on('click', function(event) {
+                    event.preventDefault(); // Mencegah form langsung di-reset
 
-                        // Tampilkan SweetAlert untuk konfirmasi reset
-                        Swal.fire({
-                            title: 'Apakah Anda yakin?',
-                            text: "Anda akan mereset semua data yang telah diisi!",
-                            icon: 'question',
-                            showCancelButton: true,
-                            confirmButtonText: 'Ya, reset',
-                            cancelButtonText: 'Batal',
-                            reverseButtons: true
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                // Jika pengguna memilih "Ya", reset form
-                                $('#pengajuanForm')[0].reset(); // Reset form secara manual
+                    // Tampilkan SweetAlert untuk konfirmasi reset
+                    Swal.fire({
+                        title: 'Apakah Anda yakin?',
+                        text: "Anda akan mereset semua data yang telah diisi!",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, reset',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Jika pengguna memilih "Ya", reset form
+                            $('#pengajuanForm')[0].reset(); // Reset form secara manual
 
-                                // Reset input file secara manual
-                                $('#fileLaporan').val(null); // Set input file ke null
+                            // Reset input file secara manual
+                            $('#fileLaporan').val(null); // Set input file ke null
 
-                                // Reset label file dan hapus kelas 'selected'
-                                var fileLabel = $('.custom-file-label');
-                                fileLabel.text('Pilih file'); // Mengembalikan teks label ke default
-                                fileLabel.removeClass('selected'); // Hapus kelas 'selected' jika ada
+                            // Reset label file dan hapus kelas 'selected'
+                            var fileLabel = $('.custom-file-label');
+                            fileLabel.text('Pilih file'); // Mengembalikan teks label ke default
+                            fileLabel.removeClass('selected'); // Hapus kelas 'selected' jika ada
 
-                                // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
-                                Swal.fire({
-                                    title: 'Direset!',
-                                    text: 'Formulir telah direset.',
-                                    icon: 'success',
-                                    showConfirmButton: false,
-                                    timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
-                                });
-                            }
-                        });
+                            // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
+                            Swal.fire({
+                                title: 'Direset!',
+                                text: 'Formulir telah direset.',
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
+                            });
+                        }
                     });
+                });
 
-                    // Event listener untuk perubahan file input
-                    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
-                        var fileName = e.target.files[0].name;
-                        var nextSibling = e.target.nextElementSibling;
+                // Event listener untuk perubahan file input
+                document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+                    var fileName = e.target.files[0].name;
+                    var nextSibling = e.target.nextElementSibling;
 
-                        // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
-                        nextSibling.innerText = fileName;
-                        nextSibling.classList.add('selected');
-                    });
+                    // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
+                    nextSibling.innerText = fileName;
+                    nextSibling.classList.add('selected');
+                });
                 </script>
 
                 <script>
-                    $('#pengajuanForm').on('submit', function(event) {
-                        event.preventDefault(); // Mencegah submit form otomatis
+                $('#pengajuanForm').on('submit', function(event) {
+                    event.preventDefault(); // Mencegah submit form otomatis
 
-                        // Ambil data dari form
-                        const lembaga = $('#lembaga').val();
-                        const programStudi = $('#programStudi').val();
-                        const jurusan = $('#jurusan').val();
-                        const namaPeserta = $('#namaPeserta').val();
-                        const alamat = $('#alamat').val();
-                        const tanggalKegiatan = $('#tanggalKegiatan').val();
-                        const tanggalSelesai = $('#tanggalSelesai').val();
-                        const sumberDana = $('#sumberDana').val();
-                        const kompetensi = $('#kompetensi').val();
-                        const targetKegiatan = $('#targetKegiatan').val();
-                        const fileLaporan = $('#fileLaporan')[0].files[0]; // Ambil file yang diunggah
+                    // Ambil data dari form
+                    const lembaga = $('#lembaga').val();
+                    const programStudi = $('#programStudi').val();
+                    const jurusan = $('#jurusan').val();
+                    const namaPeserta = $('#namaPeserta').val();
+                    const alamat = $('#alamat').val();
+                    const tanggalKegiatan = $('#tanggalKegiatan').val();
+                    const tanggalSelesai = $('#tanggalSelesai').val();
+                    const sumberDana = $('#sumberDana').val();
+                    const kompetensi = $('#kompetensi').val();
+                    const targetKegiatan = $('#targetKegiatan').val();
+                    const fileLaporan = $('#fileLaporan')[0].files[0]; // Ambil file yang diunggah
 
-                        // Validasi jika ada kolom yang kosong
-                        if (!lembaga || !programStudi || !jurusan || !namaPeserta || !alamat ||
-                            !tanggalKegiatan || !tanggalSelesai || !sumberDana || !kompetensi ||
-                            !targetKegiatan || !fileLaporan) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Semua kolom harus diisi, termasuk file laporan!'
-                            });
-                            return;
-                        }
-
-                        // Validasi format file PDF
-                        if (fileLaporan.type !== 'application/pdf') {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'File laporan harus berformat PDF!'
-                            });
-                            return;
-                        }
-
-                        // Buat URL untuk file yang diunggah agar bisa ditampilkan
-                        const fileUrl = URL.createObjectURL(fileLaporan);
-
-                        // Isi data di modal konfirmasi
-                        $('#confirmLembaga').text(lembaga);
-                        $('#confirmProgramStudi').text(programStudi);
-                        $('#confirmJurusan').text(jurusan);
-                        $('#confirmNamaPeserta').text(namaPeserta);
-                        $('#confirmAlamat').text(alamat);
-                        $('#confirmTanggalKegiatan').text(tanggalKegiatan);
-                        $('#confirmTanggalSelesai').text(tanggalSelesai);
-                        $('#confirmSumberDana').text(sumberDana);
-                        $('#confirmKompetensi').text(kompetensi);
-                        $('#confirmTargetKegiatan').text(targetKegiatan);
-                        $('#confirmFileLaporan').attr('href', fileUrl); // Set href untuk link file
-
-                        // Munculkan modal konfirmasi
-                        $('#konfirmasiModal').modal('show');
-                    });
-
-                    // Ketika tombol "Kirim" ditekan, tampilkan notifikasi dan redirect
-                    $('#submitPengajuan').on('click', function() {
-                        $('#konfirmasiModal').modal('hide');
-
+                    // Validasi jika ada kolom yang kosong
+                    if (!lembaga || !programStudi || !jurusan || !namaPeserta || !alamat ||
+                        !tanggalKegiatan || !tanggalSelesai || !sumberDana || !kompetensi ||
+                        !targetKegiatan || !fileLaporan) {
                         Swal.fire({
-                            icon: 'success',
-                            title: 'Pengajuan Pelatihan Berhasil Diajukan',
-                            showConfirmButton: false,
-                            timer: 2500
-                        }).then(() => {
-                            window.location.href = 'index.php'; // Redirect setelah sukses
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Semua kolom harus diisi, termasuk file laporan!'
                         });
+                        return;
+                    }
+
+                    // Validasi format file PDF
+                    if (fileLaporan.type !== 'application/pdf') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'File laporan harus berformat PDF!'
+                        });
+                        return;
+                    }
+
+                    // Buat URL untuk file yang diunggah agar bisa ditampilkan
+                    const fileUrl = URL.createObjectURL(fileLaporan);
+
+                    // Isi data di modal konfirmasi
+                    $('#confirmLembaga').text(lembaga);
+                    $('#confirmProgramStudi').text(programStudi);
+                    $('#confirmJurusan').text(jurusan);
+                    $('#confirmNamaPeserta').text(namaPeserta);
+                    $('#confirmAlamat').text(alamat);
+                    $('#confirmTanggalKegiatan').text(tanggalKegiatan);
+                    $('#confirmTanggalSelesai').text(tanggalSelesai);
+                    $('#confirmSumberDana').text(sumberDana);
+                    $('#confirmKompetensi').text(kompetensi);
+                    $('#confirmTargetKegiatan').text(targetKegiatan);
+                    $('#confirmFileLaporan').attr('href', fileUrl); // Set href untuk link file
+
+                    // Munculkan modal konfirmasi
+                    $('#konfirmasiModal').modal('show');
+                });
+
+                // Ketika tombol "Kirim" ditekan, tampilkan notifikasi dan redirect
+                $('#submitPengajuan').on('click', function() {
+                    $('#konfirmasiModal').modal('hide');
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Pengajuan Pelatihan Berhasil Diajukan',
+                        showConfirmButton: false,
+                        timer: 2500
+                    }).then(() => {
+                        window.location.href = 'index.php'; // Redirect setelah sukses
                     });
+                });
                 </script>
 
                 <!-- Logout Modal-->
-                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Yakin Untuk Keluar?</h5>
-                                <button class="close" type="button" data-dismiss="modal"
-                                    aria-label="Close">
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">×</span>
                                 </button>
                             </div>
                             <div class="modal-body">Pilih "Keluar" di bawah jika Anda siap untuk mengakhiri
                                 sesi Anda saat ini.</div>
                             <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button"
-                                    data-dismiss="modal">Batal</button>
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
                                 <a class="btn btn-primary" href="login.php">Keluar</a>
                             </div>
                         </div>
