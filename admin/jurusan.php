@@ -1,5 +1,5 @@
 <!-- KONEKSI -->
-<?php include '../koneksi.php'; 
+<?php include '../koneksi.php';
 
 
 //nasyith
@@ -132,13 +132,6 @@ $total_rejected = $row_rejected['total_rejected'];
                 Menu Utama
             </div>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="add_jurusan.php">
-                    <i class="fas fa-fw fa-user-plus"></i>
-                    <span>Tambah Jurusan</span></a>
-            </li>
-
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -150,23 +143,43 @@ $total_rejected = $row_rejected['total_rejected'];
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pilih Opsi:</h6>
                         <a class="collapse-item" href="view_pegawai.php">Pegawai</a>
-                        <a class="collapse-item active" href="view_supervisor.php">Supervisor</a>
+                        <a class="collapse-item" href="view_supervisor.php">Supervisor</a>
                     </div>
                 </div>
             </li>
 
-            <!-- Nav Item - Charts -->
+            <!-- Nav Item - jurusan Collapse Menu -->
             <li class="nav-item active">
-                <a class="nav-link" href="jurusan.php">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsejurusan"
+                    aria-expanded="true" aria-controls="collapsejurusan">
                     <i class="fas fa-fw fa-graduation-cap"></i>
-                    <span>Jurusan</span></a>
+                    <span>kelola Jurusan</span>
+                </a>
+                <div id="collapsejurusan" class="collapse" aria-labelledby="headingjurusan"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Pilih Opsi:</h6>
+                        <a class="collapse-item active" href="jurusan.php">Data Jurusan</a>
+                        <a class="collapse-item" href="add_jurusan.php">Tambah Jurusan</a>
+                    </div>
+                </div>
             </li>
 
-            <!-- Nav Item - Charts -->
+            <!-- Nav Item - prodi Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="prodi.php">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseprodi"
+                    aria-expanded="true" aria-controls="collapseprodi">
                     <i class="fas fa-fw fa-graduation-cap"></i>
-                    <span>Prodi</span></a>
+                    <span>kelola Prodi</span>
+                </a>
+                <div id="collapseprodi" class="collapse" aria-labelledby="headingprodi"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Pilih Opsi:</h6>
+                        <a class="collapse-item" href="prodi.php">Data Prodi</a>
+                        <a class="collapse-item" href="add_prodi.php">Tambah Prodi</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Divider -->
@@ -429,40 +442,40 @@ $total_rejected = $row_rejected['total_rejected'];
                     </div>
 
                     <script>
-                    function updateClock() {
-                        // Buat objek tanggal baru
-                        var now = new Date();
+                        function updateClock() {
+                            // Buat objek tanggal baru
+                            var now = new Date();
 
-                        // Ambil elemen untuk menampilkan waktu
-                        var timeDisplay = document.getElementById("timeDisplay");
+                            // Ambil elemen untuk menampilkan waktu
+                            var timeDisplay = document.getElementById("timeDisplay");
 
-                        // Array untuk nama hari dalam bahasa Indonesia
-                        var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                            // Array untuk nama hari dalam bahasa Indonesia
+                            var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-                        // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
-                        var day = dayNames[now.getDay()];
-                        var date = now.getDate();
-                        var month = now.toLocaleString('id-ID', {
-                            month: 'long'
-                        }); // Nama bulan dalam bahasa Indonesia
-                        var year = now.getFullYear();
-                        var hours = now.getHours().toString().padStart(2, '0');
-                        var minutes = now.getMinutes().toString().padStart(2, '0');
-                        var seconds = now.getSeconds().toString().padStart(2, '0');
+                            // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
+                            var day = dayNames[now.getDay()];
+                            var date = now.getDate();
+                            var month = now.toLocaleString('id-ID', {
+                                month: 'long'
+                            }); // Nama bulan dalam bahasa Indonesia
+                            var year = now.getFullYear();
+                            var hours = now.getHours().toString().padStart(2, '0');
+                            var minutes = now.getMinutes().toString().padStart(2, '0');
+                            var seconds = now.getSeconds().toString().padStart(2, '0');
 
-                        // Format waktu
-                        var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' +
-                            minutes + ':' + seconds;
+                            // Format waktu
+                            var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' +
+                                minutes + ':' + seconds;
 
-                        // Update elemen HTML dengan waktu terbaru
-                        timeDisplay.textContent = formattedTime;
-                    }
+                            // Update elemen HTML dengan waktu terbaru
+                            timeDisplay.textContent = formattedTime;
+                        }
 
-                    // Jalankan updateClock setiap detik
-                    setInterval(updateClock, 1000);
+                        // Jalankan updateClock setiap detik
+                        setInterval(updateClock, 1000);
 
-                    // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
-                    updateClock();
+                        // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
+                        updateClock();
                     </script>
 
                     <!-- Content Row -->
@@ -512,18 +525,20 @@ $total_rejected = $row_rejected['total_rejected'];
                                             </thead>
                                             <tbody>
 
-                                                <?php $i = 0; $i++; foreach ($jurusan as $data) { ?>
-                                                <tr>
-                                                    <td><?=$i++?></td>
-                                                    <td><?=$data['jurusan']?></td>
-                                                    <td>
-                                                        <span class="status-button detail">
-                                                            <span class="dot"></span>
-                                                            Detail
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <?php }?>
+                                                <?php $i = 0;
+                                                $i++;
+                                                foreach ($jurusan as $data) { ?>
+                                                    <tr>
+                                                        <td><?= $i++ ?></td>
+                                                        <td><?= $data['jurusan'] ?></td>
+                                                        <td>
+                                                            <span class="status-button detail">
+                                                                <span class="dot"></span>
+                                                                Detail
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
                                             </tbody>
                                         </table>
                                     </div>
