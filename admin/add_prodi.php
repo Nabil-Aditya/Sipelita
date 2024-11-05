@@ -59,7 +59,7 @@ $jurusan = getall_jurusan();
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Beranda</span></a>
@@ -73,42 +73,56 @@ $jurusan = getall_jurusan();
                 Menu Utama
             </div>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="add_pengajuan_pelatihan.php">
-                    <i class="fas fa-fw fa-file-import"></i>
-                    <span>Buat Pengajuan Pelatihan</span></a>
-            </li>
-
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-file-alt"></i>
-                    <span>Data Pengajuan</span>
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Kelola Pengguna</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pilih Opsi:</h6>
-                        <a class="collapse-item" href="view_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
-                        <a class="collapse-item" href="view_pengajuan_lpj.php">Pengajuan LPJ</a>
+                        <a class="collapse-item" href="view_pegawai.php">Pegawai</a>
+                        <a class="collapse-item" href="view_supervisor.php">Supervisor</a>
                     </div>
                 </div>
             </li>
 
-            <!-- Nav Item - Charts -->
+            <!-- Nav Item - jurusan Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="jurusan.php">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Jurusan</span></a>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsejurusan"
+                    aria-expanded="true" aria-controls="collapsejurusan">
+                    <i class="fas fa-fw fa-graduation-cap"></i>
+                    <span>kelola Jurusan</span>
+                </a>
+                <div id="collapsejurusan" class="collapse" aria-labelledby="headingjurusan"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Pilih Opsi:</h6>
+                        <a class="collapse-item" href="jurusan.php">Data Jurusan</a>
+                        <a class="collapse-item" href="add_jurusan.php">Tambah Jurusan</a>
+                    </div>
+                </div>
             </li>
 
-            <!-- Nav Item - Charts -->
+            <!-- Nav Item - prodi Collapse Menu -->
             <li class="nav-item active">
-                <a class="nav-link" href="prodi.php">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Prodi</span></a>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseprodi"
+                    aria-expanded="true" aria-controls="collapseprodi">
+                    <i class="fas fa-fw fa-graduation-cap"></i>
+                    <span>kelola Prodi</span>
+                </a>
+                <div id="collapseprodi" class="collapse" aria-labelledby="headingprodi"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Pilih Opsi:</h6>
+                        <a class="collapse-item" href="prodi.php">Data Prodi</a>
+                        <a class="collapse-item active" href="add_prodi.php">Tambah Prodi</a>
+                    </div>
+                </div>
             </li>
+
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -354,7 +368,7 @@ $jurusan = getall_jurusan();
                     <!-- Basic Card Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Tambah Jurusan</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tambah Prodi</h6>
                         </div>
                         <div class="card-body">
                             <form method="post" id="pengajuanForm">
@@ -362,15 +376,15 @@ $jurusan = getall_jurusan();
                                     <div class="col-md-12">
 
 
-                                    <div class="form-group">
-    <label for="jurusan" class="font-weight-bold">Jurusan</label>
-    <select class="form-control" id="jurusan" name="jurusan">
-        <option value="" disabled selected>Pilih Jurusan</option>
-        <?php foreach ($jurusan as $data) { ?>
-            <option value="<?=$data['id_jurusan']?>"><?=$data['jurusan']?></option>
-        <?php } ?>
-    </select>
-</div>
+                                        <div class="form-group">
+                                            <label for="jurusan" class="font-weight-bold">Jurusan</label>
+                                            <select class="form-control" id="jurusan" name="jurusan">
+                                                <option value="" disabled selected>Pilih Jurusan</option>
+                                                <?php foreach ($jurusan as $data) { ?>
+                                                    <option value="<?= $data['id_jurusan'] ?>"><?= $data['jurusan'] ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
 
                                         <div class="form-group">
                                             <label for="jurusan" class="font-weight-bold">Prodi</label>
@@ -434,53 +448,53 @@ $jurusan = getall_jurusan();
                 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
                 <script>
-                // Event listener untuk tombol Reset
-                $('#resetButton').on('click', function(event) {
-                    event.preventDefault(); // Mencegah form langsung di-reset
+                    // Event listener untuk tombol Reset
+                    $('#resetButton').on('click', function(event) {
+                        event.preventDefault(); // Mencegah form langsung di-reset
 
-                    // Tampilkan SweetAlert untuk konfirmasi reset
-                    Swal.fire({
-                        title: 'Apakah Anda yakin?',
-                        text: "Anda akan mereset semua data yang telah diisi!",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, reset',
-                        cancelButtonText: 'Batal',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Jika pengguna memilih "Ya", reset form
-                            $('#pengajuanForm')[0].reset(); // Reset form secara manual
+                        // Tampilkan SweetAlert untuk konfirmasi reset
+                        Swal.fire({
+                            title: 'Apakah Anda yakin?',
+                            text: "Anda akan mereset semua data yang telah diisi!",
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, reset',
+                            cancelButtonText: 'Batal',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Jika pengguna memilih "Ya", reset form
+                                $('#pengajuanForm')[0].reset(); // Reset form secara manual
 
-                            // Reset input file secara manual
-                            $('#fileLaporan').val(null); // Set input file ke null
+                                // Reset input file secara manual
+                                $('#fileLaporan').val(null); // Set input file ke null
 
-                            // Reset label file dan hapus kelas 'selected'
-                            var fileLabel = $('.custom-file-label');
-                            fileLabel.text('Pilih file'); // Mengembalikan teks label ke default
-                            fileLabel.removeClass('selected'); // Hapus kelas 'selected' jika ada
+                                // Reset label file dan hapus kelas 'selected'
+                                var fileLabel = $('.custom-file-label');
+                                fileLabel.text('Pilih file'); // Mengembalikan teks label ke default
+                                fileLabel.removeClass('selected'); // Hapus kelas 'selected' jika ada
 
-                            // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
-                            Swal.fire({
-                                title: 'Direset!',
-                                text: 'Formulir telah direset.',
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
-                            });
-                        }
+                                // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
+                                Swal.fire({
+                                    title: 'Direset!',
+                                    text: 'Formulir telah direset.',
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
+                                });
+                            }
+                        });
                     });
-                });
 
-                // Event listener untuk perubahan file input
-                document.querySelector('.custom-file-input').addEventListener('change', function(e) {
-                    var fileName = e.target.files[0].name;
-                    var nextSibling = e.target.nextElementSibling;
+                    // Event listener untuk perubahan file input
+                    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+                        var fileName = e.target.files[0].name;
+                        var nextSibling = e.target.nextElementSibling;
 
-                    // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
-                    nextSibling.innerText = fileName;
-                    nextSibling.classList.add('selected');
-                });
+                        // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
+                        nextSibling.innerText = fileName;
+                        nextSibling.classList.add('selected');
+                    });
                 </script>
 
 

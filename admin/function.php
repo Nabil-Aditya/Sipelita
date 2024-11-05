@@ -216,11 +216,6 @@ function get_pegawai_byId($id_user) {
 
 
 
-
-
-
-
-
 // ---------------------------------------------------------------------------JURUSAN-
 
 // tambah jurusan
@@ -231,7 +226,10 @@ function add_jurusan($data) {
     $sql = mysqli_query($koneksi, "INSERT INTO jurusan (id_jurusan, jurusan) VALUES ('', '$jurusan')");
     
     if ($sql) {
-        echo "<script>alert('Data berhasil ditambahkan!');</script>";
+        echo "<script>
+        alert('Data berhasil ditambahkan!');
+        window.location.href = 'http://localhost/SIPELITA-PROJECT/admin/jurusan.php';
+    </script>";
     } else {
         echo "<script>alert('Gagal menambahkan jurusan: " . mysqli_error($koneksi) . "');</script>";
     }
@@ -256,7 +254,7 @@ function get_jumlah_jurusan(){
 // get jurusan
 function getall_jurusan(){
     global $koneksi;
-    $sql = mysqli_query($koneksi, "SELECT * FROM jurusan");
+    $sql = mysqli_query($koneksi, "SELECT * FROM jurusan ORDER BY id_jurusan DESC");
     $jurusan = [];
     while ($row = mysqli_fetch_assoc($sql)) {
         $jurusan[] = $row;
@@ -280,7 +278,10 @@ function add_prodi($data) {
     $sql = mysqli_query($koneksi, "INSERT INTO prodi (id_prodi, id_jurusan, prodi) VALUES ('', '$jurusan', '$prodi')");
     
     if ($sql) {
-        echo "<script>alert('Data berhasil ditambahkan!');</script>";
+        echo "<script>
+            alert('Data berhasil ditambahkan!');
+            window.location.href = 'http://localhost/SIPELITA-PROJECT/admin/prodi.php';
+        </script>";
     } else {
         echo "<script>alert('Gagal menambahkan prodi: " . mysqli_error($koneksi) . "');</script>";
     }
@@ -302,16 +303,23 @@ function get_jumlah_prodi(){
 }
 
 
-// get prodi
+// get prodi with jurusan
 function getall_prodi(){
     global $koneksi;
-    $sql = mysqli_query($koneksi, "SELECT * FROM prodi");
+    $sql = mysqli_query($koneksi, "
+        SELECT prodi.*, jurusan.jurusan 
+        FROM prodi 
+        JOIN jurusan ON prodi.id_jurusan = jurusan.id_jurusan 
+        ORDER BY prodi.id_prodi DESC
+    ");
+    
     $prodi = [];
     while ($row = mysqli_fetch_assoc($sql)) {
         $prodi[] = $row;
     }
     return $prodi;
 }
+
 
 
 
