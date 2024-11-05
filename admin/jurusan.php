@@ -514,7 +514,7 @@ $total_rejected = $row_rejected['total_rejected'];
 
                                                 <?php $i = 0; $i++; foreach ($jurusan as $data) { ?>
                                                 <tr>
-                                                    <td><?=$i?></td>
+                                                    <td><?=$i++?></td>
                                                     <td><?=$data['jurusan']?></td>
                                                     <td>
                                                         <span class="status-button detail">
