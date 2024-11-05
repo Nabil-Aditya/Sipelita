@@ -303,16 +303,23 @@ function get_jumlah_prodi(){
 }
 
 
-// get prodi
+// get prodi with jurusan
 function getall_prodi(){
     global $koneksi;
-    $sql = mysqli_query($koneksi, "SELECT * FROM prodi ORDER BY id_prodi DESC");
+    $sql = mysqli_query($koneksi, "
+        SELECT prodi.*, jurusan.jurusan 
+        FROM prodi 
+        JOIN jurusan ON prodi.id_jurusan = jurusan.id_jurusan 
+        ORDER BY prodi.id_prodi DESC
+    ");
+    
     $prodi = [];
     while ($row = mysqli_fetch_assoc($sql)) {
         $prodi[] = $row;
     }
     return $prodi;
 }
+
 
 
 
