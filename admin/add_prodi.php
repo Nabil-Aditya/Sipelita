@@ -354,7 +354,7 @@ $jurusan = getall_jurusan();
                     <!-- Basic Card Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Tambah Jurusan</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tambah Prodi</h6>
                         </div>
                         <div class="card-body">
                             <form method="post" id="pengajuanForm">
@@ -362,15 +362,15 @@ $jurusan = getall_jurusan();
                                     <div class="col-md-12">
 
 
-                                    <div class="form-group">
-    <label for="jurusan" class="font-weight-bold">Jurusan</label>
-    <select class="form-control" id="jurusan" name="jurusan">
-        <option value="" disabled selected>Pilih Jurusan</option>
-        <?php foreach ($jurusan as $data) { ?>
-            <option value="<?=$data['id_jurusan']?>"><?=$data['jurusan']?></option>
-        <?php } ?>
-    </select>
-</div>
+                                        <div class="form-group">
+                                            <label for="jurusan" class="font-weight-bold">Jurusan</label>
+                                            <select class="form-control" id="jurusan" name="jurusan">
+                                                <option value="" disabled selected>Pilih Jurusan</option>
+                                                <?php foreach ($jurusan as $data) { ?>
+                                                    <option value="<?= $data['id_jurusan'] ?>"><?= $data['jurusan'] ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
 
                                         <div class="form-group">
                                             <label for="jurusan" class="font-weight-bold">Prodi</label>
@@ -434,53 +434,53 @@ $jurusan = getall_jurusan();
                 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
                 <script>
-                // Event listener untuk tombol Reset
-                $('#resetButton').on('click', function(event) {
-                    event.preventDefault(); // Mencegah form langsung di-reset
+                    // Event listener untuk tombol Reset
+                    $('#resetButton').on('click', function(event) {
+                        event.preventDefault(); // Mencegah form langsung di-reset
 
-                    // Tampilkan SweetAlert untuk konfirmasi reset
-                    Swal.fire({
-                        title: 'Apakah Anda yakin?',
-                        text: "Anda akan mereset semua data yang telah diisi!",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, reset',
-                        cancelButtonText: 'Batal',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Jika pengguna memilih "Ya", reset form
-                            $('#pengajuanForm')[0].reset(); // Reset form secara manual
+                        // Tampilkan SweetAlert untuk konfirmasi reset
+                        Swal.fire({
+                            title: 'Apakah Anda yakin?',
+                            text: "Anda akan mereset semua data yang telah diisi!",
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, reset',
+                            cancelButtonText: 'Batal',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Jika pengguna memilih "Ya", reset form
+                                $('#pengajuanForm')[0].reset(); // Reset form secara manual
 
-                            // Reset input file secara manual
-                            $('#fileLaporan').val(null); // Set input file ke null
+                                // Reset input file secara manual
+                                $('#fileLaporan').val(null); // Set input file ke null
 
-                            // Reset label file dan hapus kelas 'selected'
-                            var fileLabel = $('.custom-file-label');
-                            fileLabel.text('Pilih file'); // Mengembalikan teks label ke default
-                            fileLabel.removeClass('selected'); // Hapus kelas 'selected' jika ada
+                                // Reset label file dan hapus kelas 'selected'
+                                var fileLabel = $('.custom-file-label');
+                                fileLabel.text('Pilih file'); // Mengembalikan teks label ke default
+                                fileLabel.removeClass('selected'); // Hapus kelas 'selected' jika ada
 
-                            // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
-                            Swal.fire({
-                                title: 'Direset!',
-                                text: 'Formulir telah direset.',
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
-                            });
-                        }
+                                // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
+                                Swal.fire({
+                                    title: 'Direset!',
+                                    text: 'Formulir telah direset.',
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
+                                });
+                            }
+                        });
                     });
-                });
 
-                // Event listener untuk perubahan file input
-                document.querySelector('.custom-file-input').addEventListener('change', function(e) {
-                    var fileName = e.target.files[0].name;
-                    var nextSibling = e.target.nextElementSibling;
+                    // Event listener untuk perubahan file input
+                    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+                        var fileName = e.target.files[0].name;
+                        var nextSibling = e.target.nextElementSibling;
 
-                    // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
-                    nextSibling.innerText = fileName;
-                    nextSibling.classList.add('selected');
-                });
+                        // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
+                        nextSibling.innerText = fileName;
+                        nextSibling.classList.add('selected');
+                    });
                 </script>
 
 
