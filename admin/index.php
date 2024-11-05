@@ -133,13 +133,6 @@ $total_rejected = $row_rejected['total_rejected'];
                 Menu Utama
             </div>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="add_pegawai.php">
-                    <i class="fas fa-fw fa-user-plus"></i>
-                    <span>Tambah Pegawai</span></a>
-            </li>
-
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -156,18 +149,38 @@ $total_rejected = $row_rejected['total_rejected'];
                 </div>
             </li>
 
-            <!-- Nav Item - Charts -->
+            <!-- Nav Item - jurusan Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="jurusan.php">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsejurusan"
+                    aria-expanded="true" aria-controls="collapsejurusan">
                     <i class="fas fa-fw fa-graduation-cap"></i>
-                    <span>Jurusan</span></a>
+                    <span>kelola Jurusan</span>
+                </a>
+                <div id="collapsejurusan" class="collapse" aria-labelledby="headingjurusan"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Pilih Opsi:</h6>
+                        <a class="collapse-item" href="jurusan.php">Data Jurusan</a>
+                        <a class="collapse-item" href="add_jurusan.php">Tambah Jurusan</a>
+                    </div>
+                </div>
             </li>
 
-            <!-- Nav Item - Charts -->
+            <!-- Nav Item - prodi Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="prodi.php">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseprodi"
+                    aria-expanded="true" aria-controls="collapseprodi">
                     <i class="fas fa-fw fa-graduation-cap"></i>
-                    <span>Prodi</span></a>
+                    <span>kelola Prodi</span>
+                </a>
+                <div id="collapseprodi" class="collapse" aria-labelledby="headingprodi"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Pilih Opsi:</h6>
+                        <a class="collapse-item" href="prodi.php">Data Prodi</a>
+                        <a class="collapse-item" href="add_prodi.php">Tambah Prodi</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Divider -->
