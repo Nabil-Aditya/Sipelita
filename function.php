@@ -9,33 +9,46 @@
 </head>
 
 <?php
-
 include 'koneksi.php';
 
-// login function
+// Fungsi login
 function login($data)
 {
     global $koneksi;
 
+    // Mengambil data 'username' dan 'password' dari input pengguna
     $username = $data['username'];
     $password = $data['password'];
 
-    // Check the username
-    $cek_username = mysqli_query($koneksi, "SELECT * FROM user WHERE username = '$username'");
+    // Menggunakan prepared statements untuk mencegah SQL injection
+    // 'SELECT * FROM user WHERE username = ?' akan mencari data pengguna berdasarkan username
+    $stmt = mysqli_prepare($koneksi, "SELECT * FROM user WHERE username = ?");
+    
+    // Mengikat parameter 's' (string) dari '$username' ke prepared statement
+    mysqli_stmt_bind_param($stmt, "s", $username);
+    
+    // Menjalankan query yang telah dipersiapkan
+    mysqli_stmt_execute($stmt);
+    
+    // Mendapatkan hasil query untuk pengecekan
+    $result = mysqli_stmt_get_result($stmt);
 
-    // If username exists in database
-    if (mysqli_num_rows($cek_username) === 1) {
+    // Memeriksa apakah ada data pengguna dengan username tersebut
+    if (mysqli_num_rows($result) === 1) {
 
-        // Get data from username
-        $data_from_username = mysqli_fetch_assoc($cek_username);
+        // Mengambil data pengguna berdasarkan username
+        $data_from_username = mysqli_fetch_assoc($result);
 
+        // Verifikasi password yang dimasukkan dengan password di database menggunakan password_verify
         if (password_verify($password, $data_from_username['password'])) {
 
+            // Menyimpan informasi pengguna dalam session untuk digunakan dalam aplikasi
             $_SESSION['username'] = $data_from_username['username'];
             $_SESSION['role'] = $data_from_username['role'];
             $_SESSION['id_user'] = $data_from_username['id_user'];
 
-            // SweetAlert based on role
+            // Menampilkan SweetAlert berdasarkan peran pengguna yang login
+            // Jika role adalah 'pegawai'
             if ($data_from_username['role'] == 'pegawai') {
                 echo "<script>
                         Swal.fire({
@@ -48,7 +61,9 @@ function login($data)
                         });
                       </script>";
                 exit;
-            } else if ($data_from_username['role'] == 'supervisor') {
+            } 
+            // Jika role adalah 'supervisor'
+            else if ($data_from_username['role'] == 'supervisor') {
                 echo "<script>
                         Swal.fire({
                             icon: 'success',
@@ -60,7 +75,9 @@ function login($data)
                         });
                       </script>";
                 exit;
-            } else {
+            } 
+            // Untuk peran lainnya, misalnya 'admin'
+            else {
                 echo "<script>
                         Swal.fire({
                             icon: 'success',
@@ -73,13 +90,21 @@ function login($data)
                     </script>";
                 exit;
             }
-        } else {
+        } 
+        // Jika password salah
+        else {
             echo "<script>Swal.fire('Proses Masuk Gagal', 'Kata Sandi Anda Salah', 'error');</script>";
         }
-    } else {
+    } 
+    // Jika username tidak ditemukan
+    else {
         echo "<script>Swal.fire('Proses Masuk Gagal', 'Nama Pengguna Tidak Ditemukan', 'error');</script>";
     }
+
+    // Menutup statement untuk membebaskan sumber daya
+    mysqli_stmt_close($stmt);
 }
+
 
 ?>
 
