@@ -190,6 +190,11 @@ h3,
 }
 
 /* Diproses - Biru */
+.in-belum {
+    background-color: #ffc107; 
+    color: #212529; 
+    border: 1px solid #007bff;
+}
 .in-process {
     background-color: #e7f3fe;
     color: #007bff;
@@ -852,10 +857,15 @@ h3,
                                                             <td>61</td>
                                                             <td>2011/04/25</td>
                                                             <td>
-                                                                <span class="status-button in-process">
+                                                                <span class="status-button in-belum">
                                                                     <span class="dot"></span>
-                                                                    Diproses
+                                                                    Belum Membuat LPJ
                                                                 </span>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <a href="add_pengajuan_lpj.php?id_pelatihan=<?=$data['id_pelatihan']?>"><button class="btn btn-primary btn-sm">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button></a>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -867,11 +877,16 @@ h3,
                                                             <td>
                                                                 <span class="status-button accepted">
                                                                     <span class="dot"></span>
-                                                                    Diterima
+                                                                    Selesai
                                                                 </span>
                                                             </td>
+                                                            <td class="text-center">
+                                                                <a href="add_pengajuan_lpj.php?id_pelatihan=<?=$data['id_pelatihan']?>"><button class="btn btn-primary btn-sm">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button></a>
+                                                            </td>
                                                         </tr>
-                                                        <tr>
+                                                        <!-- <tr>
                                                             <td>Ashton Cox</td>
                                                             <td>Junior Technical Author</td>
                                                             <td>San Francisco</td>
@@ -883,7 +898,7 @@ h3,
                                                                     Ditolak
                                                                 </span>
                                                             </td>
-                                                        </tr>
+                                                        </tr> -->
                                                     </tbody>
                                                 </table>
                                             </div>

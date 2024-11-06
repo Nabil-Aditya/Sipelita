@@ -151,6 +151,7 @@ function add_lpj($data) {
     
     // Ambil informasi file yang diunggah
     $berkas = $_FILES['berkas'];
+    $status = 'Diproses' ;
     
     // Cek apakah file diunggah dengan benar
     if ($berkas['error'] === UPLOAD_ERR_OK) {
@@ -167,7 +168,7 @@ function add_lpj($data) {
             $tgl = date('Y-m-d');
 
             // Simpan ke database
-            $sql = mysqli_query($koneksi, "INSERT INTO pelaporan (id_pelatihan, berkas, tgl) VALUES ('$id_pelatihan', '$upload_file', '$tgl')");
+            $sql = mysqli_query($koneksi, "INSERT INTO pelaporan (id_pelatihan, berkas, status, tgl) VALUES ('$id_pelatihan', '$upload_file', '$status', '$tgl')");
             if ($sql) {
                 echo "<script>alert('Berhasil')</script>";
             } else {
@@ -181,5 +182,13 @@ function add_lpj($data) {
     }
 }
 
+
+
+function get_berkas_byPelatihan(){
+    global $koneksi;
+    $id_pegawai = $_GET['id_pelatihan'];
+    $sql = mysqli_query($koneksi, "SELECT * FROM pelaporan WHERE id_pelatihan = '$id_pegawai'");
+    return mysqli_fetch_assoc($sql);
+}
 
 ?>

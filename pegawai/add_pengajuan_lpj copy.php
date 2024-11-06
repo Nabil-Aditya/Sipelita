@@ -566,8 +566,6 @@ $berkas = get_berkas_byPelatihan();
                             <form method="post" enctype="multipart/form-data">
                                 <div class="alert alert-success" role="alert">
                                     <strong>Perhatian!</strong> Pengajuan anda diterima, mohon mengajukan LPJ
-                                    <a href="add_lpj.php?id_pelatihan=<?= $pelatihan['id_pelatihan'] ?>">[ Klik 
-                                        disini ]</a>
                                 </div>
                                 <div class="row">
                                     <!-- Kolom Kiri -->
@@ -641,7 +639,8 @@ $berkas = get_berkas_byPelatihan();
                                                 readonly><?=$pelatihan['target']?></textarea>
                                         </div>
 
-                                        <!-- <div class="form-group">
+                                        <div class="form-group">
+                                            <!-- Teks dan link untuk template pelaporan -->
                                             <p class="mb-2">
                                                 <b>Template Pelaporan:</b>
                                                 <a href="../assets/template-LPJ.doc" download="template-LPJ.doc"
@@ -650,6 +649,7 @@ $berkas = get_berkas_byPelatihan();
                                                 </a>
                                             </p>
 
+                                            <!-- Input untuk unggah file PDF -->
                                             <label for="fileLaporan" class="font-weight-bold text-danger">Unggah File
                                                 Laporan (PDF)</label>
                                             <div class="input-group">
@@ -672,10 +672,11 @@ $berkas = get_berkas_byPelatihan();
                                                 var fileName = e.target.files[0].name;
                                                 var nextSibling = e.target.nextElementSibling;
 
+                                                // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
                                                 nextSibling.innerText = fileName;
                                                 nextSibling.classList.add('selected');
                                             });
-                                        </script> -->
+                                        </script>
                                     </div>
                                 </div>
                                 <hr>
@@ -683,12 +684,12 @@ $berkas = get_berkas_byPelatihan();
                                 <!-- Tombol Aksi -->
                                 <div class="d-flex justify-content-between mt-4">
                                     <?php if (!isset($berkas['berkas'])) { ?>
-                                    <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
-                                    <button type="submit" class="btn btn-primary" name="buat_lpj">Buat</button>
+                                        <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
+                                        <button type="submit" class="btn btn-primary" name="buat_lpj">Buat</button>
                                     <?php } else { ?>
-                                    <a href="index.php" class="btn btn-primary">Back</a>
+                                        <a href="index.php"  class="btn btn-primary">Back</a>
                                     <?php }?>
-
+                                    
                                 </div>
                             </form>
                             <?php endif; ?>

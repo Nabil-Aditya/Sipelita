@@ -564,11 +564,18 @@ $berkas = get_berkas_byPelatihan();
 
                             <?php if ($pelatihan['status'] == 'Diterima'): ?>
                             <form method="post" enctype="multipart/form-data">
-                                <div class="alert alert-success" role="alert">
-                                    <strong>Perhatian!</strong> Pengajuan anda diterima, mohon mengajukan LPJ
-                                    <a href="add_lpj.php?id_pelatihan=<?= $pelatihan['id_pelatihan'] ?>">[ Klik 
-                                        disini ]</a>
+                                <?php if (!isset($berkas['berkas'])) { ?>
+                                <div class="alert alert-warning" role="alert">
+                                    <strong>Perhatian!</strong> Mohon mengajukan LPJ
                                 </div>
+                                <?php } elseif ($berkas['status'] === 'Diproses') { ?>
+                                <div class="alert alert-primary" role="alert">
+                                    <strong>Perhatian!</strong> Berkas LPJ anda sedang di proses
+                                </div>
+                                <?php } ?>
+                                <!-- <div class="alert alert-success" role="alert">
+                                    <strong>Perhatian!</strong> Pengajuan anda diterima, mohon mengajukan LPJ
+                                </div> -->
                                 <div class="row">
                                     <!-- Kolom Kiri -->
                                     <div class="col-md-6">
@@ -641,7 +648,8 @@ $berkas = get_berkas_byPelatihan();
                                                 readonly><?=$pelatihan['target']?></textarea>
                                         </div>
 
-                                        <!-- <div class="form-group">
+                                        <div class="form-group">
+                                            <!-- Teks dan link untuk template pelaporan -->
                                             <p class="mb-2">
                                                 <b>Template Pelaporan:</b>
                                                 <a href="../assets/template-LPJ.doc" download="template-LPJ.doc"
@@ -650,6 +658,7 @@ $berkas = get_berkas_byPelatihan();
                                                 </a>
                                             </p>
 
+                                            <!-- Input untuk unggah file PDF -->
                                             <label for="fileLaporan" class="font-weight-bold text-danger">Unggah File
                                                 Laporan (PDF)</label>
                                             <div class="input-group">
@@ -672,10 +681,11 @@ $berkas = get_berkas_byPelatihan();
                                                 var fileName = e.target.files[0].name;
                                                 var nextSibling = e.target.nextElementSibling;
 
+                                                // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
                                                 nextSibling.innerText = fileName;
                                                 nextSibling.classList.add('selected');
                                             });
-                                        </script> -->
+                                        </script>
                                     </div>
                                 </div>
                                 <hr>
