@@ -4,6 +4,82 @@ include '../koneksi.php';
 
 
 
+
+
+// ------------------------------------------------SUPERVISOR--------------------------------------------
+
+// get semua pelatihan
+function get_all_pelatihan(){
+    global $koneksi;
+    $sql = mysqli_query($koneksi, "SELECT * FROM pelatihan");
+    $pelatihan = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pelatihan[] = $row;
+    }
+    return $pelatihan;
+}
+
+
+
+
+
+//-----Terima/Tolak : Pengajuan Pelatihan
+function status_pelatihan($data) {
+    global $koneksi;
+
+    $id_pelatihan = $_GET['id_pelatihan']; // Pastikan `id_pelatihan` dikirimkan lewat URL atau form
+    $status = $data['status'];
+    $keterangan = $data['komentar'];
+
+    // Insert ke tabel komentar
+    $insertKomentarQuery = "INSERT INTO komentar_pelatihan (id_pelatihan, komentar) VALUES ('$id_pelatihan', '$keterangan')";
+
+    if (mysqli_query($koneksi, $insertKomentarQuery)) {
+        // Update status di tabel pelatihan jika insert ke komentar berhasil
+        $updatePelatihanQuery = "UPDATE pelatihan SET status = '$status' WHERE id_pelatihan = '$id_pelatihan'";
+
+        if (mysqli_query($koneksi, $updatePelatihanQuery)) {
+            // Jika statusnya "Diterima", insert ke tabel pelaporan
+            if ($status === "Diterima") {
+                $insertPelaporanQuery = "INSERT INTO pelaporan (id_pelatihan, berkas, status, tgl) VALUES ('$id_pelatihan', NULL, 'Belum mengupload LPJ', NULL)";
+
+                if (!mysqli_query($koneksi, $insertPelaporanQuery)) {
+                    echo "<script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan',
+                            text: 'Gagal menyimpan ke pelaporan: " . mysqli_error($koneksi) . "'
+                        });
+                    </script>";
+                }
+            }
+
+            // Redirect jika semua berhasil
+            echo "<script>window.location.href = 'index.php';</script>";
+        } else {
+            echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terjadi Kesalahan',
+                    text: 'Gagal memperbarui status pelatihan: " . mysqli_error($koneksi) . "'
+                });
+            </script>";
+        }
+    } else {
+        echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan',
+                text: 'Gagal menyimpan komentar: " . mysqli_error($koneksi) . "'
+            });
+        </script>";
+    }
+}
+
+
+
+
+
 // --------------------------------------------PENGAJUAN PELATIHAN----------------------------------------------
 function getall_jurusan(){
     global $koneksi;
@@ -142,46 +218,6 @@ function getall_pelatihan_byId(){
 
 // -----------------------------------------------LPJ
 
-// function add_lpj($data) {
-//     global $koneksi;
-
-//     // Ambil data dari session dan GET
-//     $id_pegawai = $_SESSION['id_user'];
-//     $id_pelatihan = $_GET['id_pelatihan'];
-    
-//     // Ambil informasi file yang diunggah
-//     $berkas = $_FILES['berkas'];
-//     $status = 'Diproses' ;
-    
-//     // Cek apakah file diunggah dengan benar
-//     if ($berkas['error'] === UPLOAD_ERR_OK) {
-//         // Dapatkan informasi file
-//         $tmp_name = $berkas['tmp_name'];
-//         $name = basename($berkas['name']);
-        
-//         // Tentukan folder tujuan
-//         $upload_dir = '../assets/berkas_lpj/';
-//         $upload_file = $name;
-
-//         // Pindahkan file ke folder yang dituju
-//         if (move_uploaded_file($tmp_name, $upload_file)) {
-//             $tgl = date('Y-m-d');
-
-//             // Simpan ke database
-//             $sql = mysqli_query($koneksi, "INSERT INTO pelaporan (id_pelatihan, berkas, status, tgl) VALUES ('$id_pelatihan', '$upload_file', '$status', '$tgl')");
-//             if ($sql) {
-//                 echo "<script>alert('Berhasil')</script>";
-//             } else {
-//                 echo "<script>alert('Gagal')</script>";
-//             }
-//         } else {
-//             echo "<script>alert('Gagal mengunggah file.')</script>";
-//         }
-//     } else {
-//         echo "<script>alert('Error saat mengunggah file.')</script>";
-//     }
-// }
-
 function add_lpj($data) {
     global $koneksi;
 
@@ -204,15 +240,15 @@ function add_lpj($data) {
         $upload_file = $name;
 
         // Pindahkan file ke folder yang dituju
-        if (move_uploaded_file($tmp_name, $upload_dir . $upload_file)) {
+        if (move_uploaded_file($tmp_name, $upload_file)) {
             $tgl = date('Y-m-d');
 
-            // Update data ke database
-            $sql = mysqli_query($koneksi, "UPDATE pelaporan SET berkas='$upload_file', status='$status', tgl='$tgl' WHERE id_pelatihan='$id_pelatihan'");
+            // Simpan ke database
+            $sql = mysqli_query($koneksi, "INSERT INTO pelaporan (id_pelatihan, berkas, status, tgl) VALUES ('$id_pelatihan', '$upload_file', '$status', '$tgl')");
             if ($sql) {
-                echo "<script>alert('Berhasil memperbarui LPJ')</script>";
+                echo "<script>alert('Berhasil')</script>";
             } else {
-                echo "<script>alert('Gagal memperbarui LPJ')</script>";
+                echo "<script>alert('Gagal')</script>";
             }
         } else {
             echo "<script>alert('Gagal mengunggah file.')</script>";
@@ -222,13 +258,12 @@ function add_lpj($data) {
     }
 }
 
-
 function getall_pelaporan(){
     global $koneksi;
     $id_pegawai = $_SESSION['id_user'];
     
     $sql = mysqli_query($koneksi, "
-        SELECT pelaporan.*, pelatihan.*, pelaporan.status AS pelaporan_status, pelatihan.status AS pelatihan_status
+        SELECT pelaporan.*, pelatihan.* 
         FROM pelaporan 
         INNER JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan 
         WHERE pelatihan.id_pegawai = '$id_pegawai'
@@ -244,20 +279,12 @@ function getall_pelaporan(){
 
 
 
-
 function get_berkas_byPelatihan(){
     global $koneksi;
-    $id_pelatihan = $_GET['id_pelatihan'];
-    $sql = mysqli_query($koneksi, "SELECT * FROM pelaporan WHERE id_pelatihan = '$id_pelatihan'");
+    $id_pegawai = $_GET['id_pelatihan'];
+    $sql = mysqli_query($koneksi, "SELECT * FROM pelaporan WHERE id_pelatihan = '$id_pegawai'");
     return mysqli_fetch_assoc($sql);
 }
-
-// function get_pelaporan_byPleatihan(){
-//     global $koneksi;
-//     $id_pelatihan = $_GET['id_pelatihan'];
-//     $sql = mysqli_query($koneksi, "SELECT * FROM pelaporan WHERE id_pelatihan = '$id_pelatihan'");
-//     return mysqli_fetch_assoc($sql);
-// }
 
 
 

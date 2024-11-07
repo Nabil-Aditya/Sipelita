@@ -6,6 +6,7 @@ include 'function.php';
 
 
 $pelatihan = getall_pelatihan();
+$pelaporan = getall_pelaporan();
 
 ?>
 
@@ -96,126 +97,127 @@ $total_rejected = $row_rejected['total_rejected'];
 </head>
 
 <style>
-    .nav-tabs .nav-link.active {
-        background-color: #4e73df !important;
-        color: white !important;
-    }
+.nav-tabs .nav-link.active {
+    background-color: #4e73df !important;
+    color: white !important;
+}
 
-    .sidebar-brand-icon img {
-        max-width: 60px;
-        height: auto;
-        border-radius: 5px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        /* Efek bayangan lembut */
-    }
+.sidebar-brand-icon img {
+    max-width: 60px;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Efek bayangan lembut */
+}
 
-    .sipelita-text {
-        font-size: 1.3rem;
-        /* Ukuran font */
-        font-weight: bold;
-        /* Membuat teks tebal */
-        color: #ffffff;
-        /* Warna teks */
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        /* Efek timbul pada teks */
-    }
+.sipelita-text {
+    font-size: 1.3rem;
+    /* Ukuran font */
+    font-weight: bold;
+    /* Membuat teks tebal */
+    color: #ffffff;
+    /* Warna teks */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    /* Efek timbul pada teks */
+}
 
 
-    .profile-container {
-        display: flex;
-        align-items: center;
-        /* Vertikal rata tengah */
-        margin-bottom: 15px;
-    }
+.profile-container {
+    display: flex;
+    align-items: center;
+    /* Vertikal rata tengah */
+    margin-bottom: 15px;
+}
 
-    .profile-img {
-        max-width: 70px;
-        /* Sesuaikan ukuran gambar */
-        width: 100%;
-        height: auto;
-        /* Menjaga proporsi gambar */
-        margin-right: 20px;
-        /* Spasi antara gambar dan teks */
-    }
+.profile-img {
+    max-width: 70px;
+    /* Sesuaikan ukuran gambar */
+    width: 100%;
+    height: auto;
+    /* Menjaga proporsi gambar */
+    margin-right: 20px;
+    /* Spasi antara gambar dan teks */
+}
 
-    .profile-text {
-        display: flex;
-        flex-direction: column;
-        /* Agar h2 dan p berbaris secara vertikal */
-    }
+.profile-text {
+    display: flex;
+    flex-direction: column;
+    /* Agar h2 dan p berbaris secara vertikal */
+}
 
-    h3,
-    #timeDisplay {
-        margin: 0;
-        /* Menghapus margin default pada h3 dan p */
-    }
+h3,
+#timeDisplay {
+    margin: 0;
+    /* Menghapus margin default pada h3 dan p */
+}
 
-    .status-pending {
-        color: blue !important;
-        font-weight: 700;
-    }
+.status-pending {
+    color: blue !important;
+    font-weight: 700;
+}
 
-    .status-approved {
-        color: green !important;
-        font-weight: 700;
-    }
+.status-approved {
+    color: green !important;
+    font-weight: 700;
+}
 
-    .status-rejected {
-        color: red !important;
-        font-weight: 700;
-    }
+.status-rejected {
+    color: red !important;
+    font-weight: 700;
+}
 
-    /*status button pada tabel*/
-    .status-button {
-        display: inline-block;
-        padding: 5px 15px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: bold;
-        text-align: center;
-    }
+/*status button pada tabel*/
+.status-button {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
 
-    /* Diterima - Hijau */
-    .accepted {
-        background-color: #e6f4ea;
-        color: #28a745;
-        border: 1px solid #28a745;
-    }
+/* Diterima - Hijau */
+.accepted {
+    background-color: #e6f4ea;
+    color: #28a745;
+    border: 1px solid #28a745;
+}
 
-    /* Ditolak - Merah */
-    .rejected {
-        background-color: #fce8e6;
-        color: #dc3545;
-        border: 1px solid #dc3545;
-    }
+/* Ditolak - Merah */
+.rejected {
+    background-color: #fce8e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
 
 /* Diproses - Biru */
 .in-belum {
-    background-color: #ffc107; 
-    color: #212529; 
-    border: 1px solid #007bff;
+    background-color: #ffc107; /* Kuning */
+    color: #212529;
+    border: 1px solid #ffc107; /* Kuning */
 }
+
 .in-process {
     background-color: #e7f3fe;
     color: #007bff;
     border: 1px solid #007bff;
 }
 
-    /* Detail - Cyan */
-    .detail {
-        background-color: #e0f7fa;
-        color: #00bcd4;
-        border: 1px solid #00bcd4;
-    }
+/* Detail - Cyan */
+.detail {
+    background-color: #e0f7fa;
+    color: #00bcd4;
+    border: 1px solid #00bcd4;
+}
 
-    .status-button .dot {
-        height: 10px;
-        width: 10px;
-        background-color: currentColor;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 5px;
-    }
+.status-button .dot {
+    height: 10px;
+    width: 10px;
+    background-color: currentColor;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
 </style>
 
 <body id="page-top">
@@ -546,40 +548,40 @@ $total_rejected = $row_rejected['total_rejected'];
                     </div>
 
                     <script>
-                        function updateClock() {
-                            // Buat objek tanggal baru
-                            var now = new Date();
+                    function updateClock() {
+                        // Buat objek tanggal baru
+                        var now = new Date();
 
-                            // Ambil elemen untuk menampilkan waktu
-                            var timeDisplay = document.getElementById("timeDisplay");
+                        // Ambil elemen untuk menampilkan waktu
+                        var timeDisplay = document.getElementById("timeDisplay");
 
-                            // Array untuk nama hari dalam bahasa Indonesia
-                            var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                        // Array untuk nama hari dalam bahasa Indonesia
+                        var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-                            // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
-                            var day = dayNames[now.getDay()];
-                            var date = now.getDate();
-                            var month = now.toLocaleString('id-ID', {
-                                month: 'long'
-                            }); // Nama bulan dalam bahasa Indonesia
-                            var year = now.getFullYear();
-                            var hours = now.getHours().toString().padStart(2, '0');
-                            var minutes = now.getMinutes().toString().padStart(2, '0');
-                            var seconds = now.getSeconds().toString().padStart(2, '0');
+                        // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
+                        var day = dayNames[now.getDay()];
+                        var date = now.getDate();
+                        var month = now.toLocaleString('id-ID', {
+                            month: 'long'
+                        }); // Nama bulan dalam bahasa Indonesia
+                        var year = now.getFullYear();
+                        var hours = now.getHours().toString().padStart(2, '0');
+                        var minutes = now.getMinutes().toString().padStart(2, '0');
+                        var seconds = now.getSeconds().toString().padStart(2, '0');
 
-                            // Format waktu
-                            var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' +
-                                minutes + ':' + seconds;
+                        // Format waktu
+                        var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' +
+                            minutes + ':' + seconds;
 
-                            // Update elemen HTML dengan waktu terbaru
-                            timeDisplay.textContent = formattedTime;
-                        }
+                        // Update elemen HTML dengan waktu terbaru
+                        timeDisplay.textContent = formattedTime;
+                    }
 
-                        // Jalankan updateClock setiap detik
-                        setInterval(updateClock, 1000);
+                    // Jalankan updateClock setiap detik
+                    setInterval(updateClock, 1000);
 
-                        // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
-                        updateClock();
+                    // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
+                    updateClock();
                     </script>
 
                     <!-- Content Row -->
@@ -804,24 +806,28 @@ $total_rejected = $row_rejected['total_rejected'];
                                                     <tbody>
                                                         <?php foreach ($pelatihan as $data) { ?>
 
-                                                            <tr>
-                                                                <td><?= $data['kompetensi'] ?></td>
-                                                                <td><?= $data['tgl_start'] ?></td>
-                                                                <td><?= $data['tgl_end'] ?></td>
+                                                        <tr>
+                                                            <td><?= $data['kompetensi'] ?></td>
+                                                            <td><?= $data['tgl_start'] ?></td>
+                                                            <td><?= $data['tgl_start'] ?></td>
+                                                            <td><?= $data['tgl_end'] ?></td>
 
-                                                                <td>
-                                                                    <span class="status-button 
+                                                            <td>
+                                                                <span
+                                                                    class="status-button 
                                                             <?= $data['status'] === 'Diproses' ? 'in-process' : ($data['status'] === 'Ditolak' ? 'rejected' : ($data['status'] === 'Diterima' ? 'accepted' : '')) ?>">
-                                                                        <span class="dot"></span>
-                                                                        <?= $data['status'] ?>
-                                                                    </span>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <a href="add_pengajuan_lpj.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button class="btn btn-primary btn-sm">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </button></a>
-                                                                </td>
-                                                            </tr>
+                                                                    <span class="dot"></span>
+                                                                    <?= $data['status'] ?>
+                                                                </span>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <a
+                                                                    href="add_pengajuan_lpj.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button
+                                                                        class="btn btn-primary btn-sm">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </button></a>
+                                                            </td>
+                                                        </tr>
                                                         <?php } ?>
                                                     </tbody>
                                                 </table>
@@ -837,62 +843,43 @@ $total_rejected = $row_rejected['total_rejected'];
                                                     <thead>
                                                         <tr>
                                                             <th>Kompetensi</th>
-                                                            <th>Tgl&nbsp;Mulai</th>
-                                                            <th>Tgl&nbsp;Selesai</th>
+                                                            <th>Tgl pengajuan</th>
+                                                            <th>Berkas</th>
                                                             <th>Status</th>
                                                             <th>Aksi</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        <?php foreach ($pelaporan as $data) { ?>
                                                         <tr>
-                                                            <td>Tiger Nixon</td>
-                                                            <td>System Architect</td>
-                                                            <td>Edinburgh</td>
-                                                            <td>61</td>
-                                                            <td>2011/04/25</td>
-                                                            <td>
+                                                            <td><?=$data['kompetensi']?></td>
+                                                            <td><?=$data['tgl']?></td>
+                                                            <td><?=$data['berkas']?></td>
+                                                            <!-- <td>
                                                                 <span class="status-button in-belum">
                                                                     <span class="dot"></span>
-                                                                    Belum Membuat LPJ
+                                                                    <?=$data['pelaporan_status']?>
                                                                 </span>
+                                                            </td> -->
+                                                            <td>
+                                                                <span class="status-button <?= $data['pelaporan_status'] === 'Belum Mengupload LPJ' ? 'in-belum' :
+                                                                ($data['pelaporan_status'] === 'Diproses' ? 'in-process' :  
+                                                                ($data['pelaporan_status'] === 'Ditolak' ? 'rejected' : 
+                                                                ($data['pelaporan_status'] === 'Diterima' ? 'accepted' : ''))) ?>">
+                                                                    <span class="dot"></span>
+                                                                    <?= $data['pelaporan_status'] ?>
+                                                                </span>
+
                                                             </td>
                                                             <td class="text-center">
-                                                                <a href="add_pengajuan_lpj.php?id_pelatihan=<?=$data['id_pelatihan']?>"><button class="btn btn-primary btn-sm">
-                                                                    <i class="fas fa-eye"></i>
-                                                                </button></a>
+                                                                <a
+                                                                    href="add_lpj.php?id_pelatihan=<?=$data['id_pelatihan']?>"><button
+                                                                        class="btn btn-primary btn-sm">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </button></a>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>Garrett Winters</td>
-                                                            <td>Accountant</td>
-                                                            <td>Tokyo</td>
-                                                            <td>63</td>
-                                                            <td>2011/07/25</td>
-                                                            <td>
-                                                                <span class="status-button accepted">
-                                                                    <span class="dot"></span>
-                                                                    Selesai
-                                                                </span>
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <a href="add_pengajuan_lpj.php?id_pelatihan=<?=$data['id_pelatihan']?>"><button class="btn btn-primary btn-sm">
-                                                                    <i class="fas fa-eye"></i>
-                                                                </button></a>
-                                                            </td>
-                                                        </tr>
-                                                        <!-- <tr>
-                                                            <td>Ashton Cox</td>
-                                                            <td>Junior Technical Author</td>
-                                                            <td>San Francisco</td>
-                                                            <td>66</td>
-                                                            <td>2009/01/12</td>
-                                                            <td>
-                                                                <span class="status-button rejected">
-                                                                    <span class="dot"></span>
-                                                                    Ditolak
-                                                                </span>
-                                                            </td>
-                                                        </tr> -->
+                                                        <?php }?>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -908,19 +895,19 @@ $total_rejected = $row_rejected['total_rejected'];
                     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
                     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
                     <script>
-                        $(document).ready(function() {
-                            // Inisialisasi DataTables di awal
-                            $('#pengajuanTable').DataTable();
+                    $(document).ready(function() {
+                        // Inisialisasi DataTables di awal
+                        $('#pengajuanTable').DataTable();
 
-                            // Saat tab pelaporan diklik, inisialisasi DataTables di tabel pelaporan
-                            $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-                                var target = $(e.target).attr("data-bs-target");
+                        // Saat tab pelaporan diklik, inisialisasi DataTables di tabel pelaporan
+                        $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                            var target = $(e.target).attr("data-bs-target");
 
-                                if (target === '#pelaporan') {
-                                    $('#pelaporanTable').DataTable();
-                                }
-                            });
+                            if (target === '#pelaporan') {
+                                $('#pelaporanTable').DataTable();
+                            }
                         });
+                    });
                     </script>
 
                 </div>
