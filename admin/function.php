@@ -52,7 +52,6 @@ function tambah_pegawai($data)
         echo "<script>alert('Berhasil update data ke user')</script>";
     }
     
-
     // 2. Ke tabel pegawai
     $id_dari_user = mysqli_insert_id($koneksi);
 
