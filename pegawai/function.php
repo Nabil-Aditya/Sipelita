@@ -58,6 +58,8 @@ function pengajuan_pelatihan($data) {
                 timer: 1500
             });
         </script>";
+        echo "<script>window.location.href = 'index.php';</script>";
+
     } else {
         // Jika terjadi kesalahan, tampilkan SweetAlert error
         echo "<script>
@@ -282,5 +284,43 @@ function get_pelaporan(){
     }
     
     return $pelaporan;
+}
+
+
+
+
+
+
+
+
+
+
+
+//GET data user login
+function get_data_user_login() {
+    global $koneksi;
+
+    // Cek apakah session 'id_user' ada
+    if (!isset($_SESSION['id_user'])) {
+        return null; // Kembalikan null jika session tidak ada
+    }
+
+    // Ambil id_user dari session
+    $id_user = $_SESSION['id_user'];
+
+    // Query untuk mendapatkan data dari user dan student
+    $sql = mysqli_query($koneksi, 
+        "SELECT user.*, pegawai.* 
+         FROM user 
+         JOIN pegawai ON user.id_user = pegawai.id_user 
+         WHERE user.id_user = '$id_user'"
+    );
+
+    // Periksa jika ada hasil yang ditemukan
+    if (mysqli_num_rows($sql) > 0) {
+        return mysqli_fetch_assoc($sql); // Ambil data sebagai array asosiatif
+    } else {
+        return null; // Kembalikan null jika tidak ada data
+    }
 }
 ?>

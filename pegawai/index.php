@@ -8,6 +8,8 @@ include 'function.php';
 $pelatihan = getall_pelatihan();
 $pelaporan = getall_pelaporan();
 
+$login = get_data_user_login();
+
 ?>
 
 <?php
@@ -173,9 +175,11 @@ h3,
 
 /* Diproses - Biru */
 .in-belum {
-    background-color: #ffc107; /* Kuning */
+    background-color: #ffc107;
+    /* Kuning */
     color: #212529;
-    border: 1px solid #ffc107; /* Kuning */
+    border: 1px solid #ffc107;
+    /* Kuning */
 }
 
 .in-process {
@@ -225,7 +229,7 @@ h3,
             <li class="nav-item active">
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Beranda</span></a>
+                    <span>Beranda</span><?=$_SESSION['id_user']?></a>
             </li>
 
             <!-- Divider -->
@@ -474,13 +478,14 @@ h3,
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle" src="../img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$login['username']?></span>
+                                <img class="img-profile rounded-circle obejct-cover"
+                                    src="../assets/foto_pegawai/<?=$login['foto_profil']?>">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="view_profile.php?id_user=<?=$_SESSION['id_user']?>">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profil
                                 </a>
@@ -518,9 +523,10 @@ h3,
                     </div>
 
                     <div class="profile-container">
-                        <img src="../img/undraw_profile_1.svg" alt="Profile Picture" class="profile-img">
+                        <img src="../assets/foto_pegawai/<?=$login['foto_profil']?>" alt="Profile Picture"
+                            class="profile-img rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
                         <div class="profile-text">
-                            <h4><?php echo $greeting; ?>, <?php echo "Hellow World" ?>!</h4>
+                            <h4><?php echo $greeting; ?>, <?=$login['nama']?></h4>
                             <p id="timeDisplay">
                                 <!-- Tampilkan waktu awal dengan PHP -->
                                 <?php echo getIndonesianDayName(date('l')) . ', ' . date('j F Y') . ', ' . date('H:i:s'); ?>
@@ -839,7 +845,8 @@ h3,
                                                             <td><?=$data['kompetensi']?></td>
                                                             <td><?=$data['tgl']?></td>
                                                             <td>
-                                                                <span class="status-button <?= $data['pelaporan_status'] === 'Belum Mengupload LPJ' ? 'in-belum' :
+                                                                <span
+                                                                    class="status-button <?= $data['pelaporan_status'] === 'Belum Mengupload LPJ' ? 'in-belum' :
                                                                 ($data['pelaporan_status'] === 'Diproses' ? 'in-process' :  
                                                                 ($data['pelaporan_status'] === 'Ditolak' ? 'rejected' : 
                                                                 ($data['pelaporan_status'] === 'Diterima' ? 'accepted' : ''))) ?>">
