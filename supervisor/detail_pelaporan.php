@@ -4,7 +4,7 @@
 include '../koneksi.php'; 
 include 'function.php'; 
 
-$pelatihan = getall_pelatihan_byId();
+$pelaporan = get_pelaporan_supervisorByID();
 // $pelaporan = get_pelaporan();
 
 $jurusan = getall_jurusan();
@@ -23,8 +23,11 @@ if (isset($_POST['buat_lpj'])) {
 }
 
 //get berkas jika sudah mengirim berkas
-$berkas = get_berkas_byPelatihan();
+// $pelaporan = get_berkas_byPelatihan();
 
+if (isset($_POST['status_pelaporan'])) {
+    status_pelaporan($_POST);
+}
 ?>
 
 <!DOCTYPE html>
@@ -371,160 +374,166 @@ $berkas = get_berkas_byPelatihan();
 
 
 
-                            <form method="post" enctype="multipart/form-data">
-                                <?php if (!isset($berkas['berkas'])) { ?>
-                                <div class="alert alert-warning" role="alert">
-                                    <strong>Perhatian!</strong> Anda belum mengupload berkas LPJ, silahkan mengupload
-                                    berkas LPJ
-                                </div>
-                                <?php } elseif ($berkas['status'] === 'Diproses') { ?>
-                                <div class="alert alert-primary" role="alert">
-                                    <strong>Perhatian!</strong> Berkas LPJ anda sedang di proses
-                                </div>
-                                <?php } else if ($berkas['status'] === 'Ditolak') {?>
-                                <div class="alert alert-danger" role="alert">
-                                    <strong>Perhatian!</strong> Berkas LPJ anda di tolak
-                                </div>
-                                <?php } else {?>
-                                <div class="alert alert-success" role="alert">
-                                    <strong>Perhatian!</strong> Berkas LPJ anda di terima <?=$berkas['tgl']?>
-                                </div>
-                                <?php }?>
-
-
-                                <div class="row">
-                                    <!-- Kolom Kiri -->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
-                                            <input type="text" class="form-control bg-light-200" id="lembaga"
-                                                placeholder="Masukkan Lembaga / Institusi"
-                                                value="<?=$pelatihan['institusi']?>" readonly>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="programStudi" class="font-weight-bold">Program Studi</label>
-                                            <input type="text" class="form-control bg-light-200" id="programStudi"
-                                                placeholder="Masukkan Program Studi" value="<?=$pelatihan['prodi']?>"
-                                                readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="jurusan" class="font-weight-bold">Jurusan</label>
-                                            <input type="text" class="form-control bg-light-200" id="jurusan"
-                                                placeholder="Masukkan Jurusan" value="<?=$pelatihan['jurusan']?>"
-                                                readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="namaPeserta" class="font-weight-bold">Nama Peserta</label>
-                                            <textarea class="form-control bg-light-200" id="namaPeserta" rows="2"
-                                                placeholder="Masukkan Nama Peserta"
-                                                readonly><?=$pelatihan['nama_peserta']?></textarea>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
-                                            <textarea class="form-control bg-light-200" id="alamat" rows="2"
-                                                placeholder="Masukkan Tempat / Alamat"
-                                                readonly><?=$pelatihan['alamat']?></textarea>
-                                        </div>
+                            <div class="row">
+                                <!-- Kolom Kiri -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
+                                        <input type="text" class="form-control bg-light-200" id="lembaga"
+                                            placeholder="Masukkan Lembaga / Institusi"
+                                            value="<?=$pelaporan['institusi']?>" readonly>
                                     </div>
 
-                                    <!-- Kolom Kanan -->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="tanggalKegiatan" class="font-weight-bold">Tanggal
-                                                Kegiatan</label>
-                                            <input type="date" class="form-control bg-light-200" id="tanggalKegiatan"
-                                                value="<?=$pelatihan['tgl_start']?>" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan
-                                                Selesai</label>
-                                            <input type="date" class="form-control bg-light-200" id="tanggalSelesai"
-                                                value="<?=$pelatihan['tgl_end']?>" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual
-                                                Account)</label>
-                                            <input type="number" class="form-control bg-light-200" id="sumberDana"
-                                                placeholder="Masukkan Sumber Dana (Virtual Account)"
-                                                value="<?=$pelatihan['no_dana']?>" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
-                                            <input type="text" class="form-control bg-light-200" id="kompetensi"
-                                                placeholder="Masukkan Kompetensi" value="<?=$pelatihan['kompetensi']?>"
-                                                readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="targetKegiatan" class="font-weight-bold">Target yang ingin
-                                                dicapai kegiatan</label>
-                                            <textarea class="form-control bg-light-200" id="targetKegiatan" rows="2"
-                                                placeholder="Target yang ingin dicapai kegiatan"
-                                                readonly><?=$pelatihan['target']?></textarea>
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="programStudi" class="font-weight-bold">Program Studi</label>
+                                        <input type="text" class="form-control bg-light-200" id="programStudi"
+                                            placeholder="Masukkan Program Studi" value="<?=$pelaporan['nama_prodi']?>"
+                                            readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="jurusan" class="font-weight-bold">Jurusan</label>
+                                        <input type="text" class="form-control bg-light-200" id="jurusan"
+                                            placeholder="Masukkan Jurusan" value="<?=$pelaporan['nama_jurusan']?>"
+                                            readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="namaPeserta" class="font-weight-bold">Nama Peserta</label>
+                                        <textarea class="form-control bg-light-200" id="namaPeserta" rows="2"
+                                            placeholder="Masukkan Nama Peserta"
+                                            readonly><?=$pelaporan['nama_peserta']?></textarea>
+                                    </div>
 
-                                        <div class="form-group">
-                                            <!-- Teks dan link untuk template pelaporan -->
-                                            <p class="mb-2">
-                                                <b>Template Pelaporan:</b>
-                                                <a href="../assets/template-LPJ.doc" download="template-LPJ.doc"
-                                                    class="text-primary">
-                                                    Unduh Template Word
-                                                </a>
-                                            </p>
+                                    <div class="form-group">
+                                        <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
+                                        <textarea class="form-control bg-light-200" id="alamat" rows="2"
+                                            placeholder="Masukkan Tempat / Alamat"
+                                            readonly><?=$pelaporan['alamat']?></textarea>
+                                    </div>
+                                </div>
 
-                                            <!-- Input untuk unggah file PDF -->
-                                            <label for="fileLaporan" class="font-weight-bold text-danger">Unggah File
-                                                Laporan (PDF)
-                                            </label>
-                                            <div class="input-group">
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="fileLaporan"
-                                                        name="berkas" accept="application/pdf"
-                                                        <?php if (isset($berkas['status']) && ($berkas['status'] === 'Diproses' || $berkas['status'] === 'Diterima')): ?>
-                                                        onclick="return false;" <?php else: ?> required <?php endif; ?>
-                                                        onchange="updateLabel()"
-                                                        value="<?= isset($berkas['berkas']) ? $berkas['berkas'] : '' ?>">
+                                <!-- Kolom Kanan -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="tanggalKegiatan" class="font-weight-bold">Tanggal
+                                            Kegiatan</label>
+                                        <input type="date" class="form-control bg-light-200" id="tanggalKegiatan"
+                                            value="<?=$pelaporan['tgl_start']?>" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan
+                                            Selesai</label>
+                                        <input type="date" class="form-control bg-light-200" id="tanggalSelesai"
+                                            value="<?=$pelaporan['tgl_end']?>" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual
+                                            Account)</label>
+                                        <input type="number" class="form-control bg-light-200" id="sumberDana"
+                                            placeholder="Masukkan Sumber Dana (Virtual Account)"
+                                            value="<?=$pelaporan['no_dana']?>" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
+                                        <input type="text" class="form-control bg-light-200" id="kompetensi"
+                                            placeholder="Masukkan Kompetensi" value="<?=$pelaporan['kompetensi']?>"
+                                            readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="targetKegiatan" class="font-weight-bold">Target yang ingin
+                                            dicapai kegiatan</label>
+                                        <textarea class="form-control bg-light-200" id="targetKegiatan" rows="2"
+                                            placeholder="Target yang ingin dicapai kegiatan"
+                                            readonly><?=$pelaporan['target']?></textarea>
+                                    </div>
 
-                                                    <label class="custom-file-label" for="fileLaporan" id="fileLabel">
-                                                        <?= isset($berkas['berkas']) ? basename($berkas['berkas']) : 'Pilih file' ?>
-                                                    </label>
-                                                </div>
+                                    <div class="form-group">
+                                        <!-- Teks dan link untuk template pelaporan -->
+                                        <p class="mb-2">
+                                            <b>Template Pelaporan:</b>
+                                            <a href="../assets/template-LPJ.doc" download="template-LPJ.doc"
+                                                class="text-primary">
+                                                Unduh Template Word
+                                            </a>
+                                        </p>
+
+                                        <!-- Cek apakah berkas sudah ada -->
+                                        <?php if (isset($pelaporan['berkas']) && !empty($pelaporan['berkas'])) : ?>
+                                        <label for="fileLaporan" class="font-weight-bold text-success">Berkas Laporan
+                                            (PDF) Tersedia:</label>
+                                        <div class="input-group">
+                                            <a href="../assets/berkas_lpj/<?= $pelaporan['berkas'] ?>"
+                                                download="<?= basename($pelaporan['berkas']) ?>"
+                                                class="btn btn-primary">
+                                                Unduh Berkas
+                                            </a>
+                                        </div>
+                                        <?php else : ?>
+                                        <label for="fileLaporan" class="font-weight-bold text-danger">*Belum mengupload berkas</label>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <script>
+                                    document.querySelector('.custom-file-input').addEventListener('change', function(
+                                    e) {
+                                        var fileName = e.target.files[0].name;
+                                        var nextSibling = e.target.nextElementSibling;
+
+                                        // Ubah teks label dengan nama file yang dipilih
+                                        nextSibling.innerText = fileName;
+                                    });
+                                    </script>
+
+                                </div>
+                            </div>
+                            <hr>
+
+
+                            <?php if ($pelaporan['status_pelaporan'] !== 'Belum Mengupload LPJ' && $pelaporan['status_pelaporan'] !== 'Diterima') : ?>
+                            <div class="col-12">
+                                <form method="post">
+                                    <div class="row">
+                                        <!-- Kolom Kiri -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="programStudi" class="font-weight-bold">Proses</label>
+                                                <select class="form-control" id="programStudi" name="status">
+                                                    <option value="" disabled selected>Diterma/Ditolak</option>
+                                                    <option value="Diterima">Diterima</option>
+                                                    <option value="Ditolak">Ditolak</option>
+                                                </select>
                                             </div>
-
-                                            <small class="text-danger">
-                                                Type file: pdf <br> Batas ukuran file: 100 MB
-                                            </small>
                                         </div>
-                                        <script>
-                                        document.querySelector('.custom-file-input').addEventListener('change',
-                                            function(e) {
-                                                var fileName = e.target.files[0].name;
-                                                var nextSibling = e.target.nextElementSibling;
-
-                                                // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
-                                                nextSibling.innerText = fileName;
-                                                nextSibling.classList.add('selected');
-                                            });
-                                        </script>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="targetKegiatan" class="font-weight-bold">Komentar</label>
+                                                <textarea class="form-control" id="targetKegiatan" rows="2"
+                                                    name="komentar"
+                                                    placeholder="Target yang ingin dicapai kegiatan"></textarea>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <hr>
+                                    <div class="d-flex justify-content-end mt-4">
+                                        <button type="reset" class="btn btn-danger mr-2" id="resetButton">Reset</button>
+                                        <button type="submit" name="status_pelaporan"
+                                            class="btn btn-primary">Buat</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <?php endif; ?>
 
-                                <!-- Tombol Aksi -->
-                                <div class="d-flex justify-content-between mt-4">
-                                    <?php 
+
+                            <!-- Tombol Aksi -->
+                            <div class="d-flex justify-content-between mt-4">
+                                <?php 
                                     // Misalnya $status adalah status dari LPJ yang sudah ada
-                                    if ($berkas['status'] === 'Ditolak' || $berkas['status'] === 'Belum Mengupload LPJ') { ?>
-                                    <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
-                                    <button type="submit" class="btn btn-primary" name="buat_lpj">Buat</button>
-                                    <?php } else { ?>
-                                    <a href="index.php" class="btn btn-primary">Back</a>
-                                    <?php } ?>
-                                </div>
+                                    if ($pelaporan['status'] === 'Ditolak' || $pelaporan['status'] === 'Belum Mengupload LPJ') { ?>
+                                <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
+                                <button type="submit" class="btn btn-primary" name="buat_lpj">Buat</button>
+                                <?php } else { ?>
+                                <a href="index.php" class="btn btn-primary">Back</a>
+                                <?php } ?>
+                            </div>
 
-                            </form>
 
 
 

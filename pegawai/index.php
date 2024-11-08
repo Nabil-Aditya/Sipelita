@@ -855,12 +855,6 @@ h3,
                                                             <td><?=$data['kompetensi']?></td>
                                                             <td><?=$data['tgl']?></td>
                                                             <td><?=$data['berkas']?></td>
-                                                            <!-- <td>
-                                                                <span class="status-button in-belum">
-                                                                    <span class="dot"></span>
-                                                                    <?=$data['pelaporan_status']?>
-                                                                </span>
-                                                            </td> -->
                                                             <td>
                                                                 <span class="status-button <?= $data['pelaporan_status'] === 'Belum Mengupload LPJ' ? 'in-belum' :
                                                                 ($data['pelaporan_status'] === 'Diproses' ? 'in-process' :  

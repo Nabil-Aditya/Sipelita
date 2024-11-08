@@ -41,7 +41,7 @@ function status_pelatihan($data) {
         if (mysqli_query($koneksi, $updatePelatihanQuery)) {
             // Jika statusnya "Diterima", insert ke tabel pelaporan
             if ($status === "Diterima") {
-                $insertPelaporanQuery = "INSERT INTO pelaporan (id_pelatihan, berkas, status, tgl) VALUES ('$id_pelatihan', NULL, 'Belum mengupload LPJ', NULL)";
+                $insertPelaporanQuery = "INSERT INTO pelaporan (id_pelatihan, berkas, status, tgl) VALUES ('$id_pelatihan', NULL, 'Belum Mengupload LPJ', NULL)";
 
                 if (!mysqli_query($koneksi, $insertPelaporanQuery)) {
                     echo "<script>
@@ -218,6 +218,9 @@ function getall_pelatihan_byId(){
 
 // -----------------------------------------------LPJ
 
+
+
+
 function add_lpj($data) {
     global $koneksi;
 
@@ -277,6 +280,46 @@ function getall_pelaporan(){
     return $pelaporan;
 }
 
+function getall_pelaporan_supervisor() {
+    global $koneksi;
+
+    $sql = mysqli_query($koneksi, "
+        SELECT pelaporan.*, pelaporan.status AS status_pelaporan, pelatihan.*, pegawai.nama
+        FROM pelaporan
+        INNER JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan
+        INNER JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
+    ");
+
+    $pelaporan = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pelaporan[] = $row;
+    }
+
+    return $pelaporan;
+}
+
+function get_pelaporan_supervisorByID() {
+    global $koneksi;
+    $id_pelaporan = $_GET['id_pelaporan'];
+    
+    $sql = mysqli_query($koneksi, "
+        SELECT pelaporan.*, pelaporan.status AS status_pelaporan, pelatihan.*, 
+               pegawai.nama, jurusan.jurusan AS nama_jurusan, prodi.prodi AS nama_prodi
+        FROM pelaporan
+        INNER JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan
+        INNER JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
+        INNER JOIN jurusan ON pelatihan.id_jurusan = jurusan.id_jurusan
+        INNER JOIN prodi ON pelatihan.id_prodi = prodi.id_prodi
+        WHERE pelaporan.id_pelaporan = '$id_pelaporan'
+    ");
+
+    $pelaporan = mysqli_fetch_assoc($sql); // Mengambil data untuk satu pelaporan
+
+    return $pelaporan;
+}
+
+
+
 
 
 function get_berkas_byPelatihan(){
@@ -309,4 +352,100 @@ function get_pelaporan(){
     
     return $pelaporan;
 }
+
+
+//edit pelatihan
+function edit_pelaporan($data) {
+    global $koneksi;
+
+    $id_pelatihan = $_GET['id_pelatihan'];
+    $id_pegawai = $_SESSION['id_user'];
+    $institusi = $data['institusi'];
+    $prodi = $data['prodi'];
+    $jurusan = $data['jurusan'];
+    $nama_peserta = $data['nama_peserta'];
+    $alamat = $data['alamat'];
+    $tgl_start = $data['tgl_start'];
+    $tgl_end = $data['tgl_end'];
+    $no_dana = $data['no_dana'];
+    $kompetensi = $data['kompetensi'];
+    $target = $data['target'];
+    $status = 'Diproses';
+
+    $query = "UPDATE pelatihan 
+              SET institusi = '$institusi', id_prodi = '$prodi', id_jurusan = '$jurusan', nama_peserta = '$nama_peserta', 
+                  alamat = '$alamat', tgl_start = '$tgl_start', tgl_end = '$tgl_end', no_dana = '$no_dana', 
+                  kompetensi = '$kompetensi', target = '$target', status = '$status'
+              WHERE id_pelatihan = '$id_pelatihan'";
+
+    if (mysqli_query($koneksi, $query)) {
+        // Jika data berhasil diperbarui, tampilkan SweetAlert sukses
+        echo "<script>window.location.href = 'index.php';</script>";
+
+    } else {
+        // Jika terjadi kesalahan, tampilkan SweetAlert error
+        echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan',
+                text: '" . mysqli_error($koneksi) . "'
+            });
+        </script>";
+    }
+}
+
+
+
+
+
+
+
+
+
+
+function status_pelaporan($data) {
+    global $koneksi;
+
+    $id_pelaporan = $_GET['id_pelaporan']; // Pastikan `id_pelaporan` dikirimkan lewat URL atau form
+    $status = $data['status'];
+    $komentar = $data['komentar'];
+
+    // Insert ke tabel komentar
+    $insertKomentarQuery = "INSERT INTO komentar_pelaporan (id_pelaporan, komentar) VALUES ('$id_pelaporan', '$komentar')";
+
+    if (mysqli_query($koneksi, $insertKomentarQuery)) {
+        // Update status di tabel pelaporan jika insert ke komentar berhasil
+        $updatePelaporanQuery = "UPDATE pelaporan SET status = '$status' WHERE id_pelaporan = '$id_pelaporan'";
+        
+        if (mysqli_query($koneksi, $updatePelaporanQuery)) {
+            echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Status pelaporan berhasil diperbarui.'
+                });
+            </script>";
+        } else {
+            echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terjadi Kesalahan',
+                    text: 'Gagal memperbarui status pelaporan: " . mysqli_error($koneksi) . "'
+                });
+            </script>";
+        }
+    } else {
+        echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan',
+                text: 'Gagal menyimpan komentar: " . mysqli_error($koneksi) . "'
+            });
+        </script>";
+    }
+}
+
+
+
+
 ?>

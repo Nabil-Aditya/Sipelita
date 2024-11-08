@@ -4,6 +4,7 @@ include '../koneksi.php';
 include 'function.php'; 
 
 $get_pelatihan =  get_all_pelatihan();
+$get_pelaporan =  getall_pelaporan_supervisor();
 ?>
 
 
@@ -94,73 +95,73 @@ $total_rejected = $row_rejected['total_rejected'];
 
 </head>
 <style>
-
 .status-pending {
-        color: blue !important;
-        font-weight: 700;
-    }
+    color: blue !important;
+    font-weight: 700;
+}
 
-    .status-approved {
-        color: green !important;
-        font-weight: 700;
-    }
+.status-approved {
+    color: green !important;
+    font-weight: 700;
+}
 
-    .status-rejected {
-        color: red !important;
-        font-weight: 700;
-    }
+.status-rejected {
+    color: red !important;
+    font-weight: 700;
+}
 
-    /*status button pada tabel*/
-    .status-button {
-        display: inline-block;
-        padding: 5px 15px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: bold;
-        text-align: center;
-    }
+/*status button pada tabel*/
+.status-button {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
 
-    /* Diterima - Hijau */
-    .accepted {
-        background-color: #e6f4ea;
-        color: #28a745;
-        border: 1px solid #28a745;
-    }
+/* Diterima - Hijau */
+.accepted {
+    background-color: #e6f4ea;
+    color: #28a745;
+    border: 1px solid #28a745;
+}
 
-    /* Ditolak - Merah */
-    .rejected {
-        background-color: #fce8e6;
-        color: #dc3545;
-        border: 1px solid #dc3545;
-    }
+/* Ditolak - Merah */
+.rejected {
+    background-color: #fce8e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
 
 /* Diproses - Biru */
 .in-belum {
-    background-color: #ffc107; 
-    color: #212529; 
+    background-color: #ffc107;
+    color: #212529;
     border: 1px solid #007bff;
 }
+
 .in-process {
     background-color: #e7f3fe;
     color: #007bff;
     border: 1px solid #007bff;
 }
 
-    /* Detail - Cyan */
-    .detail {
-        background-color: #e0f7fa;
-        color: #00bcd4;
-        border: 1px solid #00bcd4;
-    }
+/* Detail - Cyan */
+.detail {
+    background-color: #e0f7fa;
+    color: #00bcd4;
+    border: 1px solid #00bcd4;
+}
 
-    .status-button .dot {
-        height: 10px;
-        width: 10px;
-        background-color: currentColor;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 5px;
-    }
+.status-button .dot {
+    height: 10px;
+    width: 10px;
+    background-color: currentColor;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
 </style>
 
 <body id="page-top">
@@ -785,54 +786,39 @@ $total_rejected = $row_rejected['total_rejected'];
                                                     cellspacing="0">
                                                     <thead>
                                                         <tr>
-                                                            <th>Name</th>
-                                                            <th>Position</th>
-                                                            <th>Office</th>
-                                                            <th>Age</th>
-                                                            <th>Start date</th>
-                                                            <th>Salary</th>
+                                                            <th>Pegawai</th>
+                                                            <th>Institusi</th>
+                                                            <th>Tgl Pengajuan</th>
+                                                            <th>Status</th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        <?php foreach ($get_pelaporan as $data) { ?>
                                                         <tr>
-                                                            <td>Tiger Nixon</td>
-                                                            <td>System Architect</td>
-                                                            <td>Edinburgh</td>
-                                                            <td>61</td>
-                                                            <td>2011/04/25</td>
+                                                            <td><?=$data['nama']?></td>
+                                                            <td><?=$data['institusi']?></td>
+                                                            <td><?=$data['tgl']?></td>
                                                             <td>
-                                                                <span class="status-button in-process">
+                                                                <span
+                                                                    class="status-button <?= $data['status_pelaporan'] === 'Belum Mengupload LPJ' ? 'in-belum' :
+                                                                ($data['status_pelaporan'] === 'Diproses' ? 'in-process' :  
+                                                                ($data['status_pelaporan'] === 'Ditolak' ? 'rejected' : 
+                                                                ($data['status_pelaporan'] === 'Diterima' ? 'accepted' : ''))) ?>">
                                                                     <span class="dot"></span>
-                                                                    Diproses
+                                                                    <?= $data['status_pelaporan'] ?>
                                                                 </span>
+
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <a
+                                                                    href="detail_pelaporan.php?id_pelaporan=<?=$data['id_pelaporan']?>"><button
+                                                                        class="btn btn-primary btn-sm">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </button></a>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>Garrett Winters</td>
-                                                            <td>Accountant</td>
-                                                            <td>Tokyo</td>
-                                                            <td>63</td>
-                                                            <td>2011/07/25</td>
-                                                            <td>
-                                                                <span class="status-button accepted">
-                                                                    <span class="dot"></span>
-                                                                    Diterima
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Ashton Cox</td>
-                                                            <td>Junior Technical Author</td>
-                                                            <td>San Francisco</td>
-                                                            <td>66</td>
-                                                            <td>2009/01/12</td>
-                                                            <td>
-                                                                <span class="status-button rejected">
-                                                                    <span class="dot"></span>
-                                                                    Ditolak
-                                                                </span>
-                                                            </td>
-                                                        </tr>
+                                                        <?php }?>
                                                     </tbody>
                                                 </table>
                                             </div>
