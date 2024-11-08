@@ -43,25 +43,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
 }
 ?>
 
-<?php
-// Query untuk menghitung jumlah pengajuan dengan status 'Pending'
-$query_pending = "SELECT COUNT(*) AS total_pending FROM tb_pengajuan_lpj WHERE status = 'Pending'";
-$result_pending = mysqli_query($koneksi, $query_pending);
-$row_pending = mysqli_fetch_assoc($result_pending);
-$total_pending = $row_pending['total_pending'];
 
-// Query untuk menghitung jumlah pengajuan dengan status 'Approved'
-$query_approved = "SELECT COUNT(*) AS total_approved FROM tb_pengajuan_lpj WHERE status = 'Approved'";
-$result_approved = mysqli_query($koneksi, $query_approved);
-$row_approved = mysqli_fetch_assoc($result_approved);
-$total_approved = $row_approved['total_approved'];
-
-// Query untuk menghitung jumlah pengajuan dengan status 'Rejected'
-$query_rejected = "SELECT COUNT(*) AS total_rejected FROM tb_pengajuan_lpj WHERE status = 'Rejected'";
-$result_rejected = mysqli_query($koneksi, $query_rejected);
-$row_rejected = mysqli_fetch_assoc($result_rejected);
-$total_rejected = $row_rejected['total_rejected'];
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -491,7 +473,7 @@ $total_rejected = $row_rejected['total_rejected'];
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 JUMLAH SUPERVISOR</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_pending; ?>
+                                                20
                                                 <!-- Mengambil jumlah supervisor dari PHP -->
                                             </div>
                                         </div>
@@ -512,7 +494,7 @@ $total_rejected = $row_rejected['total_rejected'];
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 JUMLAH AKUN</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_pending; ?>
+                                                20
                                                 <!-- Mengambil jumlah akun supervisor dari PHP -->
                                             </div>
                                         </div>
@@ -535,7 +517,7 @@ $total_rejected = $row_rejected['total_rejected'];
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        <?php echo $total_approved; ?>
+                                                        11
                                                         <!-- Mengambil jumlah akun yang aktif dari PHP -->
                                                     </div>
                                                 </div>
@@ -558,7 +540,7 @@ $total_rejected = $row_rejected['total_rejected'];
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 AKUN MATI</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_rejected; ?>
+                                                09
                                                 <!-- Mengambil jumlah akun yang mati dari PHP -->
                                             </div>
                                         </div>

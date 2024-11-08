@@ -42,25 +42,6 @@ if ($currentHour >= 0 && $currentHour < 12) {
 }
 ?>
 
-<?php
-// Query untuk menghitung jumlah pengajuan dengan status 'Pending'
-$query_pending = "SELECT COUNT(*) AS total_pending FROM tb_pengajuan_lpj WHERE status = 'Pending'";
-$result_pending = mysqli_query($koneksi, $query_pending);
-$row_pending = mysqli_fetch_assoc($result_pending);
-$total_pending = $row_pending['total_pending'];
-
-// Query untuk menghitung jumlah pengajuan dengan status 'Approved'
-$query_approved = "SELECT COUNT(*) AS total_approved FROM tb_pengajuan_lpj WHERE status = 'Approved'";
-$result_approved = mysqli_query($koneksi, $query_approved);
-$row_approved = mysqli_fetch_assoc($result_approved);
-$total_approved = $row_approved['total_approved'];
-
-// Query untuk menghitung jumlah pengajuan dengan status 'Rejected'
-$query_rejected = "SELECT COUNT(*) AS total_rejected FROM tb_pengajuan_lpj WHERE status = 'Rejected'";
-$result_rejected = mysqli_query($koneksi, $query_rejected);
-$row_rejected = mysqli_fetch_assoc($result_rejected);
-$total_rejected = $row_rejected['total_rejected'];
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -596,7 +577,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 DATA PENGAJUAN LPJ</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_pending; ?>
+                                                2
                                                 <!-- Mengambil jumlah pengajuan diproses dari PHP -->
                                             </div>
                                         </div>
@@ -617,7 +598,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 PENGAJUAN DIPROSES</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_pending; ?>
+                                                1
                                                 <!-- Mengambil jumlah pengajuan diproses dari PHP -->
                                             </div>
                                         </div>
@@ -640,7 +621,7 @@ h3,
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        <?php echo $total_approved; ?>
+                                                        5
                                                         <!-- Mengambil jumlah pengajuan diterima dari PHP -->
                                                     </div>
                                                 </div>
@@ -663,7 +644,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 PENGAJUAN DITOLAK</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_rejected; ?>
+                                                6
                                                 <!-- Mengambil jumlah pengajuan ditolak dari PHP -->
                                             </div>
                                         </div>
@@ -684,8 +665,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 DATA PELAPORAN</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_pending; ?>
-                                                <!-- Mengambil jumlah pengajuan diproses dari PHP -->
+                                                1
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -705,7 +685,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 PELAPORAN DIPROSES</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_pending; ?>
+                                                2
                                                 <!-- Mengambil jumlah pengajuan diproses dari PHP -->
                                             </div>
                                         </div>
@@ -728,7 +708,7 @@ h3,
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        <?php echo $total_approved; ?>
+                                                        5
                                                         <!-- Mengambil jumlah pengajuan diterima dari PHP -->
                                                     </div>
                                                 </div>
@@ -751,7 +731,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 PELAPORAN DITOLAK</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $total_rejected; ?>
+                                                8
                                                 <!-- Mengambil jumlah pengajuan ditolak dari PHP -->
                                             </div>
                                         </div>
@@ -796,21 +776,22 @@ h3,
                                                     cellspacing="0">
                                                     <thead>
                                                         <tr>
+                                                            <th>Peserta</th>
+                                                            <th>Institusi</th>
                                                             <th>Kompetensi</th>
-                                                            <th>Tgl Mulai</th>
-                                                            <th>Tgl Selesai</th>
+                                                            <th>Tgl Pengajuan</th>
                                                             <th>Status</th>
-                                                            <th>Aksi</th>
+                                                            <th>View</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php foreach ($pelatihan as $data) { ?>
 
                                                         <tr>
+                                                            <td><?= $data['nama_peserta'] ?></td>
+                                                            <td><?= $data['institusi'] ?></td>
                                                             <td><?= $data['kompetensi'] ?></td>
-                                                            <td><?= $data['tgl_start'] ?></td>
-                                                            <td><?= $data['tgl_start'] ?></td>
-                                                            <td><?= $data['tgl_end'] ?></td>
+                                                            <td><?= $data['tgl_pengajuan'] ?></td>
 
                                                             <td>
                                                                 <span
@@ -842,19 +823,21 @@ h3,
                                                     cellspacing="0">
                                                     <thead>
                                                         <tr>
+                                                            <th>Peserta</th>
+                                                            <th>Institusi</th>
                                                             <th>Kompetensi</th>
                                                             <th>Tgl pengajuan</th>
-                                                            <th>Berkas</th>
                                                             <th>Status</th>
-                                                            <th>Aksi</th>
+                                                            <th>View</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php foreach ($pelaporan as $data) { ?>
                                                         <tr>
+                                                            <td><?=$data['nama_peserta']?></td>
+                                                            <td><?=$data['institusi']?></td>
                                                             <td><?=$data['kompetensi']?></td>
                                                             <td><?=$data['tgl']?></td>
-                                                            <td><?=$data['berkas']?></td>
                                                             <td>
                                                                 <span class="status-button <?= $data['pelaporan_status'] === 'Belum Mengupload LPJ' ? 'in-belum' :
                                                                 ($data['pelaporan_status'] === 'Diproses' ? 'in-process' :  

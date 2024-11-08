@@ -386,7 +386,7 @@ if (isset($_POST['edit_pegawai'])) {
                                     <!-- Kolom Kiri -->
                                     <div class="col-md-12 mb-5">
                                         <div class="form-group d-flex justify-content-center">
-                                            <img src="../foto_pegawai/<?=$get_pegawai_byId['foto_profil']?>" alt="Foto"
+                                            <img src="../assets/foto_pegawai/<?=$get_pegawai_byId['foto_profil']?>" alt="Foto"
                                                 class="img-fluid rounded-circle"
                                                 style="width: 200px; height: 200px; object-fit: cover;">
                                         </div>

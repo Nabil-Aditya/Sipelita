@@ -11,13 +11,20 @@ include '../koneksi.php';
 // get semua pelatihan
 function get_all_pelatihan(){
     global $koneksi;
-    $sql = mysqli_query($koneksi, "SELECT * FROM pelatihan");
+    $sql = mysqli_query($koneksi, "
+        SELECT pelatihan.*, pegawai.nama AS nama_pegawai
+        FROM pelatihan
+        LEFT JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_user
+    ");
+    
     $pelatihan = [];
     while ($row = mysqli_fetch_assoc($sql)) {
         $pelatihan[] = $row;
     }
+    
     return $pelatihan;
 }
+
 
 
 
@@ -284,11 +291,17 @@ function getall_pelaporan_supervisor() {
     global $koneksi;
 
     $sql = mysqli_query($koneksi, "
-        SELECT pelaporan.*, pelaporan.status AS status_pelaporan, pelatihan.*, pegawai.nama
-        FROM pelaporan
-        INNER JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan
-        INNER JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
-    ");
+    SELECT pelaporan.*, pelaporan.status AS status_pelaporan, pelatihan.*, pegawai.nama AS nama_pegawai
+    FROM pelaporan
+    LEFT JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan
+    LEFT JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_user
+");
+
+
+
+    if (!$sql) {
+        die("Query Error: " . mysqli_error($koneksi));
+    }
 
     $pelaporan = [];
     while ($row = mysqli_fetch_assoc($sql)) {
@@ -298,24 +311,29 @@ function getall_pelaporan_supervisor() {
     return $pelaporan;
 }
 
+
 function get_pelaporan_supervisorByID() {
     global $koneksi;
     $id_pelaporan = $_GET['id_pelaporan'];
-    
-    $sql = mysqli_query($koneksi, "
+
+    $sql = "
         SELECT pelaporan.*, pelaporan.status AS status_pelaporan, pelatihan.*, 
                pegawai.nama, jurusan.jurusan AS nama_jurusan, prodi.prodi AS nama_prodi
         FROM pelaporan
         INNER JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan
-        INNER JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
+        INNER JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_user
         INNER JOIN jurusan ON pelatihan.id_jurusan = jurusan.id_jurusan
         INNER JOIN prodi ON pelatihan.id_prodi = prodi.id_prodi
         WHERE pelaporan.id_pelaporan = '$id_pelaporan'
-    ");
+    ";
+    $result = mysqli_query($koneksi, $sql);
 
-    $pelaporan = mysqli_fetch_assoc($sql); // Mengambil data untuk satu pelaporan
-
-    return $pelaporan;
+    if ($result) {
+        $pelaporan = mysqli_fetch_assoc($result);
+        return $pelaporan;
+    } else {
+        return null; // Query gagal
+    }
 }
 
 

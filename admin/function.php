@@ -26,7 +26,7 @@ function tambah_pegawai($data)
 
     $foto_profil = $_FILES['foto_profil']['name'];
     $tmpname = $_FILES['foto_profil']['tmp_name'];
-    $folder = $_SERVER['DOCUMENT_ROOT'] . '/pelita/SIPELITA-PROJECT/foto_pegawai/' . $foto_profil;
+    $folder = $_SERVER['DOCUMENT_ROOT'] . '/pelita/SIPELITA-PROJECT/assets/foto_pegawai/' . $foto_profil;
 
 
     //cek apakah ada username yang sama
@@ -93,7 +93,7 @@ function edit_pegawai($data, $id_user) {
     // Penanganan upload foto profil
     $foto_profil = $_FILES['foto_profil']['name'];
     $tmpname = $_FILES['foto_profil']['tmp_name'];
-    $folder = $_SERVER['DOCUMENT_ROOT'] . '/github/SIPELITA-PROJECT/foto_pegawai/' . $foto_profil;
+    $folder = $_SERVER['DOCUMENT_ROOT'] . '/github/SIPELITA-PROJECT/assets/foto_pegawai/' . $foto_profil;
 
     // Ambil username lama dari database
     $result = mysqli_query($koneksi, "SELECT username FROM user WHERE id_user = '$id_user'");

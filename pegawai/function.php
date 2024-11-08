@@ -43,9 +43,10 @@ function pengajuan_pelatihan($data) {
     $kompetensi = $_POST['kompetensi'];
     $target = $_POST['target'];
     $status = 'Diproses';
+    $tgl_pengajuan = date('Y-m-d');
 
-    $query = "INSERT INTO pelatihan (id_pegawai, institusi, id_prodi, id_jurusan, nama_peserta, alamat, tgl_start, tgl_end, no_dana, kompetensi, target, status) 
-              VALUES ('$id_pegawai', '$institusi', '$prodi', '$jurusan', '$nama_peserta', '$alamat', '$tgl_start', '$tgl_end', '$no_dana', '$kompetensi', '$target', '$status')";
+    $query = "INSERT INTO pelatihan (id_pegawai, institusi, id_prodi, id_jurusan, nama_peserta, alamat, tgl_start, tgl_end, no_dana, kompetensi, target, status, tgl_pengajuan) 
+              VALUES ('$id_pegawai', '$institusi', '$prodi', '$jurusan', '$nama_peserta', '$alamat', '$tgl_start', '$tgl_end', '$no_dana', '$kompetensi', '$target', '$status', '$tgl_pengajuan')";
 
     if (mysqli_query($koneksi, $query)) {
         // Jika data berhasil disimpan, tampilkan SweetAlert sukses

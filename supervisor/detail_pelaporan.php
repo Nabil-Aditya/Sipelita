@@ -5,8 +5,6 @@ include '../koneksi.php';
 include 'function.php'; 
 
 $pelaporan = get_pelaporan_supervisorByID();
-// $pelaporan = get_pelaporan();
-
 $jurusan = getall_jurusan();
 $prodi = getall_prodi();
 
@@ -488,7 +486,7 @@ if (isset($_POST['status_pelaporan'])) {
                             <hr>
 
 
-                            <?php if ($pelaporan['status_pelaporan'] !== 'Belum Mengupload LPJ' && $pelaporan['status_pelaporan'] !== 'Diterima') : ?>
+                            <?php if ($pelaporan['status_pelaporan'] !== 'Belum Mengupload LPJ' && $pelaporan['status_pelaporan'] !== 'Diterima' && $pelaporan['status_pelaporan'] !== 'Ditolak') : ?>
                             <div class="col-12">
                                 <form method="post">
                                     <div class="row">
