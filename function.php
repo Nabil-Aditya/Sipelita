@@ -9,46 +9,51 @@
 </head>
 
 <?php
+session_start();
 include 'koneksi.php';
 
-// Fungsi login
+// Fungsi untuk membuat CAPTCHA
+if (!isset($_SESSION['captcha'])) {
+    $buat_captcha = rand(10000,99999);
+    $_SESSION['captcha'] = $buat_captcha;
+}
+
 function login($data)
 {
     global $koneksi;
 
-    // Mengambil data 'username' dan 'password' dari input pengguna
+    // Mengambil data dari input pengguna
     $username = $data['username'];
     $password = $data['password'];
+    $captcha_input = (int)$data['captcha_input']; // Konversi ke integer
+
+    // Verifikasi CAPTCHA
+    if (!isset($_SESSION['captcha']) || $captcha_input !== $_SESSION['captcha']) {
+        echo "<script>Swal.fire('Proses Masuk Gagal', 'CAPTCHA yang Anda masukkan salah', 'error');</script>";
+        // Buat CAPTCHA baru setelah percobaan gagal
+        $_SESSION['captcha'] = rand(10000,99999);
+        return false;
+    }
+
+    // Reset CAPTCHA setelah verifikasi
+    $old_captcha = $_SESSION['captcha'];
+    $_SESSION['captcha'] = rand(10000,99999);
 
     // Menggunakan prepared statements untuk mencegah SQL injection
-    // 'SELECT * FROM user WHERE username = ?' akan mencari data pengguna berdasarkan username
     $stmt = mysqli_prepare($koneksi, "SELECT * FROM user WHERE username = ?");
-    
-    // Mengikat parameter 's' (string) dari '$username' ke prepared statement
     mysqli_stmt_bind_param($stmt, "s", $username);
-    
-    // Menjalankan query yang telah dipersiapkan
     mysqli_stmt_execute($stmt);
-    
-    // Mendapatkan hasil query untuk pengecekan
     $result = mysqli_stmt_get_result($stmt);
 
-    // Memeriksa apakah ada data pengguna dengan username tersebut
     if (mysqli_num_rows($result) === 1) {
-
-        // Mengambil data pengguna berdasarkan username
         $data_from_username = mysqli_fetch_assoc($result);
 
-        // Verifikasi password yang dimasukkan dengan password di database menggunakan password_verify
         if (password_verify($password, $data_from_username['password'])) {
-
-            // Menyimpan informasi pengguna dalam session untuk digunakan dalam aplikasi
             $_SESSION['username'] = $data_from_username['username'];
             $_SESSION['role'] = $data_from_username['role'];
             $_SESSION['id_user'] = $data_from_username['id_user'];
 
-            // Menampilkan SweetAlert berdasarkan peran pengguna yang login
-            // Jika role adalah 'pegawai'
+            // Redirect berdasarkan role
             if ($data_from_username['role'] == 'pegawai') {
                 echo "<script>
                         Swal.fire({
@@ -62,7 +67,6 @@ function login($data)
                       </script>";
                 exit;
             } 
-            // Jika role adalah 'supervisor'
             else if ($data_from_username['role'] == 'supervisor') {
                 echo "<script>
                         Swal.fire({
@@ -76,7 +80,6 @@ function login($data)
                       </script>";
                 exit;
             } 
-            // Untuk peran lainnya, misalnya 'admin'
             else {
                 echo "<script>
                         Swal.fire({
@@ -91,19 +94,25 @@ function login($data)
                 exit;
             }
         } 
-        // Jika password salah
         else {
             echo "<script>Swal.fire('Proses Masuk Gagal', 'Kata Sandi Anda Salah', 'error');</script>";
         }
     } 
-    // Jika username tidak ditemukan
     else {
         echo "<script>Swal.fire('Proses Masuk Gagal', 'Nama Pengguna Tidak Ditemukan', 'error');</script>";
     }
 
-    // Menutup statement untuk membebaskan sumber daya
     mysqli_stmt_close($stmt);
+    return false;
 }
+
+
+function logout(){
+    session_unset();
+    session_destroy();
+    echo "<script>alert('Logout'); window.location.href='login.php'</script>";
+}
+
 
 
 ?>

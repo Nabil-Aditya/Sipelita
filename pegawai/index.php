@@ -5,10 +5,70 @@ include '../loader.php';
 include 'function.php';
 
 
-$pelatihan = getall_pelatihan();
-$pelaporan = getall_pelaporan();
 
+//logout
+if (isset($_POST['logout'])) {
+    logout();
+}
+
+
+//get semua pelatihan
+$pelatihan = getall_pelatihan();
+$jumlah_pelatihan = count($pelatihan);
+$jumlah_pelatihan_diproses = 0;
+foreach ($pelatihan as $item) {
+    if ($item['status'] === 'Diproses') {
+        $jumlah_pelatihan_diproses++;
+    }
+}
+$jumlah_pelatihan_ditolak = 0;
+foreach ($pelatihan as $item) {
+    if ($item['status'] === 'Ditolak') {
+        $jumlah_pelatihan_diproses++;
+    }
+}
+$jumlah_pelatihan_diterima = 0;
+foreach ($pelatihan as $item) {
+    if ($item['status'] === 'Diterima') {
+        $jumlah_pelatihan_diproses++;
+    }
+}
+
+
+
+//get pelaporan
+$pelaporan = getall_pelaporan();
+$jumlah_pelaporan = count($pelaporan);
+$jumlah_pelaporan_diproses = 0;
+foreach ($pelaporan as $item) {
+    if ($item['status'] === 'Diproses') {
+        $jumlah_pelaporan_diproses++;
+    }
+}
+$jumlah_pelaporan_ditolak = 0;
+foreach ($pelaporan as $item) {
+    if ($item['status'] === 'Ditolak') {
+        $jumlah_pelaporan_diproses++;
+    }
+}
+$jumlah_pelaporan_diterima = 0;
+foreach ($pelaporan as $item) {
+    if ($item['status'] === 'Diterima') {
+        $jumlah_pelaporan_diproses++;
+    }
+}
+
+//get data session login
 $login = get_data_user_login();
+
+//tidak boleh mengakses halaman jika belum login
+if (!$login) {
+    echo "<script>window.location.href = '../login.php';</script>";
+}
+
+if ($login['role'] ) {
+    # code...
+}
 
 ?>
 
@@ -524,7 +584,7 @@ h3,
 
                     <div class="profile-container">
                         <img src="../assets/foto_pegawai/<?=$login['foto_profil']?>" alt="Profile Picture"
-                            class="profile-img rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                            cllass="profile-img" style="width: 150px; height: 150px; object-fit: cover;">
                         <div class="profile-text">
                             <h4><?php echo $greeting; ?>, <?=$login['nama']?></h4>
                             <p id="timeDisplay">
@@ -583,7 +643,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 DATA PENGAJUAN LPJ</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                2
+                                                <?=$jumlah_pelatihan?>
                                                 <!-- Mengambil jumlah pengajuan diproses dari PHP -->
                                             </div>
                                         </div>
@@ -604,7 +664,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 PENGAJUAN DIPROSES</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                1
+                                                <?=$jumlah_pelatihan_diproses?>
                                                 <!-- Mengambil jumlah pengajuan diproses dari PHP -->
                                             </div>
                                         </div>
@@ -627,7 +687,7 @@ h3,
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        5
+                                                        <?=$jumlah_pelatihan_diterima?>
                                                         <!-- Mengambil jumlah pengajuan diterima dari PHP -->
                                                     </div>
                                                 </div>
@@ -650,7 +710,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 PENGAJUAN DITOLAK</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                6
+                                                <?=$jumlah_pelatihan_ditolak?>
                                                 <!-- Mengambil jumlah pengajuan ditolak dari PHP -->
                                             </div>
                                         </div>
@@ -671,7 +731,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 DATA PELAPORAN</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                1
+                                                <?=$jumlah_pelaporan?>
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -691,7 +751,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 PELAPORAN DIPROSES</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                2
+                                                <?=$jumlah_pelaporan_diproses?>
                                                 <!-- Mengambil jumlah pengajuan diproses dari PHP -->
                                             </div>
                                         </div>
@@ -714,7 +774,7 @@ h3,
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        5
+                                                        <?=$jumlah_pelaporan_diterima?>
                                                         <!-- Mengambil jumlah pengajuan diterima dari PHP -->
                                                     </div>
                                                 </div>
@@ -737,7 +797,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 PELAPORAN DITOLAK</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                8
+                                                <?=$jumlah_pelaporan_ditolak?>
                                                 <!-- Mengambil jumlah pengajuan ditolak dari PHP -->
                                             </div>
                                         </div>
@@ -931,8 +991,10 @@ h3,
                     <div class="modal-body">Pilih "Keluar" di bawah jika Anda siap untuk mengakhiri
                         sesi Anda saat ini.</div>
                     <div class="modal-footer">
+                        <form method="post">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                        <a class="btn btn-primary" href="../login.php">Keluar</a>
+                        <button class="btn btn-primary" type="submit" name="logout">Keluar</button>
+                        </form>
                     </div>
                 </div>
             </div>

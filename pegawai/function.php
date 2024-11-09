@@ -3,6 +3,13 @@ session_start();
 include '../koneksi.php';
 
 
+function logout(){
+    session_unset();
+    session_destroy();
+    echo "<script>alert('Logout'); window.location.href='../login.php'</script>";
+}
+
+
 
 // --------------------------------------------PENGAJUAN PELATIHAN----------------------------------------------
 function getall_jurusan(){
@@ -123,6 +130,7 @@ function getall_pelatihan(){
     }
     return $pelatihan;
 }
+
 
 function getall_pelatihan_byId(){
     global $koneksi;
