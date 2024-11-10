@@ -1,11 +1,11 @@
 <?php
-session_start();
+
 
 include 'function.php';
 // Generate random 5-digit number for CAPTCHA
 $_SESSION['captcha'] = rand(10000, 99999);
 
-
+wawayu
 
 //login
 if (isset($_POST['login'])) {
@@ -13,7 +13,7 @@ if (isset($_POST['login'])) {
 }
 
 
-?>
+?> 
 
 <!DOCTYPE html>
 <html lang="en">
