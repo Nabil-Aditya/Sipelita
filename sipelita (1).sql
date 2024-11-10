@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 04 Nov 2024 pada 14.45
+-- Waktu pembuatan: 04 Nov 2024 pada 05.02
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -68,19 +68,6 @@ INSERT INTO `pegawai` (`id_pegawai`, `id_user`, `nip`, `nama`, `alamat`, `telp`,
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pelaporan`
---
-
-CREATE TABLE `pelaporan` (
-  `id_pelaporan` int(11) NOT NULL,
-  `id_pelatihan` int(11) NOT NULL,
-  `berkas` varchar(255) NOT NULL,
-  `tgl` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Struktur dari tabel `pelatihan`
 --
 
@@ -96,16 +83,15 @@ CREATE TABLE `pelatihan` (
   `tgl_end` date NOT NULL,
   `no_dana` varchar(25) NOT NULL,
   `kompetensi` varchar(255) NOT NULL,
-  `target` varchar(255) NOT NULL,
-  `status` varchar(20) NOT NULL
+  `target` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `pelatihan`
 --
 
-INSERT INTO `pelatihan` (`id_pelatihan`, `id_pegawai`, `institusi`, `id_prodi`, `id_jurusan`, `nama_peserta`, `alamat`, `tgl_start`, `tgl_end`, `no_dana`, `kompetensi`, `target`, `status`) VALUES
-(2, 7, 'KEMENAG', 3, 2, 'Nabil', 'Bida Center', '2024-11-04', '2024-11-08', '123112', 'Sertifikasi Masak Nasi ', 'Pandai Masak Nasi', 'Diproses');
+INSERT INTO `pelatihan` (`id_pelatihan`, `id_pegawai`, `institusi`, `id_prodi`, `id_jurusan`, `nama_peserta`, `alamat`, `tgl_start`, `tgl_end`, `no_dana`, `kompetensi`, `target`) VALUES
+(1, 7, 'te', 3, 2, 'w', 'daw', '2024-11-04', '2024-11-12', '244', 'wa', 'dwa');
 
 -- --------------------------------------------------------
 
@@ -254,12 +240,6 @@ ALTER TABLE `pegawai`
   ADD PRIMARY KEY (`id_pegawai`);
 
 --
--- Indeks untuk tabel `pelaporan`
---
-ALTER TABLE `pelaporan`
-  ADD PRIMARY KEY (`id_pelaporan`);
-
---
 -- Indeks untuk tabel `pelatihan`
 --
 ALTER TABLE `pelatihan`
@@ -319,16 +299,10 @@ ALTER TABLE `pegawai`
   MODIFY `id_pegawai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT untuk tabel `pelaporan`
---
-ALTER TABLE `pelaporan`
-  MODIFY `id_pelaporan` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT untuk tabel `pelatihan`
 --
 ALTER TABLE `pelatihan`
-  MODIFY `id_pelatihan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_pelatihan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `prodi`
