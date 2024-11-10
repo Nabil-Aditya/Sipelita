@@ -437,11 +437,8 @@ function status_pelaporan($data) {
         
         if (mysqli_query($koneksi, $updatePelaporanQuery)) {
             echo "<script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: 'Status pelaporan berhasil diperbarui.'
-                });
+                alert('Status pelaporan berhasil diperbarui.');
+                window.location.href = 'index.php';
             </script>";
         } else {
             echo "<script>
@@ -462,6 +459,7 @@ function status_pelaporan($data) {
         </script>";
     }
 }
+
 
 
 
