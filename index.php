@@ -5,8 +5,6 @@ include 'function.php';
 // Generate random 5-digit number for CAPTCHA
 $_SESSION['captcha'] = rand(10000, 99999);
 
-wawayu
-
 //login
 if (isset($_POST['login'])) {
     login($_POST);
