@@ -66,7 +66,7 @@ if (!$login) {
     echo "<script>window.location.href = '../login.php';</script>";
 }
 
-if ($login['role'] ) {
+if ($login['role']) {
     # code...
 }
 
@@ -127,6 +127,9 @@ if ($currentHour >= 0 && $currentHour < 12) {
 
     <!-- Font khusus untuk templat ini -->
     <link href="../css/sb-admin-2.minn.css" rel="stylesheet">
+    <!-- Kustom khusus untuk templat ini -->
+    <link href="../css/pegawai/index-pegawai.css" rel="stylesheet">
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -138,132 +141,6 @@ if ($currentHour >= 0 && $currentHour < 12) {
 
 
 </head>
-
-<style>
-.nav-tabs .nav-link.active {
-    background-color: #4e73df !important;
-    color: white !important;
-}
-
-.sidebar-brand-icon img {
-    max-width: 60px;
-    height: auto;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Efek bayangan lembut */
-}
-
-.sipelita-text {
-    font-size: 1.3rem;
-    /* Ukuran font */
-    font-weight: bold;
-    /* Membuat teks tebal */
-    color: #ffffff;
-    /* Warna teks */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    /* Efek timbul pada teks */
-}
-
-
-.profile-container {
-    display: flex;
-    align-items: center;
-    /* Vertikal rata tengah */
-    margin-bottom: 15px;
-}
-
-.profile-img {
-    max-width: 70px;
-    /* Sesuaikan ukuran gambar */
-    width: 100%;
-    height: auto;
-    /* Menjaga proporsi gambar */
-    margin-right: 20px;
-    /* Spasi antara gambar dan teks */
-}
-
-.profile-text {
-    display: flex;
-    flex-direction: column;
-    /* Agar h2 dan p berbaris secara vertikal */
-}
-
-h3,
-#timeDisplay {
-    margin: 0;
-    /* Menghapus margin default pada h3 dan p */
-}
-
-.status-pending {
-    color: blue !important;
-    font-weight: 700;
-}
-
-.status-approved {
-    color: green !important;
-    font-weight: 700;
-}
-
-.status-rejected {
-    color: red !important;
-    font-weight: 700;
-}
-
-/*status button pada tabel*/
-.status-button {
-    display: inline-block;
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-}
-
-/* Diterima - Hijau */
-.accepted {
-    background-color: #e6f4ea;
-    color: #28a745;
-    border: 1px solid #28a745;
-}
-
-/* Ditolak - Merah */
-.rejected {
-    background-color: #fce8e6;
-    color: #dc3545;
-    border: 1px solid #dc3545;
-}
-
-/* Diproses - Biru */
-.in-belum {
-    background-color: #ffc107;
-    /* Kuning */
-    color: #212529;
-    border: 1px solid #ffc107;
-    /* Kuning */
-}
-
-.in-process {
-    background-color: #e7f3fe;
-    color: #007bff;
-    border: 1px solid #007bff;
-}
-
-/* Detail - Cyan */
-.detail {
-    background-color: #e0f7fa;
-    color: #00bcd4;
-    border: 1px solid #00bcd4;
-}
-
-.status-button .dot {
-    height: 10px;
-    width: 10px;
-    background-color: currentColor;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 5px;
-}
-</style>
 
 <body id="page-top">
 
@@ -289,7 +166,7 @@ h3,
             <li class="nav-item active">
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Beranda</span><?=$_SESSION['id_user']?></a>
+                    <span>Beranda</span><?= $_SESSION['id_user'] ?></a>
             </li>
 
             <!-- Divider -->
@@ -538,14 +415,18 @@ h3,
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$login['username']?></span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"
+                                    style="display: inline-block; vertical-align: middle;">
+                                    <?= $login['username'] ?>
+                                </span>
                                 <img class="img-profile rounded-circle obejct-cover"
-                                    src="../assets/foto_pegawai/<?=$login['foto_profil']?>">
+                                    src="../assets/foto_pegawai/<?= $login['foto_profil'] ?>"
+                                    style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="view_profile.php?id_user=<?=$_SESSION['id_user']?>">
+                                <a class="dropdown-item" href="view_profile.php?id_user=<?= $_SESSION['id_user'] ?>">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profil
                                 </a>
@@ -582,53 +463,52 @@ h3,
                         </a>
                     </div>
 
-                    <div class="profile-container">
-                        <img src="../assets/foto_pegawai/<?=$login['foto_profil']?>" alt="Profile Picture"
-                            cllass="profile-img" style="width: 150px; height: 150px; object-fit: cover;">
+                    <div class="profile-container" style="display: flex; align-items: center;">
+                        <img src="../assets/foto_pegawai/<?= $login['foto_profil'] ?>" alt="Profile Picture"
+                            style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; object-position: center; margin-right: 16px;">
                         <div class="profile-text">
-                            <h4><?php echo $greeting; ?>, <?=$login['nama']?></h4>
+                            <h4><?php echo $greeting; ?>, <?= $login['nama'] ?></h4>
                             <p id="timeDisplay">
-                                <!-- Tampilkan waktu awal dengan PHP -->
                                 <?php echo getIndonesianDayName(date('l')) . ', ' . date('j F Y') . ', ' . date('H:i:s'); ?>
                             </p>
                         </div>
                     </div>
 
                     <script>
-                    function updateClock() {
-                        // Buat objek tanggal baru
-                        var now = new Date();
+                        function updateClock() {
+                            // Buat objek tanggal baru
+                            var now = new Date();
 
-                        // Ambil elemen untuk menampilkan waktu
-                        var timeDisplay = document.getElementById("timeDisplay");
+                            // Ambil elemen untuk menampilkan waktu
+                            var timeDisplay = document.getElementById("timeDisplay");
 
-                        // Array untuk nama hari dalam bahasa Indonesia
-                        var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                            // Array untuk nama hari dalam bahasa Indonesia
+                            var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-                        // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
-                        var day = dayNames[now.getDay()];
-                        var date = now.getDate();
-                        var month = now.toLocaleString('id-ID', {
-                            month: 'long'
-                        }); // Nama bulan dalam bahasa Indonesia
-                        var year = now.getFullYear();
-                        var hours = now.getHours().toString().padStart(2, '0');
-                        var minutes = now.getMinutes().toString().padStart(2, '0');
-                        var seconds = now.getSeconds().toString().padStart(2, '0');
+                            // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
+                            var day = dayNames[now.getDay()];
+                            var date = now.getDate();
+                            var month = now.toLocaleString('id-ID', {
+                                month: 'long'
+                            }); // Nama bulan dalam bahasa Indonesia
+                            var year = now.getFullYear();
+                            var hours = now.getHours().toString().padStart(2, '0');
+                            var minutes = now.getMinutes().toString().padStart(2, '0');
+                            var seconds = now.getSeconds().toString().padStart(2, '0');
 
-                        // Format waktu
-                        var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' +
-                            minutes + ':' + seconds;
+                            // Format waktu
+                            var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' +
+                                minutes + ':' + seconds;
 
-                        // Update elemen HTML dengan waktu terbaru
-                        timeDisplay.textContent = formattedTime;
-                    }
+                            // Update elemen HTML dengan waktu terbaru
+                            timeDisplay.textContent = formattedTime;
+                        }
 
-                    // Jalankan updateClock setiap detik
-                    setInterval(updateClock, 1000);
+                        // Jalankan updateClock setiap detik
+                        setInterval(updateClock, 1000);
 
-                    // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
-                    updateClock();
+                        // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
+                        updateClock();
                     </script>
 
                     <!-- Content Row -->
@@ -643,7 +523,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 DATA PENGAJUAN LPJ</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?=$jumlah_pelatihan?>
+                                                <?= $jumlah_pelatihan ?>
                                                 <!-- Mengambil jumlah pengajuan diproses dari PHP -->
                                             </div>
                                         </div>
@@ -664,7 +544,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 PENGAJUAN DIPROSES</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?=$jumlah_pelatihan_diproses?>
+                                                <?= $jumlah_pelatihan_diproses ?>
                                                 <!-- Mengambil jumlah pengajuan diproses dari PHP -->
                                             </div>
                                         </div>
@@ -687,7 +567,7 @@ h3,
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        <?=$jumlah_pelatihan_diterima?>
+                                                        <?= $jumlah_pelatihan_diterima ?>
                                                         <!-- Mengambil jumlah pengajuan diterima dari PHP -->
                                                     </div>
                                                 </div>
@@ -710,7 +590,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 PENGAJUAN DITOLAK</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?=$jumlah_pelatihan_ditolak?>
+                                                <?= $jumlah_pelatihan_ditolak ?>
                                                 <!-- Mengambil jumlah pengajuan ditolak dari PHP -->
                                             </div>
                                         </div>
@@ -731,7 +611,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 DATA PELAPORAN</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?=$jumlah_pelaporan?>
+                                                <?= $jumlah_pelaporan ?>
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -751,7 +631,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 PELAPORAN DIPROSES</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?=$jumlah_pelaporan_diproses?>
+                                                <?= $jumlah_pelaporan_diproses ?>
                                                 <!-- Mengambil jumlah pengajuan diproses dari PHP -->
                                             </div>
                                         </div>
@@ -774,7 +654,7 @@ h3,
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        <?=$jumlah_pelaporan_diterima?>
+                                                        <?= $jumlah_pelaporan_diterima ?>
                                                         <!-- Mengambil jumlah pengajuan diterima dari PHP -->
                                                     </div>
                                                 </div>
@@ -797,7 +677,7 @@ h3,
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 PELAPORAN DITOLAK</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?=$jumlah_pelaporan_ditolak?>
+                                                <?= $jumlah_pelaporan_ditolak ?>
                                                 <!-- Mengambil jumlah pengajuan ditolak dari PHP -->
                                             </div>
                                         </div>
@@ -853,28 +733,28 @@ h3,
                                                     <tbody>
                                                         <?php foreach ($pelatihan as $data) { ?>
 
-                                                        <tr>
-                                                            <td><?= $data['nama_peserta'] ?></td>
-                                                            <td><?= $data['institusi'] ?></td>
-                                                            <td><?= $data['kompetensi'] ?></td>
-                                                            <td><?= $data['tgl_pengajuan'] ?></td>
+                                                            <tr>
+                                                                <td><?= $data['nama_peserta'] ?></td>
+                                                                <td><?= $data['institusi'] ?></td>
+                                                                <td><?= $data['kompetensi'] ?></td>
+                                                                <td><?= $data['tgl_pengajuan'] ?></td>
 
-                                                            <td>
-                                                                <span
-                                                                    class="status-button 
+                                                                <td>
+                                                                    <span
+                                                                        class="status-button 
                                                             <?= $data['status'] === 'Diproses' ? 'in-process' : ($data['status'] === 'Ditolak' ? 'rejected' : ($data['status'] === 'Diterima' ? 'accepted' : '')) ?>">
-                                                                    <span class="dot"></span>
-                                                                    <?= $data['status'] ?>
-                                                                </span>
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <a
-                                                                    href="add_pengajuan_lpj.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button
-                                                                        class="btn btn-primary btn-sm">
-                                                                        <i class="fas fa-eye"></i>
-                                                                    </button></a>
-                                                            </td>
-                                                        </tr>
+                                                                        <span class="dot"></span>
+                                                                        <?= $data['status'] ?>
+                                                                    </span>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <a
+                                                                        href="add_pengajuan_lpj.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button
+                                                                            class="btn btn-primary btn-sm">
+                                                                            <i class="fas fa-eye"></i>
+                                                                        </button></a>
+                                                                </td>
+                                                            </tr>
                                                         <?php } ?>
                                                     </tbody>
                                                 </table>
@@ -899,31 +779,28 @@ h3,
                                                     </thead>
                                                     <tbody>
                                                         <?php foreach ($pelaporan as $data) { ?>
-                                                        <tr>
-                                                            <td><?=$data['nama_peserta']?></td>
-                                                            <td><?=$data['institusi']?></td>
-                                                            <td><?=$data['kompetensi']?></td>
-                                                            <td><?=$data['tgl']?></td>
-                                                            <td>
-                                                                <span
-                                                                    class="status-button <?= $data['pelaporan_status'] === 'Belum Mengupload LPJ' ? 'in-belum' :
-                                                                ($data['pelaporan_status'] === 'Diproses' ? 'in-process' :  
-                                                                ($data['pelaporan_status'] === 'Ditolak' ? 'rejected' : 
-                                                                ($data['pelaporan_status'] === 'Diterima' ? 'accepted' : ''))) ?>">
-                                                                    <span class="dot"></span>
-                                                                    <?= $data['pelaporan_status'] ?>
-                                                                </span>
+                                                            <tr>
+                                                                <td><?= $data['nama_peserta'] ?></td>
+                                                                <td><?= $data['institusi'] ?></td>
+                                                                <td><?= $data['kompetensi'] ?></td>
+                                                                <td><?= $data['tgl'] ?></td>
+                                                                <td>
+                                                                    <span
+                                                                        class="status-button <?= $data['pelaporan_status'] === 'Belum Mengupload LPJ' ? 'in-belum' : ($data['pelaporan_status'] === 'Diproses' ? 'in-process' : ($data['pelaporan_status'] === 'Ditolak' ? 'rejected' : ($data['pelaporan_status'] === 'Diterima' ? 'accepted' : ''))) ?>">
+                                                                        <span class="dot"></span>
+                                                                        <?= $data['pelaporan_status'] ?>
+                                                                    </span>
 
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <a
-                                                                    href="add_lpj.php?id_pelatihan=<?=$data['id_pelatihan']?>"><button
-                                                                        class="btn btn-primary btn-sm">
-                                                                        <i class="fas fa-eye"></i>
-                                                                    </button></a>
-                                                            </td>
-                                                        </tr>
-                                                        <?php }?>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <a
+                                                                        href="add_lpj.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button
+                                                                            class="btn btn-primary btn-sm">
+                                                                            <i class="fas fa-eye"></i>
+                                                                        </button></a>
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -939,19 +816,19 @@ h3,
                     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
                     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
                     <script>
-                    $(document).ready(function() {
-                        // Inisialisasi DataTables di awal
-                        $('#pengajuanTable').DataTable();
+                        $(document).ready(function() {
+                            // Inisialisasi DataTables di awal
+                            $('#pengajuanTable').DataTable();
 
-                        // Saat tab pelaporan diklik, inisialisasi DataTables di tabel pelaporan
-                        $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-                            var target = $(e.target).attr("data-bs-target");
+                            // Saat tab pelaporan diklik, inisialisasi DataTables di tabel pelaporan
+                            $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                                var target = $(e.target).attr("data-bs-target");
 
-                            if (target === '#pelaporan') {
-                                $('#pelaporanTable').DataTable();
-                            }
+                                if (target === '#pelaporan') {
+                                    $('#pelaporanTable').DataTable();
+                                }
+                            });
                         });
-                    });
                     </script>
 
                 </div>
@@ -992,8 +869,8 @@ h3,
                         sesi Anda saat ini.</div>
                     <div class="modal-footer">
                         <form method="post">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                        <button class="btn btn-primary" type="submit" name="logout">Keluar</button>
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                            <button class="btn btn-primary" type="submit" name="logout">Keluar</button>
                         </form>
                     </div>
                 </div>
