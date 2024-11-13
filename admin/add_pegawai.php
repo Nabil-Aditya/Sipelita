@@ -436,40 +436,6 @@ if (isset($_POST['tambah_pegawai'])) {
                 </div>
                 <!-- /.container-fluid -->
 
-                <!-- Modal Konfirmasi Pengajuan -->
-                <div class="modal fade" id="konfirmasiModal" tabindex="-1" role="dialog"
-                    aria-labelledby="konfirmasiModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="m-0 font-weight-bold text-primary" id="konfirmasiModalLabel">Konfirmasi
-                                    Pengajuan Pelatihan</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p><strong>Lembaga / Institusi:</strong> <span id="confirmLembaga"></span></p>
-                                <p><strong>Program Studi:</strong> <span id="confirmProgramStudi"></span></p>
-                                <p><strong>Jurusan:</strong> <span id="confirmJurusan"></span></p>
-                                <p><strong>Nama Peserta:</strong> <span id="confirmNamaPeserta"></span></p>
-                                <p><strong>Alamat:</strong> <span id="confirmAlamat"></span></p>
-                                <p><strong>Tanggal Kegiatan:</strong> <span id="confirmTanggalKegiatan"></span></p>
-                                <p><strong>Tanggal Selesai:</strong> <span id="confirmTanggalSelesai"></span></p>
-                                <p><strong>Sumber Dana:</strong> <span id="confirmSumberDana"></span></p>
-                                <p><strong>Kompetensi:</strong> <span id="confirmKompetensi"></span></p>
-                                <p><strong>Target Kegiatan:</strong> <span id="confirmTargetKegiatan"></span></p>
-                                <p><strong>File Laporan:</strong> <a href="#" target="_blank"
-                                        id="confirmFileLaporan">Lihat Laporan</a></p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                                <button type="button" class="btn btn-primary" id="submitPengajuan">Kirim</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Bootstrap JS -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
