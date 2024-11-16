@@ -417,10 +417,13 @@ if ($currentHour >= 0 && $currentHour < 12) {
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle" src="../img/undraw_profile.svg">
-                            </a>
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                           <img class="img-profile rounded-circle obejct-cover"
+                               src="../img/eren.jpg? $login['foto_profil'] ?>"
+                               style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                       </a>
+
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
@@ -458,9 +461,10 @@ if ($currentHour >= 0 && $currentHour < 12) {
                             <i class="fas fa-plus fa-sm text-white-50"></i>&nbsp;Buat Pengajuan?
                         </a>
                     </div>
-
-                    <div class="profile-container">
-                        <img src="../img/undraw_profile_1.svg" alt="Profile Picture" class="profile-img">
+                    
+                     <div class="profile-container" style="display: flex; align-items: center;">
+                        <img src="../img/eren.jpg?= $login['foto_profil'] ?>" alt="Profile Picture"
+                            style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; object-position: center; margin-right: 16px;">
                         <div class="profile-text">
                             <h4><?php echo $greeting; ?>, <?php echo "Hellow World" ?>!</h4>
                             <p id="timeDisplay">
