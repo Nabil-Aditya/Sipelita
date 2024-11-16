@@ -22,29 +22,44 @@
         /* Efek timbul pada teks */
     }
 
-    .profile-container {
-        display: flex;
-        align-items: center;
-        /* Vertikal rata tengah */
-        margin-bottom: 15px;
-    }
-
-    .profile-img {
-        max-width: 70px;
-        /* Sesuaikan ukuran gambar */
-        width: 100%;
-        height: auto;
-        /* Menjaga proporsi gambar */
-        margin-right: 20px;
-        /* Spasi antara gambar dan teks */
-    }
-
     .profile-text {
         display: flex;
         flex-direction: column;
         /* Agar h2 dan p berbaris secara vertikal */
     }
-
+    
+    /* Default: Tampilan untuk layar besar (laptop atau monitor) */
+    .profile-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    
+    }
+    
+    .profile-img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-right: 16px;
+    }
+    
+    /* Responsif untuk layar ponsel dan tablet */
+    @media (max-width: 768px) {
+        .profile-container {
+            flex-direction: column;
+            /* Menyusun elemen dalam kolom pada layar kecil */
+            align-items: center;
+            text-align: center;
+        }
+    
+        .profile-img {
+            margin-right: 0;
+            /* Hilangkan margin kanan untuk center alignment */
+            margin-bottom: 10px;
+            /* Tambahkan margin bawah */
+        }
+    }
     h3,
     #timeDisplay {
         margin: 0;
