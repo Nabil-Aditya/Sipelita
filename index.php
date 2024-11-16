@@ -1,17 +1,23 @@
 <?php
 
-
 include 'function.php';
-// Generate random 5-digit number for CAPTCHA
-$_SESSION['captcha'] = rand(10000, 99999);
 
 //login
 if (isset($_POST['login'])) {
     login($_POST);
 }
 
-
-?> 
+if (isset($_SESSION['role'])) {
+    if ($_SESSION['role'] === 'admin') {
+        echo "<script>window.location.href = 'admin/index.php';</script>";
+    } else if ($_SESSION['role'] === 'pegawai') {
+        echo "<script>window.location.href = 'pegawai/index.php';</script>";
+    } else if ($_SESSION['role'] === 'supervisor') {
+        echo "<script>window.location.href = 'supervisor/index.php';</script>";
+    }
+    exit(); 
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,19 +35,19 @@ if (isset($_POST['login'])) {
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- styles this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="css/login.css" rel="stylesheet">
 
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
-
 </head>
 
-<body class="bg-gradient-warning">
+<body>
 
     <div class="container">
 
@@ -59,7 +65,8 @@ if (isset($_POST['login'])) {
                                 <img src="./img/login_img.jpg" alt="Login Image" class="login-image">
                                 <div class="text-center mt-1">
                                     <a href="#" class="btn btn-link custom-link">Buku Panduan</a> |
-                                    <a href="https://wa.me/6287842033231" class="btn btn-link custom-link" target="_blank">Hubungi Kami</a> |
+                                    <a href="https://wa.me/6287842033231" class="btn btn-link custom-link"
+                                        target="_blank">Hubungi Kami</a> |
                                     <a href="#" class="btn btn-link custom-link" id="developerTeam">Tim Pengembang</a>
                                 </div>
                                 <div class="text-center mt-2">
@@ -71,8 +78,7 @@ if (isset($_POST['login'])) {
                                     <div class="text-center">
                                         <h1 class="h4 mb-5 custom-heading">Portal Masuk Sipelita</h1>
                                     </div>
-                                    <form class="user" method="post"  id="loginForm">
-
+                                    <form class="user" method="post">
                                         <span class="bold-black-text">Nama Pengguna</span>
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
@@ -82,25 +88,25 @@ if (isset($_POST['login'])) {
 
                                         <span class="bold-black-text">Kata Sandi</span>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user" name="password"
-                                                id="exampleInputPassword" placeholder="Masukkan Kata Sandi..." minlength="3" required>
+                                            <input type="password" class="form-control form-control-user"
+                                                name="password" id="exampleInputPassword"
+                                                placeholder="Masukkan Kata Sandi..." minlength="3" required>
                                         </div>
 
-                                        <!-- CAPTCHA Section with Two Columns -->
-                                        <!-- <span class="bold-black-text">CAPTCHA</span>
+                                        <span class="bold-black-text">CAPTCHA</span>
                                         <div class="form-group captcha-row">
                                             <div class="captcha-box"><?php echo $_SESSION['captcha']; ?></div>
-                                            <input type="text" class="form-control form-control-user captcha-input" placeholder="Masukkan CAPTCHA..." name="captcha_input" required>
-                                        </div> -->
+                                            <input type="text" class="form-control form-control-user captcha-input"
+                                                placeholder="Masukkan CAPTCHA..." name="captcha_input" required>
+                                        </div>
 
-                                        <button type="submit" name="login" class="btn btn-primary btn-user btn-block custom-button">
+                                        <button type="submit" name="login"
+                                            class="btn btn-primary btn-user btn-block custom-button">
                                             Masuk
                                         </button>
                                     </form>
                                     <hr>
-                                    <!-- <div class="text-center">
-                                        <a class="custom-link" href="forgot-password.php">Lupa Kata Sandi?</a>
-                                    </div> -->
+
                                 </div>
                             </div>
                         </div>
@@ -120,55 +126,39 @@ if (isset($_POST['login'])) {
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
-    <!-- SweetAlert2 JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+      <!-- SweetAlert2 JavaScript -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
 
-    <script>
-        document.getElementById("developerTeam").addEventListener("click", function(event) {
-            event.preventDefault(); // Prevent default action of the link
+<script>
+    document.getElementById("developerTeam").addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent default action of the link
 
-            Swal.fire({
-                title: 'Tim Pengembang',
-                html: `
-                <div class="popup-content">
-                    <!-- Logo at the center -->
-                    <img src="./img/sipelita.jpg" alt="Logo" class="popup-logo">
-                    <hr>
+        Swal.fire({
+            title: 'Tim Pengembang',
+            html: `
+            <div class="popup-content">
+                <!-- Logo at the center -->
+                <img src="./img/sipelita.jpg" alt="Logo" class="popup-logo">
+                <hr>
 
-                    <!-- Developer team image -->
-                    <img src="./img/developer.jpg" alt="Tim Pengembang" class="popup-image">
-                    
-                    <!-- Footer content with "Tutup" button -->
-                    <div class="popup-footer">
-                        <button class="swal2-confirm swal2-styled" onclick="Swal.close()">Tutup</button>
-                    </div>
+                <!-- Developer team image -->
+                <img src="./img/developer.jpg" alt="Tim Pengembang" class="popup-image">
+                
+                <!-- Footer content with "Tutup" button -->
+                <div class="popup-footer">
+                    <button class="swal2-confirm swal2-styled" onclick="Swal.close()">Tutup</button>
                 </div>
-            `,
-                showConfirmButton: false, // Hide default confirm button
-                showCloseButton: true, // Enable the "X" close button
-                customClass: {
-                    popup: 'swal2-full-popup', // Custom class untuk memperbesar popup
-                }
-            });
+            </div>
+        `,
+            showConfirmButton: false, // Hide default confirm button
+            showCloseButton: true, // Enable the "X" close button
+            customClass: {
+                popup: 'swal2-full-popup', // Custom class untuk memperbesar popup
+            }
         });
-    </script>
+    });
+</script>
 
-    <!-- Script to trigger SweetAlert2 on form submit -->
-    <!-- <script>
-        document.getElementById("loginForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent form submission
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Anda Berhasil Masuk",
-                showConfirmButton: false,
-                timer: 2000
-            }).then(() => {
-                // After the alert, you can proceed with form submission if needed
-                this.submit();
-            });
-        });
-    </script> -->
 
 </body>
 
