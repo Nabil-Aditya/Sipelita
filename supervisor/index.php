@@ -5,6 +5,10 @@ include 'function.php';
 
 $get_pelatihan =  get_all_pelatihan();
 $get_pelaporan =  getall_pelaporan_supervisor();
+
+if (isset($_POST['logout'])) {
+    logout();
+}
 ?>
 
 
@@ -880,8 +884,10 @@ if ($currentHour >= 0 && $currentHour < 12) {
                     <div class="modal-body">Pilih "Keluar" di bawah jika Anda siap untuk mengakhiri
                         sesi Anda saat ini.</div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                        <a class="btn btn-primary" href="login.php">Keluar</a>
+                        <form method="post">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                            <button class="btn btn-primary" type="submit" name="logout">Keluar</button>
+                        </form>
                     </div>
                 </div>
             </div>

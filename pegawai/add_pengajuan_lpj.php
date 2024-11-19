@@ -8,7 +8,8 @@ $pelatihan = getall_pelatihan_byId();
 
 $jurusan = getall_jurusan();
 $prodi = getall_prodi();
-
+$peserta = get_peserta();
+$pegawai = getall_pegawai();
 
 //Jika pengajuan pelatihan di tolak, (edit kesalahan)
 if (isset($_POST['edit_pelatihan'])) {
@@ -23,7 +24,11 @@ if (isset($_POST['buat_lpj'])) {
 
 //get berkas jika sudah mengirim berkas
 $berkas = get_berkas_byPelatihan();
+$komentar = get_komentar_byPelatihan();
 
+echo '<pre>'; // Membuat format yang lebih mudah dibaca
+var_dump($komentar); // atau bisa juga menggunakan print_r($komentar);
+echo '</pre>';
 ?>
 
 <!DOCTYPE html>
@@ -51,8 +56,10 @@ $berkas = get_berkas_byPelatihan();
     <!-- Font khusus untuk templat ini -->
     <link href="../css/pegawai/add-pengajuan-lpj.css" rel="stylesheet">
 
-</head>
-
+    <!-- select -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -373,7 +380,8 @@ $berkas = get_berkas_byPelatihan();
                             <form id="pengajuanForm">
                                 <div class="alert alert-warning" role="alert">
                                     <strong>Perhatian!</strong> Pengajuan anda sedang diproses, mohon menunggu beberapa
-                                    saat. Terimakasih
+                                    saat. Terimakasih <br>
+                                    <strong></strong>
                                 </div>
 
                                 <div class="row">
@@ -399,11 +407,18 @@ $berkas = get_berkas_byPelatihan();
                                                 readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label for="namaPeserta" class="font-weight-bold">Nama Peserta</label>
-                                            <textarea class="form-control bg-light-200" id="namaPeserta" rows="2"
-                                                placeholder="Masukkan Nama Peserta"
-                                                readonly><?=$pelatihan['nama_peserta']?></textarea>
+                                            <label for="peserta" class="font-weight-bold">Peserta</label>
+                                            <div id="selectedNames" class="d-flex flex-wrap gap-1">
+                                                <?php foreach ($peserta as $data) { ?>
+                                                <p
+                                                    class="badge bg-light text-dark rounded-pill px-3 py-2 border border-secondary">
+                                                    <?=$data['nama']?></p>
+                                                <?php } ?>
+                                            </div>
+                                            <input type="hidden" name="peserta[]" id="pesertaHidden">
                                         </div>
+
+
 
                                         <div class="form-group">
                                             <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
@@ -463,7 +478,8 @@ $berkas = get_berkas_byPelatihan();
                             <?php if ($pelatihan['status'] == 'Ditolak'): ?>
                             <form method="post">
                                 <div class="alert alert-danger" role="alert">
-                                    <strong>Perhatian!</strong> Pengajuan anda ditolak, mohon mengajukan kembali
+                                    <strong>Perhatian!</strong> Pengajuan anda ditolak, <?=$komentar['komentar']?> mohon
+                                    mengajukan kembali
                                 </div>
                                 <div class="row">
                                     <!-- Kolom Kiri -->
@@ -498,12 +514,148 @@ $berkas = get_berkas_byPelatihan();
                                                 <?php } ?>
                                             </select>
                                         </div>
+
                                         <div class="form-group">
-                                            <label for="namaPeserta" class="font-weight-bold">Nama Peserta</label>
-                                            <textarea class="form-control" id="namaPeserta" rows="2"
-                                                placeholder="Masukkan Nama Peserta"
-                                                name="nama_peserta"><?=$pelatihan['nama_peserta']?></textarea>
+                                            <label for="peserta" class="font-weight-bold">Peserta</label>
+                                            <div class="dropdown">
+                                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                                    id="dropdownMenuButton" data-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    Pilih Nama
+                                                </button>
+
+                                                <ul class="dropdown-menu dropdown-search"
+                                                    aria-labelledby="dropdownMenuButton">
+                                                    <li>
+                                                        <input type="text" id="searchInput" class="form-control mb-2"
+                                                            placeholder="Cari nama...">
+                                                    </li>
+                                                    <?php foreach ($pegawai as $data) { ?>
+                                                    <li class="dropdown-item" data-value="<?=$data['nama']?>"
+                                                        data-id="<?=$data['id_pegawai']?>"><?=$data['nama']?></li>
+                                                    <?php } ?>
+                                                </ul>
+                                            </div>
+
+                                            <p class="mt-3">Nama Terpilih:</p>
+                                            <div id="selectedNames" class="selected-names-container mt-2">
+                                                <?php 
+                                                $peserta = get_peserta();
+                                                foreach ($peserta as $p) { ?>
+                                                <div class="selected-name" data-id="<?=$p['id_pegawai']?>">
+                                                    <span><?=$p['nama']?></span>
+                                                    <button type="button"
+                                                        class="btn btn-danger btn-sm ml-2">Hapus</button>
+                                                    <input type="hidden" name="peserta[]" value="<?=$p['id_pegawai']?>">
+                                                </div>
+                                                <?php } ?>
+                                            </div>
                                         </div>
+
+                                        <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            // Inisialisasi komponen yang dibutuhkan
+                                            const selectedNamesContainer = document.getElementById(
+                                                'selectedNames');
+                                            const searchInput = document.getElementById('searchInput');
+                                            const dropdownItems = document.querySelectorAll('.dropdown-item');
+                                            const dropdownButton = document.getElementById(
+                                            'dropdownMenuButton');
+                                            let pesertaSelected =
+                                                <?=json_encode(array_column($peserta, 'id_pegawai'))?>;
+
+                                            // Inisialisasi dropdown untuk Bootstrap 4
+                                            $(dropdownButton).dropdown();
+
+                                            // Fungsi untuk filter pencarian
+                                            searchInput.addEventListener('input', function(e) {
+                                                const searchText = e.target.value.toLowerCase();
+                                                dropdownItems.forEach(item => {
+                                                    if (item.getAttribute('data-value')) {
+                                                        const itemText = item.getAttribute(
+                                                            'data-value').toLowerCase();
+                                                        if (itemText.includes(searchText)) {
+                                                            item.style.display = 'block';
+                                                        } else {
+                                                            item.style.display = 'none';
+                                                        }
+                                                    }
+                                                });
+                                            });
+
+                                            // Handle pemilihan peserta
+                                            dropdownItems.forEach(item => {
+                                                item.addEventListener('click', function() {
+                                                    const id = this.getAttribute('data-id');
+                                                    const nama = this.getAttribute(
+                                                    'data-value');
+
+                                                    if (id && !pesertaSelected.includes(id)) {
+                                                        pesertaSelected.push(id);
+
+                                                        const selectedNameElement = document
+                                                            .createElement('div');
+                                                        selectedNameElement.classList.add(
+                                                            'selected-name');
+                                                        selectedNameElement.setAttribute(
+                                                            'data-id', id);
+
+                                                        const nameText = document.createElement(
+                                                            'span');
+                                                        nameText.textContent = nama;
+                                                        selectedNameElement.appendChild(
+                                                            nameText);
+
+                                                        const removeButton = document
+                                                            .createElement('button');
+                                                        removeButton.textContent = 'Hapus';
+                                                        removeButton.classList.add('btn',
+                                                            'btn-danger', 'btn-sm', 'ml-2');
+                                                        selectedNameElement.appendChild(
+                                                            removeButton);
+
+                                                        const hiddenInput = document
+                                                            .createElement('input');
+                                                        hiddenInput.type = 'hidden';
+                                                        hiddenInput.name = 'peserta[]';
+                                                        hiddenInput.value = id;
+                                                        selectedNameElement.appendChild(
+                                                            hiddenInput);
+
+                                                        selectedNamesContainer.appendChild(
+                                                            selectedNameElement);
+                                                    }
+
+                                                    // Tutup dropdown setelah memilih menggunakan jQuery
+                                                    $(dropdownButton).dropdown('toggle');
+                                                });
+                                            });
+
+                                            // Handle penghapusan peserta
+                                            selectedNamesContainer.addEventListener('click', function(e) {
+                                                if (e.target && e.target.tagName === 'BUTTON') {
+                                                    const idToRemove = e.target.parentElement
+                                                        .getAttribute('data-id');
+                                                    pesertaSelected = pesertaSelected.filter(id =>
+                                                        id !== idToRemove);
+                                                    e.target.parentElement.remove();
+                                                }
+                                            });
+
+                                            // Mencegah dropdown tertutup saat mengetik di search input
+                                            searchInput.addEventListener('click', function(e) {
+                                                e.stopPropagation();
+                                            });
+
+                                            // Tambahkan handler untuk menutup dropdown saat mengklik di luar
+                                            $(document).on('click', function(e) {
+                                                if (!$(e.target).closest('.dropdown').length) {
+                                                    $(dropdownButton).dropdown('hide');
+                                                }
+                                            });
+                                        });
+                                        </script>
+
                                         <div class="form-group">
                                             <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
                                             <textarea class="form-control" id="alamat" rows="2"
@@ -566,7 +718,7 @@ $berkas = get_berkas_byPelatihan();
                             <form method="post" enctype="multipart/form-data">
                                 <div class="alert alert-success" role="alert">
                                     <strong>Perhatian!</strong> Pengajuan anda diterima, mohon mengajukan LPJ
-                                    <a href="add_lpj.php?id_pelatihan=<?= $pelatihan['id_pelatihan'] ?>">[ Klik 
+                                    <a href="add_lpj.php?id_pelatihan=<?= $pelatihan['id_pelatihan'] ?>">[ Klik
                                         disini ]</a>
                                 </div>
                                 <div class="row">
@@ -731,6 +883,7 @@ $berkas = get_berkas_byPelatihan();
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Bootstrap JS -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>

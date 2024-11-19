@@ -2,6 +2,15 @@
 
 include '../koneksi.php';
 
+session_start();
+
+
+function logout(){
+    session_unset();
+    session_destroy();
+    echo "<script>alert('Logout'); window.location.href='../login.php'</script>";
+}
+
 
 
 // -------------------------------------------------------------------PEGAWAI
@@ -15,7 +24,6 @@ function tambah_pegawai($data)
     $password = mysqli_real_escape_string($koneksi, $data["password"]);
     $password2 = mysqli_real_escape_string($koneksi, $data["password2"]);
 
-
     $nip = $data['nip'];
     $nama = $data['nama'];
     $alamat = $data['alamat'];
@@ -23,11 +31,13 @@ function tambah_pegawai($data)
     $email = $data['email'];
     $telp = $data['telp'];
 
-
     $foto_profil = $_FILES['foto_profil']['name'];
     $tmpname = $_FILES['foto_profil']['tmp_name'];
-    $folder = $_SERVER['DOCUMENT_ROOT'] . '/pelita/SIPELITA-PROJECT/assets/foto_pegawai/' . $foto_profil;
 
+    // Tentukan folder penyimpanan berdasarkan jabatan
+    $folder = $_SERVER['DOCUMENT_ROOT'] . '/pelita2/SIPELITA-PROJECT/assets/';
+    $folder .= ($jabatan == 'supervisor') ? 'foto_supervisor/' : 'foto_pegawai/';
+    $folder .= $foto_profil;
 
     //cek apakah ada username yang sama
     $cek_username = mysqli_query($koneksi, "SELECT * from user WHERE username = '$username';");
@@ -38,7 +48,7 @@ function tambah_pegawai($data)
 
     // cek konfirmasi password
     if ($password !== $password2) {
-        echo "<script>alert('Mohon konfirmasikan password dengna benar')</script>";
+        echo "<script>alert('Mohon konfirmasikan password dengan benar')</script>";
         return false;
     }
 
@@ -51,25 +61,38 @@ function tambah_pegawai($data)
     if ($ke_user) {
         echo "<script>alert('Berhasil update data ke user')</script>";
     }
-    
-    // 2. Ke tabel pegawai
+
+    // 2. Dapatkan ID dari user yang baru saja dimasukkan
     $id_dari_user = mysqli_insert_id($koneksi);
 
-    if  (move_uploaded_file($tmpname, $folder)) {
-        $sql = mysqli_query($koneksi, "INSERT INTO pegawai (id_pegawai, id_user, nip, nama, alamat, telp, email, foto_profil) VALUES ('', '$id_dari_user', '$nip', '$nama', '$alamat', '$telp', '$email', '$foto_profil')");
-        if ($sql) {
-            echo "<script>alert('Register Success!'); window.location.href='index.php';</script>";
-            // return mysqli_affected_rows($koneksi);
-        } else {
-            echo "<script>alert('gagal')</script>";
+    if (move_uploaded_file($tmpname, $folder)) {
+        // Masukkan ke tabel pegawai jika jabatan bukan supervisor
+        if ($jabatan == 'pegawai') {
+            $sql = mysqli_query($koneksi, "INSERT INTO pegawai (id_pegawai, id_user, nip, nama, alamat, telp, email, foto_profil) VALUES ('', '$id_dari_user', '$nip', '$nama', '$alamat', '$telp', '$email', '$foto_profil')");
+            if ($sql) {
+                echo "<script>alert('Register Success!'); window.location.href='index.php';</script>";
+            } else {
+                echo "<script>alert('Gagal menambahkan data ke tabel pegawai')</script>";
+            }
+        }
+
+        // Masukkan ke tabel supervisor jika jabatan adalah supervisor
+        if ($jabatan == 'supervisor') {
+            $sql = mysqli_query($koneksi, "INSERT INTO supervisor (id_supervisor, id_user, nip, nama, alamat, telp, email, foto_profil) VALUES ('', '$id_dari_user', '$nip', '$nama', '$alamat', '$telp', '$email', '$foto_profil')");
+            if ($sql) {
+                echo "<script>alert('Register Success!'); window.location.href='index.php';</script>";
+            } else {
+                echo "<script>alert('Gagal menambahkan data ke tabel supervisor')</script>";
+            }
         }
 
     } else {
         // Jika gagal mengupload file
         echo "<script>alert('Gagal mengupload file');</script>";
     }
-    
 }
+
+
 
 
 
@@ -157,9 +180,7 @@ function get_pegawai() {
     $sql = mysqli_query($koneksi, 
             "SELECT user.*, pegawai.* 
             FROM user 
-            JOIN pegawai ON user.id_user = pegawai.id_user
-            WHERE user.role = 'pegawai'"
-            
+            JOIN pegawai ON user.id_user = pegawai.id_user"
     );
     if (mysqli_num_rows($sql) > 0) {
         return mysqli_fetch_all($sql, MYSQLI_ASSOC); 
@@ -174,10 +195,9 @@ function get_supervisor() {
     global $koneksi;
 
     $sql = mysqli_query($koneksi, 
-            "SELECT user.*, pegawai.* 
+            "SELECT user.*, supervisor.* 
             FROM user 
-            JOIN pegawai ON user.id_user = pegawai.id_user
-            WHERE user.role = 'supervisor'"
+            JOIN supervisor ON user.id_user = supervisor.id_user"
     );
 
     if (mysqli_num_rows($sql) > 0) {

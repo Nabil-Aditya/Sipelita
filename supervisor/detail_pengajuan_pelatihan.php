@@ -3,7 +3,7 @@ include '../koneksi.php';
 include 'function.php'; 
 
 $pelatihan = getall_pelatihan_byId();
-
+$peserta = get_peserta();
 if (isset($_POST['status_pelatihan'])) {
     status_pelatihan($_POST);
 }
@@ -356,30 +356,39 @@ if (isset($_POST['status_pelatihan'])) {
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
-                                        <input type="text" class="form-control" id="lembaga" name="institusi" value="<?=$pelatihan['institusi']?>" readonly
+                                        <input type="text" class="form-control" id="lembaga" name="institusi"
+                                            value="<?=$pelatihan['institusi']?>" readonly
                                             placeholder="Masukkan Lembaga / Institusi">
                                     </div>
                                     <div class="form-group">
                                         <label for="prodi" class="font-weight-bold">Prodi</label>
-                                        <input type="text" class="form-control" id="prodi" name="prodi" value="<?=$pelatihan['prodi']?>" readonly
-                                            placeholder="Masukkan prodi">
+                                        <input type="text" class="form-control" id="prodi" name="prodi"
+                                            value="<?=$pelatihan['prodi']?>" readonly placeholder="Masukkan prodi">
                                     </div>
                                     <div class="form-group">
                                         <label for="jurusan" class="font-weight-bold">Jurusan</label>
-                                        <input type="text" class="form-control" id="jurusan" name="jurusan" value="<?=$pelatihan['jurusan']?>" readonly
-                                            placeholder="Masukkan jurusan">
+                                        <input type="text" class="form-control" id="jurusan" name="jurusan"
+                                            value="<?=$pelatihan['jurusan']?>" readonly placeholder="Masukkan jurusan">
                                     </div>
-                                    
+
 
                                     <div class="form-group">
-                                        <label for="namaPeserta" class="font-weight-bold">Nama Peserta</label>
-                                        <textarea class="form-control" id="namaPeserta" rows="2" name="nama_peserta"
-                                            placeholder="Masukkan Nama Peserta" readonly><?=$pelatihan['nama_peserta']?></textarea>
+                                        <label for="peserta" class="font-weight-bold">Peserta</label>
+                                        <div id="selectedNames" class="d-flex flex-wrap gap-1">
+                                            <?php foreach ($peserta as $data) { ?>
+                                            <p
+                                                class="badge bg-light text-dark rounded-pill px-3 py-2 border border-secondary">
+                                                <?=$data['nama']?></p>
+                                            <?php } ?>
+                                        </div>
+                                        <input type="hidden" name="peserta[]" id="pesertaHidden">
                                     </div>
+
                                     <div class="form-group">
                                         <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
                                         <textarea class="form-control" id="alamat" rows="2" name="alamat"
-                                            placeholder="Masukkan Tempat / Alamat" readonly><?=$pelatihan['alamat']?></textarea>
+                                            placeholder="Masukkan Tempat / Alamat"
+                                            readonly><?=$pelatihan['alamat']?></textarea>
                                     </div>
                                 </div>
 
@@ -388,29 +397,34 @@ if (isset($_POST['status_pelatihan'])) {
                                     <div class="form-group">
                                         <label for="tanggalKegiatan" class="font-weight-bold">Tanggal
                                             Kegiatan</label>
-                                        <input type="date" class="form-control" id="tanggalKegiatan" name="tgl_start" value="<?=$pelatihan['tgl_start']?> " readonly> 
+                                        <input type="date" class="form-control" id="tanggalKegiatan" name="tgl_start"
+                                            value="<?=$pelatihan['tgl_start']?> " readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan
                                             Selesai</label>
-                                        <input type="date" class="form-control" id="tanggalSelesai" name="tgl_end" value="<?=$pelatihan['tgl_end']?>" readonly>
+                                        <input type="date" class="form-control" id="tanggalSelesai" name="tgl_end"
+                                            value="<?=$pelatihan['tgl_end']?>" readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual
                                             Account)</label>
-                                        <input type="number" class="form-control" id="sumberDana" name="no_dana" value="<?=$pelatihan['no_dana']?>" readonly
+                                        <input type="number" class="form-control" id="sumberDana" name="no_dana"
+                                            value="<?=$pelatihan['no_dana']?>" readonly
                                             placeholder="Masukkan Sumber Dana (Virtual Account)">
                                     </div>
                                     <div class="form-group">
-                                        <label for="kompetensi" class="font-weight-bold">Kompetensi</label> 
-                                        <input type="text" class="form-control" id="kompetensi" name="kompetensi" value="<?=$pelatihan['kompetensi']?>" readonly
+                                        <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
+                                        <input type="text" class="form-control" id="kompetensi" name="kompetensi"
+                                            value="<?=$pelatihan['kompetensi']?>" readonly
                                             placeholder="Masukkan Kompetensi">
                                     </div>
                                     <div class="form-group">
                                         <label for="targetKegiatan" class="font-weight-bold">Target yang ingin
                                             dicapai kegiatan</label>
-                                        <textarea class="form-control" id="targetKegiatan" rows="2" name="target" 
-                                            placeholder="Target yang ingin dicapai kegiatan" readonly><?=$pelatihan['target']?></textarea>
+                                        <textarea class="form-control" id="targetKegiatan" rows="2" name="target"
+                                            placeholder="Target yang ingin dicapai kegiatan"
+                                            readonly><?=$pelatihan['target']?></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -425,9 +439,9 @@ if (isset($_POST['status_pelatihan'])) {
                                                 <label for="programStudi" class="font-weight-bold">Proses</label>
                                                 <select class="form-control" id="programStudi" name="status">
                                                     <option value="" disabled selected>Diterima/Ditolak</option>
-                                                    <option value="Diterima" >Diterima</option>
-                                                    <option value="Ditolak" >Ditolak</option>
-                                                    
+                                                    <option value="Diterima">Diterima</option>
+                                                    <option value="Ditolak">Ditolak</option>
+
                                                 </select>
                                             </div>
                                         </div>

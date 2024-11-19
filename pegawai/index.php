@@ -11,6 +11,11 @@ if (isset($_POST['logout'])) {
     logout();
 }
 
+//notifikasi
+$notifikasi = get_notifikasi();
+echo "<pre>";
+print_r($notifikasi);  // atau var_dump($notifikasi);
+echo "</pre>";
 
 //get semua pelatihan
 $pelatihan = getall_pelatihan();
@@ -432,39 +437,22 @@ h3,
                                 <h6 class="dropdown-header">
                                     Pemberitahuan
                                 </h6>
+
+                                <?php foreach ($notifikasi as $data) { ?>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
+                                        <div
+                                            class="icon-circle bg-<?php echo (strpos($data['pesan'], 'tolak') !== false) ? 'danger' : (strpos($data['pesan'], 'terima') !== false ? 'success' : 'primary'); ?>">
                                             <i class="fas fa-file-alt text-white"></i>
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                        <div class="small text-gray-500"><?=$data['tgl']?></div>
+                                        <span class="font-weight-bold"><?=$data['pesan']?></span>
                                     </div>
                                 </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
+                                <?php }?>
+
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
                         </li>
@@ -842,7 +830,6 @@ h3,
                                                     cellspacing="0">
                                                     <thead>
                                                         <tr>
-                                                            <th>Peserta</th>
                                                             <th>Institusi</th>
                                                             <th>Kompetensi</th>
                                                             <th>Tgl Pengajuan</th>
@@ -854,7 +841,6 @@ h3,
                                                         <?php foreach ($pelatihan as $data) { ?>
 
                                                         <tr>
-                                                            <td><?= $data['nama_peserta'] ?></td>
                                                             <td><?= $data['institusi'] ?></td>
                                                             <td><?= $data['kompetensi'] ?></td>
                                                             <td><?= $data['tgl_pengajuan'] ?></td>
@@ -992,8 +978,8 @@ h3,
                         sesi Anda saat ini.</div>
                     <div class="modal-footer">
                         <form method="post">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                        <button class="btn btn-primary" type="submit" name="logout">Keluar</button>
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                            <button class="btn btn-primary" type="submit" name="logout">Keluar</button>
                         </form>
                     </div>
                 </div>

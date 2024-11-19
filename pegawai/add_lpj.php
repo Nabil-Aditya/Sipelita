@@ -10,7 +10,6 @@ $pelatihan = getall_pelatihan_byId();
 $jurusan = getall_jurusan();
 $prodi = getall_prodi();
 
-
 //Jika pengajuan pelatihan di tolak, (edit kesalahan)
 if (isset($_POST['edit_pelatihan'])) {
     edit_pelatihan($_POST);
@@ -24,6 +23,10 @@ if (isset($_POST['buat_lpj'])) {
 
 //get berkas jika sudah mengirim berkas
 $berkas = get_berkas_byPelatihan();
+
+//get komentar
+$komentar = get_komentar_byPelaporan();
+
 
 ?>
 
@@ -383,7 +386,7 @@ $berkas = get_berkas_byPelatihan();
                                 </div>
                                 <?php } else if ($berkas['status'] === 'Ditolak') {?>
                                 <div class="alert alert-danger" role="alert">
-                                    <strong>Perhatian!</strong> Berkas LPJ anda di tolak
+                                    <strong>Perhatian!</strong> Berkas LPJ anda di tolak, mohon mengajukan kembali   <br> <strong>Pesan : </strong><?=$komentar['komentar']?>
                                 </div>
                                 <?php } else {?>
                                 <div class="alert alert-success" role="alert">

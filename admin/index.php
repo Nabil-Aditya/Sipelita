@@ -5,6 +5,14 @@ include '../koneksi.php';
 include 'function.php';
 
 // nasyith
+
+//logout
+if (isset($_POST['logout'])) {
+    logout();
+}
+
+
+
 $get_pegawai = get_pegawai();
 $get_supervisor = get_supervisor();
 
@@ -155,8 +163,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                     <i class="fas fa-fw fa-graduation-cap"></i>
                     <span>kelola Prodi</span>
                 </a>
-                <div id="collapseprodi" class="collapse" aria-labelledby="headingprodi"
-                    data-parent="#accordionSidebar">
+                <div id="collapseprodi" class="collapse" aria-labelledby="headingprodi" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pilih Opsi:</h6>
                         <a class="collapse-item" href="prodi.php">Data Prodi</a>
@@ -783,8 +790,10 @@ if ($currentHour >= 0 && $currentHour < 12) {
                         <div class="modal-body">Pilih "Keluar" di bawah jika Anda siap untuk mengakhiri
                             sesi Anda saat ini.</div>
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                            <a class="btn btn-primary" href="../login.php">Keluar</a>
+                            <form method="post">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                                <button class="btn btn-primary" type="submit" name="logout">Keluar</button>
+                            </form>
                         </div>
                     </div>
                 </div>

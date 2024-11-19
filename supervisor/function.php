@@ -3,10 +3,18 @@ session_start();
 include '../koneksi.php';
 
 
-
-
-
 // ------------------------------------------------SUPERVISOR--------------------------------------------
+
+
+
+function logout(){
+    session_unset();
+    session_destroy();
+    echo "<script>alert('Logout'); window.location.href='../login.php'</script>";
+}
+
+
+
 
 // get semua pelatihan
 function get_all_pelatihan(){
@@ -31,57 +39,83 @@ function get_all_pelatihan(){
 
 
 //-----Terima/Tolak : Pengajuan Pelatihan
+
+
+function get_peserta(){
+    global $koneksi;
+    $id_pelatihan = $_GET['id_pelatihan'];
+    $sql = mysqli_query($koneksi, "SELECT peserta.id_pegawai, pegawai.nama FROM peserta JOIN pegawai ON peserta.id_pegawai = pegawai.id_pegawai WHERE id_pelatihan = '$id_pelatihan'");
+    $peserta = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $peserta[] = $row;
+    }
+    return $peserta;
+}
+
+
 function status_pelatihan($data) {
     global $koneksi;
 
-    $id_pelatihan = $_GET['id_pelatihan']; // Pastikan `id_pelatihan` dikirimkan lewat URL atau form
+    $id_pelatihan = $_GET['id_pelatihan'];
     $status = $data['status'];
     $keterangan = $data['komentar'];
 
-    // Insert ke tabel komentar
+    // Insert komentar pelatihan
     $insertKomentarQuery = "INSERT INTO komentar_pelatihan (id_pelatihan, komentar) VALUES ('$id_pelatihan', '$keterangan')";
 
     if (mysqli_query($koneksi, $insertKomentarQuery)) {
-        // Update status di tabel pelatihan jika insert ke komentar berhasil
+        // Update status pelatihan
         $updatePelatihanQuery = "UPDATE pelatihan SET status = '$status' WHERE id_pelatihan = '$id_pelatihan'";
 
         if (mysqli_query($koneksi, $updatePelatihanQuery)) {
-            // Jika statusnya "Diterima", insert ke tabel pelaporan
+            // Insert ke tabel pelaporan jika status diterima
             if ($status === "Diterima") {
                 $insertPelaporanQuery = "INSERT INTO pelaporan (id_pelatihan, berkas, status, tgl) VALUES ('$id_pelatihan', NULL, 'Belum Mengupload LPJ', NULL)";
-
                 if (!mysqli_query($koneksi, $insertPelaporanQuery)) {
                     echo "<script>
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Terjadi Kesalahan',
-                            text: 'Gagal menyimpan ke pelaporan: " . mysqli_error($koneksi) . "'
-                        });
+                        alert('Gagal menyimpan ke pelaporan: " . mysqli_error($koneksi) . "');
                     </script>";
                 }
             }
 
-            // Redirect jika semua berhasil
-            echo "<script>window.location.href = 'index.php';</script>";
+            // Dapatkan id_user dari tabel pelatihan
+            $getUserQuery = "SELECT id_pegawai FROM pelatihan WHERE id_pelatihan = '$id_pelatihan'";
+            $result = mysqli_query($koneksi, $getUserQuery);
+            $user = mysqli_fetch_assoc($result);
+            $id_user = $user['id_pegawai'];
+
+            // Insert notifikasi
+            $pesan = "Pengajuan pelatihan anda $status";
+            $type = "pelatihan";
+            $tgl = date('Y-m-d');
+            $is_read = 0;
+
+            $insertNotifikasiQuery = "INSERT INTO notifikasi (pesan, type, id_user, tgl, is_read) VALUES ('$pesan', '$type', '$id_user', '$tgl', '$is_read')";
+
+            if (!mysqli_query($koneksi, $insertNotifikasiQuery)) {
+                echo "<script>
+                    alert('Gagal menyimpan notifikasi: " . mysqli_error($koneksi) . "');
+                </script>";
+            }
+
+            // Alert sukses
+            echo "<script>
+                alert('Status pelatihan berhasil diperbarui dan notifikasi berhasil dikirim!');
+                window.location.href = 'index.php';
+            </script>";
         } else {
             echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Terjadi Kesalahan',
-                    text: 'Gagal memperbarui status pelatihan: " . mysqli_error($koneksi) . "'
-                });
+                alert('Gagal memperbarui status pelatihan: " . mysqli_error($koneksi) . "');
             </script>";
         }
     } else {
         echo "<script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Terjadi Kesalahan',
-                text: 'Gagal menyimpan komentar: " . mysqli_error($koneksi) . "'
-            });
+            alert('Gagal menyimpan komentar: " . mysqli_error($koneksi) . "');
         </script>";
     }
 }
+
+
 
 
 
@@ -424,15 +458,13 @@ function edit_pelaporan($data) {
 function status_pelaporan($data) {
     global $koneksi;
 
-    $id_pelaporan = $_GET['id_pelaporan']; // Pastikan `id_pelaporan` dikirimkan lewat URL atau form
+    $id_pelaporan = $_GET['id_pelaporan'];
     $status = $data['status'];
     $komentar = $data['komentar'];
 
-    // Insert ke tabel komentar
     $insertKomentarQuery = "INSERT INTO komentar_pelaporan (id_pelaporan, komentar) VALUES ('$id_pelaporan', '$komentar')";
 
     if (mysqli_query($koneksi, $insertKomentarQuery)) {
-        // Update status di tabel pelaporan jika insert ke komentar berhasil
         $updatePelaporanQuery = "UPDATE pelaporan SET status = '$status' WHERE id_pelaporan = '$id_pelaporan'";
         
         if (mysqli_query($koneksi, $updatePelaporanQuery)) {

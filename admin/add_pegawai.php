@@ -366,25 +366,35 @@ if (isset($_POST['tambah_pegawai'])) {
                                                 placeholder="Masukkan NIP">
                                         </div>
                                         <div class="form-group">
-                                            <label for="nama" class="font-weight-bold">Nama </label>
+                                            <label for="nama" class="font-weight-bold">Nama</label>
                                             <input type="text" class="form-control" id="nama" name="nama"
                                                 placeholder="Masukkan Nama">
                                         </div>
                                         <div class="form-group">
                                             <label for="jabatan" class="font-weight-bold">Jabatan</label>
-                                            <select class="form-control" id="jabatan" name="jabatan">
+                                            <select class="form-control" id="jabatan" name="jabatan"
+                                                onchange="toggleSupervisorSelect()">
                                                 <option value="">Pilih Jabatan</option>
                                                 <option value="pegawai">Pegawai</option>
                                                 <option value="supervisor">Supervisor</option>
                                             </select>
                                         </div>
+                                        <!-- Dropdown tambahan untuk supervisor -->
+                                        <div class="form-group" id="supervisorSelectContainer" style="display: none;">
+                                            <label for="supervisor" class="font-weight-bold">Nama Supervisor</label>
+                                            <select class="form-control" id="supervisor" name="supervisor">
+                                                <option value="">Pilih Supervisor</option>
+                                                <option value="supervisor1">Supervisor 1</option>
+                                                <option value="supervisor2">Supervisor 2</option>
+                                            </select>
+                                        </div>
                                         <div class="form-group">
-                                            <label for="email" class="font-weight-bold">Email </label>
+                                            <label for="email" class="font-weight-bold">Email</label>
                                             <input type="email" class="form-control" id="email" name="email"
                                                 placeholder="Masukkan Email">
                                         </div>
                                         <div class="form-group">
-                                            <label for="telp" class="font-weight-bold">Telp </label>
+                                            <label for="telp" class="font-weight-bold">Telp</label>
                                             <input type="text" class="form-control" id="telp" name="telp"
                                                 placeholder="Masukkan Telp">
                                         </div>
@@ -393,19 +403,15 @@ if (isset($_POST['tambah_pegawai'])) {
                                             <textarea class="form-control" id="alamat" name="alamat" rows="3"
                                                 placeholder="Masukkan Alamat"></textarea>
                                         </div>
-
                                         <label for="fileLaporan" class="font-weight-bold">Foto Profil</label>
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="fileLaporan"
                                                     name="foto_profil" accept=".jpg, .jpeg, .png">
-                                                <label class="custom-file-label" for="fileLaporan">Pilih
-                                                    file</label>
+                                                <label class="custom-file-label" for="fileLaporan">Pilih file</label>
                                             </div>
                                         </div>
-
                                     </div>
-
                                     <!-- Kolom Kanan -->
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -417,20 +423,31 @@ if (isset($_POST['tambah_pegawai'])) {
                                             <input type="password" class="form-control" id="password" name="password">
                                         </div>
                                         <div class="form-group">
-                                            <label for="password2" class="font-weight-bold">Konfirmasi
-                                                Password</label>
+                                            <label for="password2" class="font-weight-bold">Konfirmasi Password</label>
                                             <input type="password" class="form-control" id="password2" name="password2">
                                         </div>
                                     </div>
                                 </div>
                                 <hr>
-
                                 <!-- Tombol Aksi -->
                                 <div class="d-flex justify-content-between mt-4">
                                     <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
                                     <button type="submit" name="tambah_pegawai" class="btn btn-primary">Buat</button>
                                 </div>
                             </form>
+
+                            <script>
+                            function toggleSupervisorSelect() {
+                                var jabatan = document.getElementById("jabatan").value;
+                                var supervisorSelectContainer = document.getElementById("supervisorSelectContainer");
+                                if (jabatan === "pegawai") {
+                                    supervisorSelectContainer.style.display = "block";
+                                } else {
+                                    supervisorSelectContainer.style.display = "none";
+                                }
+                            }
+                            </script>
+
                         </div>
                     </div>
                 </div>

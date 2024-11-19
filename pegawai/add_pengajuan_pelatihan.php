@@ -4,6 +4,7 @@ include 'function.php';
 
 $jurusan = getall_jurusan();
 $prodi = getall_prodi();
+$pegawai = getall_pegawai();
 
 
 if (isset($_POST['create_pelatihan'])) {
@@ -36,6 +37,13 @@ if (isset($_POST['create_pelatihan'])) {
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="../css/pegawai/add-pengajuan-pelatihan.css" rel="stylesheet">
+
+    <!-- select -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
+
 
 </head>
 
@@ -363,15 +371,6 @@ if (isset($_POST['create_pelatihan'])) {
                                                 placeholder="Masukkan Lembaga / Institusi">
                                         </div>
                                         <div class="form-group">
-                                            <label for="programStudi" class="font-weight-bold">Program Studi</label>
-                                            <select class="form-control" id="programStudi" name="prodi">
-                                                <option value="" disabled selected>Pilih Prodi</option>
-                                                <?php foreach ($prodi as $data) { ?>
-                                                <option value="<?=$data['id_prodi']?>"><?=$data['prodi']?></option>
-                                                <?php }?>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
                                             <label for="jurusan" class="font-weight-bold">Jurusan</label>
                                             <select class="form-control" id="jurusan" name="jurusan">
                                                 <option value="" disabled selected>Pilih Jurusan</option>
@@ -381,12 +380,122 @@ if (isset($_POST['create_pelatihan'])) {
                                                 <?php }?>
                                             </select>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="prodi" class="font-weight-bold">Prodi</label>
+                                            <select class="form-control" id="prodi" name="prodi">
+                                                <option value="" disabled selected>Pilih prodi</option>
+
+                                                <?php foreach ($prodi as $data) { ?>
+                                                <option value="<?=$data['id_prodi']?>"><?=$data['prodi']?></option>
+                                                <?php }?>
+                                            </select>
+                                        </div>
 
                                         <div class="form-group">
-                                            <label for="namaPeserta" class="font-weight-bold">Nama Peserta</label>
-                                            <textarea class="form-control" id="namaPeserta" rows="2" name="nama_peserta"
-                                                placeholder="Masukkan Nama Peserta"></textarea>
+                                            <label for="peserta" class="font-weight-bold">Peserta</label>
+                                            <div class="dropdown">
+                                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                                    id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    Pilih Nama
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-search"
+                                                    aria-labelledby="dropdownMenuButton">
+                                                    <li>
+                                                        <input type="text" id="searchInput" class="form-control mb-2"
+                                                            placeholder="Cari nama..." />
+                                                    </li>
+                                                    <?php foreach ($pegawai as $data) { 
+                                                    // Filter hanya menampilkan pegawai dengan ID valid
+                                                    if ($data['id_pegawai'] > 0) { ?>
+                                                    <li class="dropdown-item" data-value="<?=$data['nama']?>"
+                                                        data-id="<?=$data['id_pegawai']?>"><?=$data['nama']?></li>
+                                                    <?php } } ?>
+                                                </ul>
+                                            </div>
+
+                                            <p class="mt-3">Nama Terpilih:</p>
+                                            <div id="selectedNames" class="selected-names-container mt-2">
+                                                <!-- Nama yang dipilih akan muncul di sini -->
+                                            </div>
+                                            <input type="hidden" name="peserta[]" id="pesertaHidden">
                                         </div>
+
+                                        <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            let selectedNamesContainer = document.getElementById(
+                                                'selectedNames');
+                                            let pesertaSelected = [];
+
+                                            // Tambahkan event listener untuk setiap item dropdown
+                                            const dropdownItems = document.querySelectorAll('.dropdown-item');
+                                            dropdownItems.forEach(item => {
+                                                item.addEventListener('click', function() {
+                                                    const id = this.getAttribute('data-id');
+                                                    const nama = this.getAttribute(
+                                                    'data-value');
+
+                                                    // Validasi: Pastikan ID valid dan bukan 0
+                                                    if (id && id !== "0" && !pesertaSelected
+                                                        .includes(id)) {
+                                                        pesertaSelected.push(id);
+
+                                                        // Elemen nama peserta
+                                                        let selectedNameElement = document
+                                                            .createElement('div');
+                                                        selectedNameElement.classList.add(
+                                                            'selected-name');
+                                                        selectedNameElement.setAttribute(
+                                                            'data-id', id);
+
+                                                        let nameText = document.createElement(
+                                                            'span');
+                                                        nameText.textContent = nama;
+                                                        selectedNameElement.appendChild(
+                                                            nameText);
+
+                                                        // Tombol remove
+                                                        let removeButton = document
+                                                            .createElement('button');
+                                                        removeButton.textContent = 'Hapus';
+                                                        removeButton.classList.add('btn',
+                                                            'btn-danger', 'btn-sm', 'ml-2');
+                                                        selectedNameElement.appendChild(
+                                                            removeButton);
+
+                                                        // Input hidden untuk setiap peserta
+                                                        let hiddenInput = document
+                                                            .createElement('input');
+                                                        hiddenInput.type = 'hidden';
+                                                        hiddenInput.name = 'peserta[]';
+                                                        hiddenInput.value = id;
+                                                        selectedNameElement.appendChild(
+                                                            hiddenInput);
+
+                                                        // Tambahkan elemen ke container
+                                                        selectedNamesContainer.appendChild(
+                                                            selectedNameElement);
+                                                    }
+                                                });
+                                            });
+
+                                            // Menangani penghapusan peserta
+                                            selectedNamesContainer.addEventListener('click', function(e) {
+                                                if (e.target && e.target.tagName === 'BUTTON') {
+                                                    let idToRemove = e.target.parentElement
+                                                        .getAttribute('data-id');
+                                                    // Hapus ID dari pesertaSelected
+                                                    pesertaSelected = pesertaSelected.filter(id =>
+                                                        id !== idToRemove);
+                                                    // Hapus elemen dari DOM
+                                                    e.target.parentElement.remove();
+                                                }
+                                            });
+                                        });
+                                        </script>
+
+
+
                                         <div class="form-group">
                                             <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
                                             <textarea class="form-control" id="alamat" rows="2" name="alamat"
@@ -437,6 +546,7 @@ if (isset($_POST['create_pelatihan'])) {
                         </div>
                     </div>
                 </div>
+
                 <!-- /.container-fluid -->
 
                 <!-- Modal Konfirmasi Pengajuan -->
@@ -470,6 +580,36 @@ if (isset($_POST['create_pelatihan'])) {
                         </div>
                     </div>
                 </div>
+
+
+
+
+
+
+
+
+
+
+
+                <!-- Bootstrap JS -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js">
+                </script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+                </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 <!-- Bootstrap JS -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -565,7 +705,7 @@ if (isset($_POST['create_pelatihan'])) {
 
                         // Ambil data dari form
                         const formData = $('#pengajuanForm')
-                    .serialize(); // Serialisasi semua input form
+                            .serialize(); // Serialisasi semua input form
 
                         // Kirim data ke server
                         $.ajax({

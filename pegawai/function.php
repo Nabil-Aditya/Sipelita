@@ -22,6 +22,16 @@ function getall_jurusan(){
     return $jurusan;
 }
 
+function getall_pegawai(){
+    global $koneksi;
+    $sql = mysqli_query($koneksi, "SELECT * FROM pegawai");
+    $pegawai = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pegawai[] = $row;
+    }
+    return $pegawai;
+}
+
 
 function getall_prodi(){
     global $koneksi;
@@ -38,11 +48,11 @@ function getall_prodi(){
 function pengajuan_pelatihan($data) {
     global $koneksi;
 
+    // Ambil data dari form
     $id_pegawai = $_SESSION['id_user'];
     $institusi = $_POST['institusi'];
     $prodi = $_POST['prodi'];
     $jurusan = $_POST['jurusan'];
-    $nama_peserta = $_POST['nama_peserta'];
     $alamat = $_POST['alamat'];
     $tgl_start = $_POST['tgl_start'];
     $tgl_end = $_POST['tgl_end'];
@@ -51,12 +61,41 @@ function pengajuan_pelatihan($data) {
     $target = $_POST['target'];
     $status = 'Diproses';
     $tgl_pengajuan = date('Y-m-d');
+    
+    // Validasi data peserta
+    if (!is_array($_POST['peserta'])) {
+        echo "<script>alert('Data peserta tidak valid');</script>";
+        return;
+    }
 
-    $query = "INSERT INTO pelatihan (id_pegawai, institusi, id_prodi, id_jurusan, nama_peserta, alamat, tgl_start, tgl_end, no_dana, kompetensi, target, status, tgl_pengajuan) 
-              VALUES ('$id_pegawai', '$institusi', '$prodi', '$jurusan', '$nama_peserta', '$alamat', '$tgl_start', '$tgl_end', '$no_dana', '$kompetensi', '$target', '$status', '$tgl_pengajuan')";
+    // Filter ID peserta untuk menghapus nilai 0
+    $peserta = array_filter($_POST['peserta'], fn($id) => $id != 0 && is_numeric($id));
 
-    if (mysqli_query($koneksi, $query)) {
-        // Jika data berhasil disimpan, tampilkan SweetAlert sukses
+    // Insert ke tabel pelatihan
+    $queryPelatihan = "INSERT INTO pelatihan (id_pegawai, institusi, id_prodi, id_jurusan, alamat, tgl_start, tgl_end, no_dana, kompetensi, target, status, tgl_pengajuan) 
+                       VALUES ('$id_pegawai', '$institusi', '$prodi', '$jurusan', '$alamat', '$tgl_start', '$tgl_end', '$no_dana', '$kompetensi', '$target', '$status', '$tgl_pengajuan')";
+
+    if (mysqli_query($koneksi, $queryPelatihan)) {
+        // Ambil ID pelatihan yang baru saja diinsert
+        $id_pelatihan = mysqli_insert_id($koneksi);
+
+        // Insert setiap peserta ke tabel peserta
+        foreach ($peserta as $id_pegawai_peserta) {
+            $queryPeserta = "INSERT INTO peserta (id_pelatihan, id_pegawai) 
+                             VALUES ('$id_pelatihan', '$id_pegawai_peserta')";
+            if (!mysqli_query($koneksi, $queryPeserta)) {
+                echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi Kesalahan',
+                        text: 'Gagal menambahkan peserta: " . mysqli_error($koneksi) . "'
+                    });
+                </script>";
+                return;
+            }
+        }
+
+        // Jika semua data berhasil disimpan, tampilkan SweetAlert sukses
         echo "<script>
             Swal.fire({
                 icon: 'success',
@@ -66,49 +105,91 @@ function pengajuan_pelatihan($data) {
             });
         </script>";
         echo "<script>window.location.href = 'index.php';</script>";
-
     } else {
-        // Jika terjadi kesalahan, tampilkan SweetAlert error
+        // Jika terjadi kesalahan pada insert pelatihan, tampilkan SweetAlert error
         echo "<script>
             Swal.fire({
                 icon: 'error',
                 title: 'Terjadi Kesalahan',
-                text: '". mysqli_error($koneksi) ."'
+                text: 'Gagal menyimpan pelatihan: " . mysqli_error($koneksi) . "'
             });
         </script>";
     }
 }
 
+
+
+
 //edit pelatihan
 function edit_pelatihan($data) {
     global $koneksi;
 
+    // Ambil data dari form
     $id_pelatihan = $_GET['id_pelatihan'];
-    $id_pegawai = $_SESSION['id_user'];
-    $institusi = $data['institusi'];
-    $prodi = $data['prodi'];
-    $jurusan = $data['jurusan'];
-    $nama_peserta = $data['nama_peserta'];
-    $alamat = $data['alamat'];
-    $tgl_start = $data['tgl_start'];
-    $tgl_end = $data['tgl_end'];
-    $no_dana = $data['no_dana'];
-    $kompetensi = $data['kompetensi'];
-    $target = $data['target'];
+    $institusi = mysqli_real_escape_string($koneksi, $data['institusi']);
+    $prodi = mysqli_real_escape_string($koneksi, $data['prodi']);
+    $jurusan = mysqli_real_escape_string($koneksi, $data['jurusan']);
+    $alamat = mysqli_real_escape_string($koneksi, $data['alamat']);
+    $tgl_start = mysqli_real_escape_string($koneksi, $data['tgl_start']);
+    $tgl_end = mysqli_real_escape_string($koneksi, $data['tgl_end']);
+    $no_dana = mysqli_real_escape_string($koneksi, $data['no_dana']);
+    $kompetensi = mysqli_real_escape_string($koneksi, $data['kompetensi']);
+    $target = mysqli_real_escape_string($koneksi, $data['target']);
     $status = 'Diproses';
 
+    // Update data pelatihan
     $query = "UPDATE pelatihan 
-              SET institusi = '$institusi', id_prodi = '$prodi', id_jurusan = '$jurusan', nama_peserta = '$nama_peserta', 
-                  alamat = '$alamat', tgl_start = '$tgl_start', tgl_end = '$tgl_end', no_dana = '$no_dana', 
-                  kompetensi = '$kompetensi', target = '$target', status = '$status'
+              SET institusi = '$institusi', id_prodi = '$prodi', id_jurusan = '$jurusan', 
+                  alamat = '$alamat', tgl_start = '$tgl_start', tgl_end = '$tgl_end', 
+                  no_dana = '$no_dana', kompetensi = '$kompetensi', target = '$target', 
+                  status = '$status' 
               WHERE id_pelatihan = '$id_pelatihan'";
 
     if (mysqli_query($koneksi, $query)) {
-        // Jika data berhasil diperbarui, tampilkan SweetAlert sukses
-        echo "<script>window.location.href = 'index.php';</script>";
+        // Hapus semua peserta sebelumnya
+        $deleteQuery = "DELETE FROM peserta WHERE id_pelatihan = '$id_pelatihan'";
+        if (!mysqli_query($koneksi, $deleteQuery)) {
+            echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terjadi Kesalahan',
+                    text: 'Gagal menghapus peserta sebelumnya'
+                });
+            </script>";
+            return;
+        }
 
+        // Tambahkan peserta baru
+        if (isset($data['peserta']) && is_array($data['peserta'])) {
+            foreach ($data['peserta'] as $id_pegawai) {
+                $id_pegawai = mysqli_real_escape_string($koneksi, $id_pegawai);
+                $insertQuery = "INSERT INTO peserta (id_pelatihan, id_pegawai) 
+                                VALUES ('$id_pelatihan', '$id_pegawai')";
+                if (!mysqli_query($koneksi, $insertQuery)) {
+                    echo "<script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan',
+                            text: 'Gagal menambahkan peserta baru'
+                        });
+                    </script>";
+                    return;
+                }
+            }
+        }
+
+        // Tampilkan pesan sukses
+        echo "<script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Data Berhasil Diperbarui',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>";
+        echo "<script>window.location.href = 'index.php';</script>";
     } else {
-        // Jika terjadi kesalahan, tampilkan SweetAlert error
+        // Tampilkan pesan error jika update gagal
         echo "<script>
             Swal.fire({
                 icon: 'error',
@@ -118,6 +199,8 @@ function edit_pelatihan($data) {
         </script>";
     }
 }
+
+
 
 
 function getall_pelatihan(){
@@ -146,52 +229,37 @@ function getall_pelatihan_byId(){
         WHERE pelatihan.id_pelatihan = '$id_pelatihan'
     ");
     
-    return mysqli_fetch_assoc($sql); // Mengembalikan satu baris saja
+    return mysqli_fetch_assoc($sql); 
+}
+
+function get_komentar_byPelatihan(){
+    global $koneksi;    
+    $id_pelatihan = $_GET['id_pelatihan'];
+
+    // Buat query
+    $sql = mysqli_query($koneksi, "SELECT komentar FROM komentar_pelatihan 
+    JOIN pelatihan ON komentar_pelatihan.id_pelatihan = pelatihan.id_pelatihan 
+    WHERE komentar_pelatihan.id_pelatihan = '$id_pelatihan' 
+    ORDER BY komentar_pelatihan.id_komentar_pelatihan DESC");
+return mysqli_fetch_assoc($sql);
+    
 }
 
 
 
-// -----------------------------------------------LPJ
+// --------------------------------------------------------PELAPORAN-----------------------------------------------
 
-// function add_lpj($data) {
-//     global $koneksi;
+function get_peserta(){
+    global $koneksi;
+    $id_pelatihan = $_GET['id_pelatihan'];
+    $sql = mysqli_query($koneksi, "SELECT peserta.id_pegawai, pegawai.nama FROM peserta JOIN pegawai ON peserta.id_pegawai = pegawai.id_pegawai WHERE id_pelatihan = '$id_pelatihan'");
+    $peserta = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $peserta[] = $row;
+    }
+    return $peserta;
+}
 
-//     // Ambil data dari session dan GET
-//     $id_pegawai = $_SESSION['id_user'];
-//     $id_pelatihan = $_GET['id_pelatihan'];
-    
-//     // Ambil informasi file yang diunggah
-//     $berkas = $_FILES['berkas'];
-//     $status = 'Diproses' ;
-    
-//     // Cek apakah file diunggah dengan benar
-//     if ($berkas['error'] === UPLOAD_ERR_OK) {
-//         // Dapatkan informasi file
-//         $tmp_name = $berkas['tmp_name'];
-//         $name = basename($berkas['name']);
-        
-//         // Tentukan folder tujuan
-//         $upload_dir = '../assets/berkas_lpj/';
-//         $upload_file = $name;
-
-//         // Pindahkan file ke folder yang dituju
-//         if (move_uploaded_file($tmp_name, $upload_file)) {
-//             $tgl = date('Y-m-d');
-
-//             // Simpan ke database
-//             $sql = mysqli_query($koneksi, "INSERT INTO pelaporan (id_pelatihan, berkas, status, tgl) VALUES ('$id_pelatihan', '$upload_file', '$status', '$tgl')");
-//             if ($sql) {
-//                 echo "<script>alert('Berhasil')</script>";
-//             } else {
-//                 echo "<script>alert('Gagal')</script>";
-//             }
-//         } else {
-//             echo "<script>alert('Gagal mengunggah file.')</script>";
-//         }
-//     } else {
-//         echo "<script>alert('Error saat mengunggah file.')</script>";
-//     }
-// }
 
 function add_lpj($data) {
     global $koneksi;
@@ -295,6 +363,27 @@ function get_pelaporan(){
 }
 
 
+function get_komentar_byPelaporan(){
+    global $koneksi;    
+    $id_pelatihan = $_GET['id_pelatihan'];
+
+    // Ambil id_pelaporan berdasarkan id_pelatihan
+    $query_pelaporan = mysqli_query($koneksi, "SELECT id_pelaporan FROM pelaporan WHERE id_pelatihan = '$id_pelatihan'");
+    $result_pelaporan = mysqli_fetch_assoc($query_pelaporan);
+
+
+    $id_pelaporan = $result_pelaporan['id_pelaporan'];
+
+    // Buat query untuk mendapatkan komentar berdasarkan id_pelaporan
+    $sql = mysqli_query($koneksi, "SELECT komentar FROM komentar_pelaporan 
+                                    WHERE id_pelaporan = '$id_pelaporan' 
+                                    ORDER BY id_komentar_pelaporan DESC");
+
+    return mysqli_fetch_assoc($sql);
+
+}
+
+
 
 
 
@@ -330,5 +419,31 @@ function get_data_user_login() {
     } else {
         return null; // Kembalikan null jika tidak ada data
     }
+}
+
+
+
+
+
+
+
+
+
+
+// -----------------------------------------------NOTIFIKASI
+
+
+function get_notifikasi(){
+    global $koneksi;
+    $id_pegawai = $_SESSION['id_user'];
+    
+    $sql = mysqli_query($koneksi, "SELECT * FROM notifikasi WHERE id_user = '$id_pegawai'");
+    
+    $pelaporan = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pelaporan[] = $row;
+    }
+    
+    return $pelaporan;
 }
 ?>
