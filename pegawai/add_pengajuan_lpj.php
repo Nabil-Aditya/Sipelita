@@ -560,7 +560,7 @@ echo '</pre>';
                                             const searchInput = document.getElementById('searchInput');
                                             const dropdownItems = document.querySelectorAll('.dropdown-item');
                                             const dropdownButton = document.getElementById(
-                                            'dropdownMenuButton');
+                                                'dropdownMenuButton');
                                             let pesertaSelected =
                                                 <?=json_encode(array_column($peserta, 'id_pegawai'))?>;
 
@@ -588,7 +588,7 @@ echo '</pre>';
                                                 item.addEventListener('click', function() {
                                                     const id = this.getAttribute('data-id');
                                                     const nama = this.getAttribute(
-                                                    'data-value');
+                                                        'data-value');
 
                                                     if (id && !pesertaSelected.includes(id)) {
                                                         pesertaSelected.push(id);
@@ -744,10 +744,15 @@ echo '</pre>';
                                                 readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label for="namaPeserta" class="font-weight-bold">Nama Peserta</label>
-                                            <textarea class="form-control bg-light-200" id="namaPeserta" rows="2"
-                                                placeholder="Masukkan Nama Peserta"
-                                                readonly><?=$pelatihan['nama_peserta']?></textarea>
+                                            <label for="peserta" class="font-weight-bold">Peserta</label>
+                                            <div id="selectedNames" class="d-flex flex-wrap gap-1">
+                                                <?php foreach ($peserta as $data) { ?>
+                                                <p
+                                                    class="badge bg-light text-dark rounded-pill px-3 py-2 border border-secondary">
+                                                    <?=$data['nama']?></p>
+                                                <?php } ?>
+                                            </div>
+                                            <input type="hidden" name="peserta[]" id="pesertaHidden">
                                         </div>
 
                                         <div class="form-group">
@@ -792,54 +797,15 @@ echo '</pre>';
                                                 placeholder="Target yang ingin dicapai kegiatan"
                                                 readonly><?=$pelatihan['target']?></textarea>
                                         </div>
-
-                                        <!-- <div class="form-group">
-                                            <p class="mb-2">
-                                                <b>Template Pelaporan:</b>
-                                                <a href="../assets/template-LPJ.doc" download="template-LPJ.doc"
-                                                    class="text-primary">
-                                                    Unduh Template Word
-                                                </a>
-                                            </p>
-
-                                            <label for="fileLaporan" class="font-weight-bold text-danger">Unggah File
-                                                Laporan (PDF)</label>
-                                            <div class="input-group">
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="fileLaporan"
-                                                        name="berkas" accept="application/pdf" required
-                                                        onchange="updateLabel()" value="<?=$berkas['berkas']?>">
-                                                    <label class="custom-file-label" for="fileLaporan" id="fileLabel">
-                                                        <?= $berkas['berkas'] ? basename($berkas['berkas']) : 'Pilih file' ?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <small class="text-danger">
-                                                Type file: pdf <br> Batas ukuran file: 100 MB
-                                            </small>
-                                        </div>
-                                        <script>
-                                        document.querySelector('.custom-file-input').addEventListener('change',
-                                            function(e) {
-                                                var fileName = e.target.files[0].name;
-                                                var nextSibling = e.target.nextElementSibling;
-
-                                                nextSibling.innerText = fileName;
-                                                nextSibling.classList.add('selected');
-                                            });
-                                        </script> -->
                                     </div>
                                 </div>
                                 <hr>
 
                                 <!-- Tombol Aksi -->
                                 <div class="d-flex justify-content-between mt-4">
-                                    <?php if (!isset($berkas['berkas'])) { ?>
-                                    <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
-                                    <button type="submit" class="btn btn-primary" name="buat_lpj">Buat</button>
-                                    <?php } else { ?>
+
                                     <a href="index.php" class="btn btn-primary">Back</a>
-                                    <?php }?>
+
 
                                 </div>
                             </form>

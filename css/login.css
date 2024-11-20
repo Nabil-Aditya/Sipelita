@@ -1,4 +1,3 @@
-
 body {
     display: flex;
     justify-content: center;
@@ -90,7 +89,7 @@ body {
     width: 100px;
     text-align: center;
 
-    /* Prevent text selection and copying */
+    /* tidak bisa di copy */
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;

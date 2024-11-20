@@ -381,7 +381,6 @@ if (isset($_POST['edit_pegawai'])) {
 
 
                             <form method="post" enctype="multipart/form-data" id="pengajuanForm">
-
                                 <div class="row">
                                     <!-- Kolom Kiri -->
                                     <div class="col-md-12 mb-5">
@@ -391,11 +390,7 @@ if (isset($_POST['edit_pegawai'])) {
                                                 style="width: 200px; height: 200px; object-fit: cover;">
                                         </div>
                                     </div>
-
                                     <div class="col-md-6">
-
-
-
                                         <div class="form-group">
                                             <label for="nip" class="font-weight-bold">NIP</label>
                                             <input type="text" class="form-control" id="nip" name="nip"
@@ -444,9 +439,7 @@ if (isset($_POST['edit_pegawai'])) {
                                                     file</label>
                                             </div>
                                         </div>
-
                                     </div>
-
                                     <!-- Kolom Kanan -->
                                     <div class="col-md-6">
                                         <div class="form-group">

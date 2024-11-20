@@ -15,7 +15,7 @@
 
     /* New Loader Styles */
     .loader {
-        width: 40px; /* Ukuran disesuaikan dengan yang lama */
+        width: 40px; /* Ukuran disesuaikan */
         aspect-ratio: 1;
         border-radius: 50%;
         background: rgb(25, 25, 112); /* Warna biru */

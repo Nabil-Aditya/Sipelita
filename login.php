@@ -1,3 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Halaman Login</title>
+    <link rel="icon" type="image/x-icon" href="icon-tittle-sipelita.jpg">
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- styles this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="css/login.css" rel="stylesheet">
+
+</head>
+
 <?php
 
 include 'function.php';
@@ -15,38 +42,11 @@ if (isset($_SESSION['role'])) {
     } else if ($_SESSION['role'] === 'supervisor') {
         echo "<script>window.location.href = 'supervisor/index.php';</script>";
     }
-    exit(); 
+    exit();
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Halaman Login</title>
-    <link rel="icon" type="image/x-icon" href="./img/icon-tittle-sipelita.jpg">
-
-    <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- styles this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <!-- Custom styles for this template-->
-    <link href="css/login.css" rel="stylesheet">
-
-</head>
-
-<body class="bg-gradient-warning">
+<body>
 
     <div class="container">
 
@@ -77,7 +77,7 @@ if (isset($_SESSION['role'])) {
                                     <div class="text-center">
                                         <h1 class="h4 mb-5 custom-heading">Portal Masuk Sipelita</h1>
                                     </div>
-                                    <form class="user" method="post" id="loginForm">
+                                    <form class="user" method="post">
                                         <span class="bold-black-text">Nama Pengguna</span>
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
@@ -124,6 +124,39 @@ if (isset($_SESSION['role'])) {
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- SweetAlert2 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        document.getElementById("developerTeam").addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent default action of the link
+
+            Swal.fire({
+                title: 'Tim Pengembang',
+                html: `
+                <div class="popup-content">
+                    <!-- Logo at the center -->
+                    <img src="./img/sipelita.jpg" alt="Logo" class="popup-logo">
+                    <hr>
+
+                    <!-- Developer team image -->
+                    <img src="./img/developer.jpg" alt="Tim Pengembang" class="popup-image">
+                    
+                    <!-- Footer content with "Tutup" button -->
+                    <div class="popup-footer">
+                        <button class="swal2-confirm swal2-styled" onclick="Swal.close()">Tutup</button>
+                    </div>
+                </div>
+            `,
+                showConfirmButton: false, // Hide default confirm button
+                showCloseButton: true, // Enable the "X" close button
+                customClass: {
+                    popup: 'swal2-full-popup', // Custom class untuk memperbesar popup
+                }
+            });
+        });
+    </script>
 
 </body>
 

@@ -11,6 +11,88 @@ function logout(){
 
 
 
+// Fungsi edit pegawai
+function edit_pegawai($data, $id_user) {
+    global $koneksi;
+
+    // Sanitasi dan validasi input
+    $nip = strtolower(stripslashes($data['nip']));
+    $nama = strtolower(stripslashes($data['nama']));
+    $jabatan = strtolower(stripslashes($data['jabatan']));
+    $email = strtolower(stripslashes($data['email']));
+    $telp = mysqli_real_escape_string($koneksi, $data['telp']);
+    $alamat = mysqli_real_escape_string($koneksi, $data['alamat']);
+    $username = mysqli_real_escape_string($koneksi, $data['username']);
+    $password = mysqli_real_escape_string($koneksi, $data['password']);
+    $password2 = mysqli_real_escape_string($koneksi, $data['password2']);
+
+    // Penanganan upload foto profil
+    $foto_profil = $_FILES['foto_profil']['name'];
+    $tmpname = $_FILES['foto_profil']['tmp_name'];
+    $folder = $_SERVER['DOCUMENT_ROOT'] . '/pelita2/SIPELITA-PROJECT/assets/foto_pegawai/' . $foto_profil;
+
+    // Ambil data user lama dari database
+    $result = mysqli_query($koneksi, "SELECT username FROM user WHERE id_user = '$id_user'");
+    if (!$result || mysqli_num_rows($result) === 0) {
+        echo "<script>alert('User tidak ditemukan.');</script>";
+        return false;
+    }
+
+    $currentData = mysqli_fetch_assoc($result);
+    $currentUsername = $currentData['username'];
+
+    // Cek apakah username diubah dan sudah ada yang memakai username baru
+    if ($username !== $currentUsername) {
+        $cek_username = mysqli_query($koneksi, "SELECT id_user FROM user WHERE username = '$username'");
+        if (mysqli_num_rows($cek_username) > 0) {
+            echo "<script>alert('Username sudah digunakan.');</script>";
+            return false;
+        }
+    }
+
+    // Cek konfirmasi password jika ada perubahan password
+    if (!empty($password) && $password !== $password2) {
+        echo "<script>alert('Konfirmasi password tidak sesuai.');</script>";
+        return false;
+    }
+
+    // Update tabel user
+    if (!empty($password)) {
+        $password_hashed = password_hash($password, PASSWORD_DEFAULT);
+        $updateUser = mysqli_query($koneksi, 
+            "UPDATE user SET username = '$username', password = '$password_hashed', role = '$jabatan' WHERE id_user = '$id_user'");
+    } else {
+        $updateUser = mysqli_query($koneksi, 
+            "UPDATE user SET username = '$username', role = '$jabatan' WHERE id_user = '$id_user'");
+    }
+
+    // Update tabel pegawai
+    if ($foto_profil) {
+        if (move_uploaded_file($tmpname, $folder)) {
+            $updatePegawai = mysqli_query($koneksi, 
+                "UPDATE pegawai SET nip = '$nip', nama = '$nama', email = '$email', telp = '$telp', alamat = '$alamat', foto_profil = '$foto_profil' WHERE id_user = '$id_user'");
+        } else {
+            echo "<script>alert('Gagal mengunggah foto.');</script>";
+            return false;
+        }
+    } else {
+        $updatePegawai = mysqli_query($koneksi, 
+            "UPDATE pegawai SET nip = '$nip', nama = '$nama', email = '$email', telp = '$telp', alamat = '$alamat' WHERE id_user = '$id_user'");
+    }
+
+    // Validasi keberhasilan query
+    if ($updateUser && $updatePegawai) {
+        $_SESSION['username'] = $username; // Update session username jika diperlukan
+        echo "<script>alert('Data berhasil diperbarui!'); window.location.href = 'index.php';</script>";
+        return true;
+    } else {
+        echo "<script>alert('Gagal memperbarui data.');</script>";
+        return false;
+    }
+}
+
+
+
 // --------------------------------------------PENGAJUAN PELATIHAN----------------------------------------------
 function getall_jurusan(){
     global $koneksi;

@@ -9,7 +9,7 @@ $pelatihan = getall_pelatihan_byId();
 
 $jurusan = getall_jurusan();
 $prodi = getall_prodi();
-
+$peserta = get_peserta();
 //Jika pengajuan pelatihan di tolak, (edit kesalahan)
 if (isset($_POST['edit_pelatihan'])) {
     edit_pelatihan($_POST);
@@ -386,7 +386,8 @@ $komentar = get_komentar_byPelaporan();
                                 </div>
                                 <?php } else if ($berkas['status'] === 'Ditolak') {?>
                                 <div class="alert alert-danger" role="alert">
-                                    <strong>Perhatian!</strong> Berkas LPJ anda di tolak, mohon mengajukan kembali   <br> <strong>Pesan : </strong><?=$komentar['komentar']?>
+                                    <strong>Perhatian!</strong> Berkas LPJ anda di tolak, mohon mengajukan kembali <br>
+                                    <strong>Pesan : </strong><?=$komentar['komentar']?>
                                 </div>
                                 <?php } else {?>
                                 <div class="alert alert-success" role="alert">
@@ -418,10 +419,15 @@ $komentar = get_komentar_byPelaporan();
                                                 readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label for="namaPeserta" class="font-weight-bold">Nama Peserta</label>
-                                            <textarea class="form-control bg-light-200" id="namaPeserta" rows="2"
-                                                placeholder="Masukkan Nama Peserta"
-                                                readonly><?=$pelatihan['nama_peserta']?></textarea>
+                                            <label for="peserta" class="font-weight-bold">Peserta</label>
+                                            <div id="selectedNames" class="d-flex flex-wrap gap-1">
+                                                <?php foreach ($peserta as $data) { ?>
+                                                <p
+                                                    class="badge bg-light text-dark rounded-pill px-3 py-2 border border-secondary">
+                                                    <?=$data['nama']?></p>
+                                                <?php } ?>
+                                            </div>
+                                            <input type="hidden" name="peserta[]" id="pesertaHidden">
                                         </div>
 
                                         <div class="form-group">
