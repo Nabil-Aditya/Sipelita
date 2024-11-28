@@ -1,24 +1,3 @@
-<?php
-
-include 'function.php';
-
-//login
-if (isset($_POST['login'])) {
-    login($_POST);
-}
-
-if (isset($_SESSION['role'])) {
-    if ($_SESSION['role'] === 'admin') {
-        echo "<script>window.location.href = 'admin/index.php';</script>";
-    } else if ($_SESSION['role'] === 'pegawai') {
-        echo "<script>window.location.href = 'pegawai/index.php';</script>";
-    } else if ($_SESSION['role'] === 'supervisor') {
-        echo "<script>window.location.href = 'supervisor/index.php';</script>";
-    }
-    exit(); 
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,6 +26,27 @@ if (isset($_SESSION['role'])) {
 
 </head>
 
+<?php
+
+include 'function.php';
+
+//login
+if (isset($_POST['login'])) {
+    login($_POST);
+}
+
+if (isset($_SESSION['role'])) {
+    if ($_SESSION['role'] === 'admin') {
+        echo "<script>window.location.href = 'admin/index.php';</script>";
+    } else if ($_SESSION['role'] === 'pegawai') {
+        echo "<script>window.location.href = 'pegawai/index.php';</script>";
+    } else if ($_SESSION['role'] === 'supervisor') {
+        echo "<script>window.location.href = 'supervisor/index.php';</script>";
+    }
+    exit(); 
+}
+?>
+
 <body>
 
     <div class="container">
@@ -64,8 +64,8 @@ if (isset($_SESSION['role'])) {
                                 <img src="./img/sipelita.jpg" alt="Logo" class="img-fluid"> V.1.0
                                 <img src="./img/login_img.jpg" alt="Login Image" class="login-image">
                                 <div class="text-center mt-1">
-                                    <a href="#" class="btn btn-link custom-link">Buku Panduan</a> |
-                                    <a href="https://wa.me/6287842033231" class="btn btn-link custom-link"
+                                <a href="assets/MANUAL-BOOK-SIPELITA.pdf" target="_blank" class="btn btn-link custom-link">Buku Panduan</a>
+                                <a href="https://wa.me/6287842033231" class="btn btn-link custom-link"
                                         target="_blank">Hubungi Kami</a> |
                                     <a href="#" class="btn btn-link custom-link" id="developerTeam">Tim Pengembang</a>
                                 </div>
