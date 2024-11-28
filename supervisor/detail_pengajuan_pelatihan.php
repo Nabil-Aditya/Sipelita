@@ -437,7 +437,7 @@ if (isset($_POST['status_pelatihan'])) {
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="programStudi" class="font-weight-bold">Proses</label>
-                                                <select class="form-control" id="programStudi" name="status">
+                                                <select class="form-control" id="programStudi" name="status" required>
                                                     <option value="" disabled selected>Diterima/Ditolak</option>
                                                     <option value="Diterima">Diterima</option>
                                                     <option value="Ditolak">Ditolak</option>

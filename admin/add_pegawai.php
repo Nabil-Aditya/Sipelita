@@ -1,6 +1,7 @@
 <!-- KONEKSI -->
 <?php include 'function.php'; 
 
+$supervisor = get_supervisor();
 
 // tambah pegawai
 if (isset($_POST['tambah_pegawai'])) {
@@ -384,8 +385,9 @@ if (isset($_POST['tambah_pegawai'])) {
                                             <label for="supervisor" class="font-weight-bold">Nama Supervisor</label>
                                             <select class="form-control" id="supervisor" name="supervisor">
                                                 <option value="">Pilih Supervisor</option>
-                                                <option value="supervisor1">Supervisor 1</option>
-                                                <option value="supervisor2">Supervisor 2</option>
+                                                <?php foreach ($supervisor as $key) { ?>
+                                                <option value="<?=$key['id_supervisor']?>"><?=$key['nama']?></option>
+                                                <?php }?>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -420,7 +422,7 @@ if (isset($_POST['tambah_pegawai'])) {
                                         </div>
                                         <div class="form-group">
                                             <label for="password" class="font-weight-bold">Password</label>
-                                            <input type="password" class="form-control" id="password" name="password">
+                                            <input type="password" class="form-control" minlength="6" id="password" name="password">
                                         </div>
                                         <div class="form-group">
                                             <label for="password2" class="font-weight-bold">Konfirmasi Password</label>

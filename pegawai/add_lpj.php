@@ -517,6 +517,46 @@ $komentar = get_komentar_byPelaporan();
                                                 nextSibling.classList.add('selected');
                                             });
                                         </script>
+
+                                        <hr>
+
+                                        <div class="form-group">
+                                            <!-- Teks dan link untuk template pelaporan -->
+
+                                            <!-- Input untuk unggah file PDF -->
+                                            <label for="fileSertifikat" class="font-weight-bold text-danger">Unggah File
+                                                Sertifikat (PDF)
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-sertifikat-input" id="fileSertifikat"
+                                                        name="sertifikat" accept="application/pdf"
+                                                        <?php if (isset($berkas['status']) && ($berkas['status'] === 'Diproses' || $berkas['status'] === 'Diterima')): ?>
+                                                        onclick="return false;" <?php else: ?> required <?php endif; ?>
+                                                        onchange="updateLabel()"
+                                                        value="<?= isset($berkas['sertifikat']) ? $berkas['sertifikat'] : '' ?>">
+
+                                                    <label class="custom-file-label" for="fileSertifikat" id="fileLabel">
+                                                        <?= isset($berkas['sertifikat']) ? basename($berkas['sertifikat']) : 'Pilih file' ?>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <small class="text-danger">
+                                                Type file: pdf <br> Batas ukuran file: 100 MB
+                                            </small>
+                                        </div>
+                                        <script>
+                                        document.querySelector('.custom-sertifikat-input').addEventListener('change',
+                                            function(e) {
+                                                var fileName = e.target.files[0].name;
+                                                var nextSibling = e.target.nextElementSibling;
+
+                                                // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
+                                                nextSibling.innerText = fileName;
+                                                nextSibling.classList.add('selected');
+                                            });
+                                        </script>
                                     </div>
                                 </div>
                                 <hr>
@@ -526,7 +566,7 @@ $komentar = get_komentar_byPelaporan();
                                     <?php 
                                     // Misalnya $status adalah status dari LPJ yang sudah ada
                                     if ($berkas['status'] === 'Ditolak' || $berkas['status'] === 'Belum Mengupload LPJ') { ?>
-                                    <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
+                                    <a href='index.php' type="button" class="btn btn-danger" >Back</a>
                                     <button type="submit" class="btn btn-primary" name="buat_lpj">Buat</button>
                                     <?php } else { ?>
                                     <a href="index.php" class="btn btn-primary">Back</a>

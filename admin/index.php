@@ -4,7 +4,10 @@
 include '../koneksi.php';
 include 'function.php';
 
-// nasyith
+
+//get data session login
+$login = get_data_user_login();
+
 
 //logout
 if (isset($_POST['logout'])) {
@@ -380,7 +383,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$login['username']?></span>
                                 <img class="img-profile rounded-circle" src="../img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -421,9 +424,9 @@ if ($currentHour >= 0 && $currentHour < 12) {
                     </div>
 
                     <div class="profile-container">
-                        <img src="../img/undraw_profile_1.svg" alt="Profile Picture" class="profile-img">
+                        <img src="../img/undraw_profile.svg" alt="Profile Picture" class="profile-img">
                         <div class="profile-text">
-                            <h4><?php echo $greeting; ?>, <?php echo "Hellow World" ?>!</h4>
+                            <h4><?php echo $greeting; ?>, <?=$login['username']?>!</h4>
                             <p id="timeDisplay">
                                 <!-- Tampilkan waktu awal dengan PHP -->
                                 <?php echo getIndonesianDayName(date('l')) . ', ' . date('j F Y') . ', ' . date('H:i:s'); ?>
@@ -690,15 +693,12 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                                             <td><?= $data['nama'] ?></td>
                                                             <td><?= $data['telp'] ?></td>
                                                             <td><?= $data['email'] ?></td>
-
-                                                            <td>
+                                                            <td class="text-center">
                                                                 <a
-                                                                    href="view_profile.php?id_user=<?=$data['id_user']?>"><span
-                                                                        class="status-button detail">
-                                                                        <span class="dot"></span>
-                                                                        Detail
-                                                                    </span>
-                                                                </a>
+                                                                    href="view_pegawai.php?id_user=<?=$data['id_user']?>"><button
+                                                                        class="btn btn-primary btn-sm">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </button></a>
                                                             </td>
                                                         </tr>
                                                         <?php } ?>
@@ -731,15 +731,12 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                                             <td><?= $data['nama'] ?></td>
                                                             <td><?= $data['telp'] ?></td>
                                                             <td><?= $data['email'] ?></td>
-
-                                                            <td>
+                                                            <td class="text-center">
                                                                 <a
-                                                                    href="view_profile.php?id_user=<?=$data['id_user']?>"><span
-                                                                        class="status-button detail">
-                                                                        <span class="dot"></span>
-                                                                        Detail
-                                                                    </span>
-                                                                </a>
+                                                                    href="view_supervisor.php?id_user=<?=$data['id_user']?>"><button
+                                                                        class="btn btn-primary btn-sm">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </button></a>
                                                             </td>
                                                         </tr>
                                                         <?php } ?>

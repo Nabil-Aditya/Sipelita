@@ -5,7 +5,17 @@ include '../loader.php';
 include 'function.php';
 
 
-
+if (isset($_POST['action']) && $_POST['action'] == 'read_notifikasi' && isset($_POST['id'])) {
+    $id = $_POST['id'];
+    
+    // Panggil fungsi untuk memperbarui status notifikasi
+    if (read_notifikasi($id)) {
+        echo "Notifikasi berhasil dibaca.";  // Pesan untuk respons AJAX
+    } else {
+        echo "Gagal memperbarui status notifikasi.";
+    }
+    exit;  // Pastikan proses berhenti setelah mengirim respons
+}
 //logout
 if (isset($_POST['logout'])) {
     logout();
@@ -13,9 +23,10 @@ if (isset($_POST['logout'])) {
 
 //notifikasi
 $notifikasi = get_notifikasi();
-echo "<pre>";
-print_r($notifikasi);  // atau var_dump($notifikasi);
-echo "</pre>";
+// echo "<pre>";
+// print_r($notifikasi);  // atau var_dump($notifikasi);
+// echo "</pre>";
+
 
 //get semua pelatihan
 $pelatihan = getall_pelatihan();
@@ -38,6 +49,9 @@ foreach ($pelatihan as $item) {
         $jumlah_pelatihan_diproses++;
     }
 }
+
+//get supervisor sendiri
+$supervisor = get_supervisor_byPegawai();
 
 
 
@@ -71,9 +85,11 @@ if (!$login) {
     echo "<script>window.location.href = '../login.php';</script>";
 }
 
-if ($login['role']) {
-    # code...
-}
+if ($_SESSION['role'] === 'admin') {
+    echo "<script>window.location.href = '../admin/index.php';</script>";
+} else if ($_SESSION['role'] === 'supervisor'){
+    echo "<script>window.location.href = '../admin/index.php';</script>";
+} 
 
 ?>
 
@@ -316,37 +332,87 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                 </h6>
 
                                 <?php foreach ($notifikasi as $data) { ?>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <a class="dropdown-item d-flex align-items-center <?php echo ($data['is_read'] == 1) ? 'bg-secondary' : 'bg-light'; ?>" href="#" onclick="read_notifikasi(<?=$data['id_notifikasi']?>)">
+
                                     <div class="mr-3">
                                         <div
                                             class="icon-circle bg-<?php echo (strpos($data['pesan'], 'tolak') !== false) ? 'danger' : (strpos($data['pesan'], 'terima') !== false ? 'success' : 'primary'); ?>">
                                             <i class="fas fa-file-alt text-white"></i>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div class="small text-gray-500"><?=$data['tgl']?></div>
-                                        <span class="font-weight-bold"><?=$data['pesan']?></span>
+                                    <div class="d-flex justify-content-between w-100">
+                                        <div>
+                                            <div class="small text-gray-500"><?=$data['tgl']?></div>
+                                            <span class="font-weight-bold"><?=$data['pesan']?></span>
+                                            <?php if ($data['is_read'] == 0) { ?>
+                                            <span class="unread-indicator"></span>
+                                            <?php } ?>
+                                        </div>
                                     </div>
                                 </a>
-                                <?php }?>
+                                <?php } ?>
+
 
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
+
+                            <style>
+                            /* Titik merah untuk notifikasi yang belum dibaca */
+                            .unread-indicator {
+                                width: 10px;
+                                height: 10px;
+                                border-radius: 50%;
+                                background-color: red;
+                                position: absolute;
+                                right: 10px;
+                            }
+                            </style>
+                            <script>
+                            function read_notifikasi(id) {
+                                // Kirim permintaan ke server untuk memperbarui status 'is_read' menjadi 1
+                                fetch('function.php', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/x-www-form-urlencoded',
+                                        },
+                                        body: new URLSearchParams({
+                                            action: 'read_notifikasi',
+                                            id: id
+                                        })
+                                    })
+                                    .then(response => response.text())
+                                    .then(data => {
+                                        console.log(data); // Log untuk memeriksa respons dari server
+
+                                        // Hapus indikator unread jika status berhasil diperbarui
+                                        const unreadIndicator = document.querySelector(
+                                            `[onclick="read_notifikasi(${id})"] .unread-indicator`);
+                                        if (unreadIndicator) {
+                                            unreadIndicator.style.display = 'none';
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                    });
+                            }
+                            </script>
+
                         </li>
 
                         <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                       <!-- Nav Item - Alerts -->
+                       <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
+                                <i class="fas fa-bell fa-fw"></i>
+                                <!-- Counter - Alerts -->
+                                <span class="badge badge-danger badge-counter">3+</span>
                             </a>
-                            <!-- Dropdown - Messages -->
+                            <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
+                                aria-labelledby="alertsDropdown" style="max-height: 300px; overflow-y: auto;">
                                 <h6 class="dropdown-header">
-                                    Pesan
+                                    Pemberitahuan
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
@@ -463,40 +529,40 @@ if ($currentHour >= 0 && $currentHour < 12) {
                     </div>
 
                     <script>
-                        function updateClock() {
-                            // Buat objek tanggal baru
-                            var now = new Date();
+                    function updateClock() {
+                        // Buat objek tanggal baru
+                        var now = new Date();
 
-                            // Ambil elemen untuk menampilkan waktu
-                            var timeDisplay = document.getElementById("timeDisplay");
+                        // Ambil elemen untuk menampilkan waktu
+                        var timeDisplay = document.getElementById("timeDisplay");
 
-                            // Array untuk nama hari dalam bahasa Indonesia
-                            var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                        // Array untuk nama hari dalam bahasa Indonesia
+                        var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-                            // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
-                            var day = dayNames[now.getDay()];
-                            var date = now.getDate();
-                            var month = now.toLocaleString('id-ID', {
-                                month: 'long'
-                            }); // Nama bulan dalam bahasa Indonesia
-                            var year = now.getFullYear();
-                            var hours = now.getHours().toString().padStart(2, '0');
-                            var minutes = now.getMinutes().toString().padStart(2, '0');
-                            var seconds = now.getSeconds().toString().padStart(2, '0');
+                        // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
+                        var day = dayNames[now.getDay()];
+                        var date = now.getDate();
+                        var month = now.toLocaleString('id-ID', {
+                            month: 'long'
+                        }); // Nama bulan dalam bahasa Indonesia
+                        var year = now.getFullYear();
+                        var hours = now.getHours().toString().padStart(2, '0');
+                        var minutes = now.getMinutes().toString().padStart(2, '0');
+                        var seconds = now.getSeconds().toString().padStart(2, '0');
 
-                            // Format waktu
-                            var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' +
-                                minutes + ':' + seconds;
+                        // Format waktu
+                        var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' +
+                            minutes + ':' + seconds;
 
-                            // Update elemen HTML dengan waktu terbaru
-                            timeDisplay.textContent = formattedTime;
-                        }
+                        // Update elemen HTML dengan waktu terbaru
+                        timeDisplay.textContent = formattedTime;
+                    }
 
-                        // Jalankan updateClock setiap detik
-                        setInterval(updateClock, 1000);
+                    // Jalankan updateClock setiap detik
+                    setInterval(updateClock, 1000);
 
-                        // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
-                        updateClock();
+                    // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
+                    updateClock();
                     </script>
 
                     <!-- Content Row -->
@@ -677,6 +743,36 @@ if ($currentHour >= 0 && $currentHour < 12) {
                             </div>
                         </div>
 
+                        <div class="col-xl-12 col-md-12 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-3">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <!-- Kolom Foto -->
+                                        <div class="col-auto text-center">
+                                            <img src="../assets/foto_supervisor/<?= htmlspecialchars($supervisor['foto_profil']) ?>"
+                                                alt="Foto Supervisor" class="rounded-circle img-fluid"
+                                                style="width: 100px; height: 100px; object-fit: cover;">
+                                        </div>
+                                        <!-- Kolom Informasi -->
+                                        <div class="col ml-4">
+                                            <h5 class="font-weight-bold text-primary mb-2">Supervisor</h5>
+                                            <p class="mb-1"><strong>Nama:</strong>
+                                                <?= htmlspecialchars($supervisor['nama']) ?></p>
+                                            <p class="mb-1"><strong>NIP:</strong>
+                                                <?= htmlspecialchars($supervisor['nip']) ?></p>
+                                            <p class="mb-1"><strong>Alamat:</strong>
+                                                <?= htmlspecialchars($supervisor['alamat']) ?></p>
+                                            <p class="mb-1"><strong>Email:</strong>
+                                                <?= htmlspecialchars($supervisor['email']) ?></p>
+                                            <p class="mb-0"><strong>Telp:</strong>
+                                                <?= htmlspecialchars($supervisor['telp']) ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
 
@@ -725,22 +821,22 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                                             <td><?= $data['kompetensi'] ?></td>
                                                             <td><?= $data['tgl_pengajuan'] ?></td>
 
-                                                                <td>
-                                                                    <span
-                                                                        class="status-button 
+                                                            <td>
+                                                                <span
+                                                                    class="status-button 
                                                             <?= $data['status'] === 'Diproses' ? 'in-process' : ($data['status'] === 'Ditolak' ? 'rejected' : ($data['status'] === 'Diterima' ? 'accepted' : '')) ?>">
-                                                                        <span class="dot"></span>
-                                                                        <?= $data['status'] ?>
-                                                                    </span>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <a
-                                                                        href="add_pengajuan_lpj.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button
-                                                                            class="btn btn-primary btn-sm">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </button></a>
-                                                                </td>
-                                                            </tr>
+                                                                    <span class="dot"></span>
+                                                                    <?= $data['status'] ?>
+                                                                </span>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <a
+                                                                    href="add_pengajuan_lpj.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button
+                                                                        class="btn btn-primary btn-sm">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </button></a>
+                                                            </td>
+                                                        </tr>
                                                         <?php } ?>
                                                     </tbody>
                                                 </table>
@@ -764,26 +860,26 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                                     </thead>
                                                     <tbody>
                                                         <?php foreach ($pelaporan as $data) { ?>
-                                                            <tr>
-                                                                <td><?= $data['institusi'] ?></td>
-                                                                <td><?= $data['kompetensi'] ?></td>
-                                                                <td><?= $data['tgl'] ?></td>
-                                                                <td>
-                                                                    <span
-                                                                        class="status-button <?= $data['pelaporan_status'] === 'Belum Mengupload LPJ' ? 'in-belum' : ($data['pelaporan_status'] === 'Diproses' ? 'in-process' : ($data['pelaporan_status'] === 'Ditolak' ? 'rejected' : ($data['pelaporan_status'] === 'Diterima' ? 'accepted' : ''))) ?>">
-                                                                        <span class="dot"></span>
-                                                                        <?= $data['pelaporan_status'] ?>
-                                                                    </span>
+                                                        <tr>
+                                                            <td><?= $data['institusi'] ?></td>
+                                                            <td><?= $data['kompetensi'] ?></td>
+                                                            <td><?= $data['tgl'] ?></td>
+                                                            <td>
+                                                                <span
+                                                                    class="status-button <?= $data['pelaporan_status'] === 'Belum Mengupload LPJ' ? 'in-belum' : ($data['pelaporan_status'] === 'Diproses' ? 'in-process' : ($data['pelaporan_status'] === 'Ditolak' ? 'rejected' : ($data['pelaporan_status'] === 'Diterima' ? 'accepted' : ''))) ?>">
+                                                                    <span class="dot"></span>
+                                                                    <?= $data['pelaporan_status'] ?>
+                                                                </span>
 
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <a
-                                                                        href="add_lpj.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button
-                                                                            class="btn btn-primary btn-sm">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </button></a>
-                                                                </td>
-                                                            </tr>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <a
+                                                                    href="add_lpj.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button
+                                                                        class="btn btn-primary btn-sm">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </button></a>
+                                                            </td>
+                                                        </tr>
                                                         <?php } ?>
                                                     </tbody>
                                                 </table>
@@ -800,19 +896,19 @@ if ($currentHour >= 0 && $currentHour < 12) {
                     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
                     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
                     <script>
-                        $(document).ready(function() {
-                            // Inisialisasi DataTables di awal
-                            $('#pengajuanTable').DataTable();
+                    $(document).ready(function() {
+                        // Inisialisasi DataTables di awal
+                        $('#pengajuanTable').DataTable();
 
-                            // Saat tab pelaporan diklik, inisialisasi DataTables di tabel pelaporan
-                            $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-                                var target = $(e.target).attr("data-bs-target");
+                        // Saat tab pelaporan diklik, inisialisasi DataTables di tabel pelaporan
+                        $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                            var target = $(e.target).attr("data-bs-target");
 
-                                if (target === '#pelaporan') {
-                                    $('#pelaporanTable').DataTable();
-                                }
-                            });
+                            if (target === '#pelaporan') {
+                                $('#pelaporanTable').DataTable();
+                            }
                         });
+                    });
                     </script>
 
                 </div>

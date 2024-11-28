@@ -11,6 +11,21 @@ function logout(){
 
 
 
+function get_supervisor_byPegawai(){
+    global $koneksi;
+    $id_user = $_SESSION['id_user'];
+    $sql = mysqli_query($koneksi, 
+    "SELECT s.* 
+    FROM pegawai p
+    JOIN supervisor s ON p.id_supervisor = s.id_supervisor
+    WHERE p.id_user = '$id_user';
+    "); 
+    if ($sql) {
+        return mysqli_fetch_assoc($sql);
+    }
+    
+} 
+
 // Fungsi edit pegawai
 function edit_pegawai($data, $id_user) {
     global $koneksi;
@@ -25,6 +40,7 @@ function edit_pegawai($data, $id_user) {
     $username = mysqli_real_escape_string($koneksi, $data['username']);
     $password = mysqli_real_escape_string($koneksi, $data['password']);
     $password2 = mysqli_real_escape_string($koneksi, $data['password2']);
+    $old_password = mysqli_real_escape_string($koneksi, $data['old_password']);
 
     // Penanganan upload foto profil
     $foto_profil = $_FILES['foto_profil']['name'];
@@ -32,7 +48,7 @@ function edit_pegawai($data, $id_user) {
     $folder = $_SERVER['DOCUMENT_ROOT'] . '/pelita2/SIPELITA-PROJECT/assets/foto_pegawai/' . $foto_profil;
 
     // Ambil data user lama dari database
-    $result = mysqli_query($koneksi, "SELECT username FROM user WHERE id_user = '$id_user'");
+    $result = mysqli_query($koneksi, "SELECT username, password FROM user WHERE id_user = '$id_user'");
     if (!$result || mysqli_num_rows($result) === 0) {
         echo "<script>alert('User tidak ditemukan.');</script>";
         return false;
@@ -40,12 +56,21 @@ function edit_pegawai($data, $id_user) {
 
     $currentData = mysqli_fetch_assoc($result);
     $currentUsername = $currentData['username'];
+    $currentPassword = $currentData['password'];
 
     // Cek apakah username diubah dan sudah ada yang memakai username baru
     if ($username !== $currentUsername) {
         $cek_username = mysqli_query($koneksi, "SELECT id_user FROM user WHERE username = '$username'");
         if (mysqli_num_rows($cek_username) > 0) {
             echo "<script>alert('Username sudah digunakan.');</script>";
+            return false;
+        }
+    }
+
+    // Validasi password lama jika ada perubahan password
+    if (!empty($password) && !empty($old_password)) {
+        if (!password_verify($old_password, $currentPassword)) {
+            echo "<script>alert('Password lama tidak sesuai!');</script>";
             return false;
         }
     }
@@ -126,12 +151,17 @@ function getall_prodi(){
 }
 
 
-//buat pelatihan
 function pengajuan_pelatihan($data) {
     global $koneksi;
 
     // Ambil data dari form
-    $id_pegawai = $_SESSION['id_user'];
+    $id = $_SESSION['id_user'];
+    $sql_pegawai = mysqli_query($koneksi, "
+    SELECT id_pegawai FROM pegawai WHERE id_user = $id
+    ");
+    $row_pegawai = mysqli_fetch_assoc($sql_pegawai);
+    $id_pegawai = $row_pegawai['id_pegawai']; 
+
     $institusi = $_POST['institusi'];
     $prodi = $_POST['prodi'];
     $jurusan = $_POST['jurusan'];
@@ -166,38 +196,63 @@ function pengajuan_pelatihan($data) {
             $queryPeserta = "INSERT INTO peserta (id_pelatihan, id_pegawai) 
                              VALUES ('$id_pelatihan', '$id_pegawai_peserta')";
             if (!mysqli_query($koneksi, $queryPeserta)) {
-                echo "<script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Terjadi Kesalahan',
-                        text: 'Gagal menambahkan peserta: " . mysqli_error($koneksi) . "'
-                    });
-                </script>";
+                echo "<script>alert('Gagal menambahkan peserta: " . mysqli_error($koneksi) . "');</script>";
                 return;
             }
         }
 
-        // Jika semua data berhasil disimpan, tampilkan SweetAlert sukses
-        echo "<script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Data Berhasil Disimpan',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        </script>";
-        echo "<script>window.location.href = 'index.php';</script>";
+        // Mendapatkan nama pengguna
+        $nama = $_SESSION['username'];
+
+        // Query untuk mendapatkan id_supervisor
+        $querySupervisor = "SELECT id_supervisor FROM pegawai WHERE id_user = '$id'";
+        $resultSupervisor = mysqli_query($koneksi, $querySupervisor);
+
+        // Cek apakah query berhasil dan ambil id_supervisor
+        if ($resultSupervisor && mysqli_num_rows($resultSupervisor) > 0) {
+            $row = mysqli_fetch_assoc($resultSupervisor);
+            $id_supervisor = $row['id_supervisor'];
+
+            // Query untuk mendapatkan id_user berdasarkan id_supervisor
+            $querySupervisorUser = "SELECT id_user FROM supervisor WHERE id_supervisor = '$id_supervisor'";
+            $resultSupervisorUser = mysqli_query($koneksi, $querySupervisorUser);
+
+            if ($resultSupervisorUser && mysqli_num_rows($resultSupervisorUser) > 0) {
+                $rowUser = mysqli_fetch_assoc($resultSupervisorUser);
+                $id_user = $rowUser['id_user'];
+
+                // Membuat pesan notifikasi
+                $pesan = "$nama melakukan pengajuan pelatihan kompetensi $kompetensi";
+                $type = "pelatihan";
+                $tgl = date('Y-m-d');
+                $is_read = 0;
+
+                // Query untuk insert notifikasi
+                $insertNotifikasiQuery = "INSERT INTO notifikasi (pesan, type, id_user, tgl, is_read) 
+                                           VALUES ('$pesan', '$type', '$id_user', '$tgl', '$is_read')";
+
+                // Mengeksekusi query notifikasi
+                if (mysqli_query($koneksi, $insertNotifikasiQuery)) {
+                    echo "<script>alert('Data berhasil disimpan dan notifikasi terkirim.');</script>";
+                    echo "<script>window.location.href = 'index.php';</script>";
+                } else {
+                    echo "<script>alert('Gagal mengirim notifikasi: " . mysqli_error($koneksi) . "');</script>";
+                }
+            } else {
+                echo "<script>alert('Gagal mendapatkan id_user dari supervisor.');</script>";
+                return;
+            }
+        } else {
+            echo "<script>alert('Gagal mendapatkan data supervisor.');</script>";
+            return;
+        }
     } else {
-        // Jika terjadi kesalahan pada insert pelatihan, tampilkan SweetAlert error
-        echo "<script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Terjadi Kesalahan',
-                text: 'Gagal menyimpan pelatihan: " . mysqli_error($koneksi) . "'
-            });
-        </script>";
+        // Jika terjadi kesalahan pada insert pelatihan, tampilkan alert error
+        echo "<script>alert('Gagal menyimpan pelatihan: " . mysqli_error($koneksi) . "');</script>";
     }
 }
+
+
 
 
 
@@ -287,7 +342,12 @@ function edit_pelatihan($data) {
 
 function getall_pelatihan(){
     global $koneksi;
-    $id_pegawai = $_SESSION['id_user'];
+    $id = $_SESSION['id_user'];
+    $sql_pegawai = mysqli_query($koneksi, "
+    SELECT id_pegawai FROM pegawai WHERE id_user = $id
+    ");
+    $row_pegawai = mysqli_fetch_assoc($sql_pegawai);
+    $id_pegawai = $row_pegawai['id_pegawai']; 
     $sql = mysqli_query($koneksi, "SELECT * FROM pelatihan WHERE id_pegawai = '$id_pegawai'");
     $pelatihan = [];
     while ($row = mysqli_fetch_assoc($sql)) {
@@ -352,55 +412,88 @@ function add_lpj($data) {
     
     // Ambil informasi file yang diunggah
     $berkas = $_FILES['berkas'];
-    $status = 'Diproses' ;
+    $sertifikat = $_FILES['sertifikat'];
+    $status = 'Diproses';
+
+    $tgl = date('Y-m-d');
     
-    // Cek apakah file diunggah dengan benar
+    // Tentukan folder tujuan
+    $upload_dir_berkas = '../assets/berkas_lpj/';
+    $upload_dir_sertifikat = '../assets/sertifikat_lpj/';
+
+    // Proses unggah file berkas
     if ($berkas['error'] === UPLOAD_ERR_OK) {
-        // Dapatkan informasi file
-        $tmp_name = $berkas['tmp_name'];
-        $name = basename($berkas['name']);
-        
-        // Tentukan folder tujuan
-        $upload_dir = '../assets/berkas_lpj/';
-        $upload_file = $name;
+        $tmp_name_berkas = $berkas['tmp_name'];
+        $name_berkas = basename($berkas['name']);
+        $path_berkas = $upload_dir_berkas . $name_berkas;
 
-        // Pindahkan file ke folder yang dituju
-        if (move_uploaded_file($tmp_name, $upload_dir . $upload_file)) {
-            $tgl = date('Y-m-d');
+        if (move_uploaded_file($tmp_name_berkas, $path_berkas)) {
+            // Proses unggah file sertifikat
+            if ($sertifikat['error'] === UPLOAD_ERR_OK) {
+                $tmp_name_sertifikat = $sertifikat['tmp_name'];
+                $name_sertifikat = basename($sertifikat['name']);
+                $path_sertifikat = $upload_dir_sertifikat . $name_sertifikat;
 
-            // Update data ke database
-            $sql = mysqli_query($koneksi, "UPDATE pelaporan SET berkas='$upload_file', status='$status', tgl='$tgl' WHERE id_pelatihan='$id_pelatihan'");
-            if ($sql) {
-                echo "<script>alert('Berhasil memperbarui LPJ')</script>";
+                if (move_uploaded_file($tmp_name_sertifikat, $path_sertifikat)) {
+                    // Update data ke database
+                    $sql = mysqli_query($koneksi, "UPDATE pelaporan 
+                        SET berkas='$name_berkas', sertifikat='$name_sertifikat', 
+                            status='$status', tgl='$tgl' 
+                        WHERE id_pelatihan='$id_pelatihan'");
+
+                    if ($sql) {
+                        echo "<script>alert('Berhasil memperbarui LPJ')</script>";
+                    } else {
+                        echo "<script>alert('Gagal memperbarui LPJ ke database')</script>";
+                    }
+                } else {
+                    echo "<script>alert('Gagal mengunggah sertifikat.')</script>";
+                }
             } else {
-                echo "<script>alert('Gagal memperbarui LPJ')</script>";
+                echo "<script>alert('Error saat mengunggah file sertifikat.')</script>";
             }
         } else {
-            echo "<script>alert('Gagal mengunggah file.')</script>";
+            echo "<script>alert('Gagal mengunggah file berkas.')</script>";
         }
     } else {
-        echo "<script>alert('Error saat mengunggah file.')</script>";
+        echo "<script>alert('Error saat mengunggah file berkas.')</script>";
     }
 }
 
 
+
 function getall_pelaporan(){
     global $koneksi;
-    $id_pegawai = $_SESSION['id_user'];
+    // Dapatkan id_user dari session
+    $id_user = $_SESSION['id_user'];
     
-    $sql = mysqli_query($koneksi, "
-        SELECT pelaporan.*, pelatihan.*, pelaporan.status AS pelaporan_status, pelatihan.status AS pelatihan_status
-        FROM pelaporan 
-        INNER JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan 
-        WHERE pelatihan.id_pegawai = '$id_pegawai'
-    ");
+    // Cari id_pegawai berdasarkan id_user
+    $getIdPegawaiQuery = "SELECT id_pegawai FROM pegawai WHERE id_user = '$id_user'";
+    $result = mysqli_query($koneksi, $getIdPegawaiQuery);
     
-    $pelaporan = [];
-    while ($row = mysqli_fetch_assoc($sql)) {
-        $pelaporan[] = $row;
+    if ($result && mysqli_num_rows($result) > 0) {
+        $pegawai = mysqli_fetch_assoc($result);
+        $id_pegawai = $pegawai['id_pegawai'];
+        
+        // Lakukan query untuk mendapatkan pelaporan berdasarkan id_pegawai
+        $sql = mysqli_query($koneksi, "
+            SELECT pelaporan.*, pelatihan.*, pelaporan.status AS pelaporan_status, pelatihan.status AS pelatihan_status
+            FROM pelaporan 
+            INNER JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan 
+            WHERE pelatihan.id_pegawai = '$id_pegawai'
+        ");
+        
+        $pelaporan = [];
+        while ($row = mysqli_fetch_assoc($sql)) {
+            $pelaporan[] = $row;
+        }
+        
+        return $pelaporan;
+    } else {
+        // Jika id_pegawai tidak ditemukan berdasarkan id_user, Anda bisa menangani error di sini
+        echo "Error: id_pegawai tidak ditemukan untuk id_user: $id_user";
+        return [];
     }
-    
-    return $pelaporan;
 }
 
 
@@ -519,7 +612,7 @@ function get_notifikasi(){
     global $koneksi;
     $id_pegawai = $_SESSION['id_user'];
     
-    $sql = mysqli_query($koneksi, "SELECT * FROM notifikasi WHERE id_user = '$id_pegawai'");
+    $sql = mysqli_query($koneksi, "SELECT * FROM notifikasi WHERE id_user = '$id_pegawai' ORDER BY id_notifikasi DESC");
     
     $pelaporan = [];
     while ($row = mysqli_fetch_assoc($sql)) {

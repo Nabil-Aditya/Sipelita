@@ -339,8 +339,10 @@ if (isset($_POST['edit_pegawai'])) {
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$get_pegawai_byId['username']?></span>
-                                <img class="img-profile rounded-circle" src="../assets/foto_pegawai/<?=$get_pegawai_byId['foto_profil']?>">
+                                <span
+                                    class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$get_pegawai_byId['username']?></span>
+                                <img class="img-profile rounded-circle"
+                                    src="../assets/foto_pegawai/<?=$get_pegawai_byId['foto_profil']?>">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -385,15 +387,15 @@ if (isset($_POST['edit_pegawai'])) {
                                     <!-- Kolom Kiri -->
                                     <div class="col-md-12 mb-5">
                                         <div class="form-group d-flex justify-content-center">
-                                            <img src="../assets/foto_pegawai/<?=$get_pegawai_byId['foto_profil']?>" alt="Foto"
-                                                class="img-fluid rounded-circle"
+                                            <img src="../assets/foto_pegawai/<?=$get_pegawai_byId['foto_profil']?>"
+                                                alt="Foto" class="img-fluid rounded-circle"
                                                 style="width: 200px; height: 200px; object-fit: cover;">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="nip" class="font-weight-bold">NIP</label>
-                                            <input type="text" class="form-control" id="nip" name="nip"
+                                            <input type="text" class="form-control" id="nip" name="nip" readonly
                                                 value="<?=$get_pegawai_byId['nip']?>" placeholder="Masukkan NIP">
                                         </div>
                                         <div class="form-group">
@@ -429,16 +431,19 @@ if (isset($_POST['edit_pegawai'])) {
                                                 placeholder="Masukkan Alamat"><?=$get_pegawai_byId['alamat']?></textarea>
                                         </div>
 
-                                        <label for="fileLaporan" class="font-weight-bold">Foto Profil</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="fileLaporan"
-                                                    value="<?=$get_pegawai_byId['foto_profil']?>" name="foto_profil"
-                                                    accept=".jpg, .jpeg, .png">
-                                                <label class="custom-file-label" for="fileLaporan">Pilih
-                                                    file</label>
+                                        <div class="form-group">
+                                            <label for="fileLaporan" class="font-weight-bold">Foto Profil</label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="fileLaporan"
+                                                        name="foto_profil" accept=".jpg, .jpeg, .png">
+                                                    <label class="custom-file-label" for="fileLaporan">Pilih
+                                                        file</label>
+                                                </div>
                                             </div>
                                         </div>
+
+
                                     </div>
                                     <!-- Kolom Kanan -->
                                     <div class="col-md-6">
@@ -448,23 +453,36 @@ if (isset($_POST['edit_pegawai'])) {
                                                 value="<?=$get_pegawai_byId['username']?>">
                                         </div>
                                         <div class="form-group">
-                                            <label for="password" class="font-weight-bold">Password</label>
-                                            <input type="password" class="form-control" id="password" name="password"
-                                                value="<?=$get_pegawai_byId['password']?>">
+                                            <button type="button" id="ubahPasswordBtn" class="btn btn-secondary">Ubah
+                                                Password</button>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="password2" class="font-weight-bold">Konfirmasi
-                                                Password</label>
-                                            <input type="password" class="form-control" id="password2" name="password2"
-                                                value="<?=$get_pegawai_byId['password']?>">
+
+                                        <div id="passwordFields" style="display: none;">
+                                            <div class="form-group">
+                                                <label for="old_password" class="font-weight-bold">Password Lama</label>
+                                                <input type="password" class="form-control" id="old_password"
+                                                    name="old_password" placeholder="Masukkan Password Lama">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password" class="font-weight-bold">Password Baru</label>
+                                                <input type="password" class="form-control" id="password"
+                                                    name="password" placeholder="Masukkan Password Baru">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password2" class="font-weight-bold">Konfirmasi Password
+                                                    Baru</label>
+                                                <input type="password" class="form-control" id="password2"
+                                                    name="password2" placeholder="Konfirmasi Password Baru">
+                                            </div>
                                         </div>
+
                                     </div>
                                 </div>
                                 <hr>
 
                                 <!-- Tombol Aksi -->
                                 <div class="d-flex justify-content-between mt-4">
-                                    <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
+                                    <a href='index.php' type="button" class="btn btn-danger" >Back</a>
                                     <button type="submit" name="edit_pegawai" class="btn btn-primary">Buat</button>
                                 </div>
                             </form>
@@ -556,6 +574,38 @@ if (isset($_POST['edit_pegawai'])) {
                 <!-- Page level custom scripts -->
                 <script src="../js/demo/datatables-demo.js"></script>
 
+
+                <script>
+                // Update nama file pada label ketika file dipilih
+                document.getElementById('fileLaporan').addEventListener('change', function() {
+                    const fileName = this.files[0] ? this.files[0].name : "Pilih file";
+                    this.nextElementSibling.textContent = fileName;
+                });
+                </script>
+
+
+                <script>
+                document.getElementById('ubahPasswordBtn').addEventListener('click', function() {
+                    const passwordFields = document.getElementById('passwordFields');
+                    if (passwordFields.style.display === 'none' || passwordFields.style
+                        .display === '') {
+                        passwordFields.style.display = 'block';
+                        this.textContent = 'Batal Ubah Password';
+                        this.classList.remove('btn-secondary');
+                        this.classList.add('btn-danger');
+                    } else {
+                        passwordFields.style.display = 'none';
+                        this.textContent = 'Ubah Password';
+                        this.classList.remove('btn-danger');
+                        this.classList.add('btn-secondary');
+
+                        // Reset nilai input saat dibatalkan
+                        document.getElementById('old_password').value = '';
+                        document.getElementById('password').value = '';
+                        document.getElementById('password2').value = '';
+                    }
+                });
+                </script>
 </body>
 
 </html>

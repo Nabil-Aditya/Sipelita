@@ -14,24 +14,59 @@ function logout(){
 }
 
 
-
-
-// get semua pelatihan
-function get_all_pelatihan(){
+function get_data_user_login() {
     global $koneksi;
+
+    // Cek apakah session 'id_user' ada
+    if (!isset($_SESSION['id_user'])) {
+        return null; // Kembalikan null jika session tidak ada
+    }
+
+    // Ambil id_user dari session
+    $id_user = $_SESSION['id_user'];
+
+    // Query untuk mendapatkan data dari user dan student
+    $sql = mysqli_query($koneksi, 
+        "SELECT user.*, supervisor.* 
+         FROM user 
+         JOIN supervisor ON user.id_user = supervisor.id_user 
+         WHERE user.id_user = '$id_user'"
+    );
+
+    // Periksa jika ada hasil yang ditemukan
+    if (mysqli_num_rows($sql) > 0) {
+        return mysqli_fetch_assoc($sql); // Ambil data sebagai array asosiatif
+    } else {
+        return null; // Kembalikan null jika tidak ada data
+    }
+}
+
+
+function get_pelatihan_supervisor() {
+    global $koneksi;
+    $id_supervisor = $_SESSION['id_user']; // Supervisor login
+
     $sql = mysqli_query($koneksi, "
         SELECT pelatihan.*, pegawai.nama AS nama_pegawai
         FROM pelatihan
-        LEFT JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_user
+        INNER JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
+        INNER JOIN supervisor ON supervisor.id_supervisor = pegawai.id_supervisor
+        WHERE supervisor.id_user = $id_supervisor
     ");
-    
+
+    if (!$sql) {
+        die("Query error: " . mysqli_error($koneksi));
+    }
+
     $pelatihan = [];
     while ($row = mysqli_fetch_assoc($sql)) {
         $pelatihan[] = $row;
     }
-    
+
     return $pelatihan;
 }
+
+
 
 
 
@@ -51,6 +86,46 @@ function get_peserta(){
     }
     return $peserta;
 }
+
+function get_peserta_pelaporan(){
+    global $koneksi;
+    
+    // Ambil id_pelaporan dari parameter GET
+    $id_pelaporan = $_GET['id_pelaporan'];
+
+    // Query untuk mengambil id_pelatihan berdasarkan id_pelaporan
+    $sql_pelatihan = mysqli_query($koneksi, "
+        SELECT id_pelatihan 
+        FROM pelaporan 
+        WHERE id_pelaporan = '$id_pelaporan'
+    ");
+
+    // Ambil id_pelatihan dari hasil query
+    $data_pelatihan = mysqli_fetch_assoc($sql_pelatihan);
+    if (!$data_pelatihan) {
+        return []; // Jika id_pelatihan tidak ditemukan
+    }
+
+    $id_pelatihan = $data_pelatihan['id_pelatihan'];
+
+    // Query untuk mengambil peserta berdasarkan id_pelatihan
+    $sql = mysqli_query($koneksi, "
+        SELECT peserta.id_pegawai, pegawai.nama 
+        FROM peserta 
+        JOIN pegawai ON peserta.id_pegawai = pegawai.id_pegawai 
+        WHERE peserta.id_pelatihan = '$id_pelatihan'
+    ");
+
+    // Menyimpan hasil peserta ke dalam array
+    $peserta = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $peserta[] = $row;
+    }
+
+    return $peserta;
+}
+
+
 
 
 function status_pelatihan($data) {
@@ -78,31 +153,48 @@ function status_pelatihan($data) {
                 }
             }
 
-            // Dapatkan id_user dari tabel pelatihan
-            $getUserQuery = "SELECT id_pegawai FROM pelatihan WHERE id_pelatihan = '$id_pelatihan'";
+            // Dapatkan id_pegawai dari tabel pelatihan dan gunakan untuk mengambil id_user dari tabel pegawai
+            $getUserQuery = "SELECT pelatihan.id_pegawai, pelatihan.kompetensi
+                             FROM pelatihan
+                             JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
+                             WHERE pelatihan.id_pelatihan = '$id_pelatihan'";
+
             $result = mysqli_query($koneksi, $getUserQuery);
-            $user = mysqli_fetch_assoc($result);
-            $id_user = $user['id_pegawai'];
+            if ($result && mysqli_num_rows($result) > 0) {
+                $user = mysqli_fetch_assoc($result);
+                $id_pegawai = $user['id_pegawai']; // Ambil id_pegawai dari hasil join
+                $kompetensi = $user['kompetensi'];
 
-            // Insert notifikasi
-            $pesan = "Pengajuan pelatihan anda $status";
-            $type = "pelatihan";
-            $tgl = date('Y-m-d');
-            $is_read = 0;
+                // Dapatkan id_user dari tabel pegawai berdasarkan id_pegawai
+                $getUserIdQuery = "SELECT id_user FROM pegawai WHERE id_pegawai = '$id_pegawai'";
+                $userResult = mysqli_query($koneksi, $getUserIdQuery);
+                $userData = mysqli_fetch_assoc($userResult);
+                $id_user = $userData['id_user']; // Ambil id_user
 
-            $insertNotifikasiQuery = "INSERT INTO notifikasi (pesan, type, id_user, tgl, is_read) VALUES ('$pesan', '$type', '$id_user', '$tgl', '$is_read')";
+                // Insert notifikasi
+                $pesan = "Pengajuan pelatihan kompetensi $kompetensi anda $status";
+                $type = "pelatihan";
+                $tgl = date('Y-m-d');
+                $is_read = 0;
 
-            if (!mysqli_query($koneksi, $insertNotifikasiQuery)) {
+                $insertNotifikasiQuery = "INSERT INTO notifikasi (pesan, type, id_user, tgl, is_read) VALUES ('$pesan', '$type', '$id_user', '$tgl', '$is_read')";
+
+                if (!mysqli_query($koneksi, $insertNotifikasiQuery)) {
+                    echo "<script>
+                        alert('Gagal menyimpan notifikasi: " . mysqli_error($koneksi) . "');
+                    </script>";
+                }
+
+                // Alert sukses
                 echo "<script>
-                    alert('Gagal menyimpan notifikasi: " . mysqli_error($koneksi) . "');
+                    alert('Status pelatihan berhasil diperbarui dan notifikasi berhasil dikirim!');
+                    window.location.href = 'index.php';
+                </script>";
+            } else {
+                echo "<script>
+                    alert('Gagal mengambil data user: " . mysqli_error($koneksi) . "');
                 </script>";
             }
-
-            // Alert sukses
-            echo "<script>
-                alert('Status pelatihan berhasil diperbarui dan notifikasi berhasil dikirim!');
-                window.location.href = 'index.php';
-            </script>";
         } else {
             echo "<script>
                 alert('Gagal memperbarui status pelatihan: " . mysqli_error($koneksi) . "');
@@ -227,16 +319,44 @@ function edit_pelatihan($data) {
 }
 
 
-function getall_pelatihan(){
+function getall_pelatihan() {
     global $koneksi;
-    $id_pegawai = $_SESSION['id_user'];
-    $sql = mysqli_query($koneksi, "SELECT * FROM pelatihan WHERE id_pegawai = '$id_pegawai'");
-    $pelatihan = [];
-    while ($row = mysqli_fetch_assoc($sql)) {
-        $pelatihan[] = $row;
+
+    // Ambil id_user dari sesi login
+    $id_user = $_SESSION['id_user'];
+
+    // Cari id_supervisor berdasarkan id_user yang login
+    $query_supervisor = mysqli_query($koneksi, "
+        SELECT id_supervisor 
+        FROM supervisor 
+        WHERE id_user = '$id_user'
+    ");
+
+    // Pastikan supervisor ditemukan
+    if ($row_supervisor = mysqli_fetch_assoc($query_supervisor)) {
+        $id_supervisor = $row_supervisor['id_supervisor'];
+
+        // Ambil pelatihan berdasarkan pegawai yang diawasi oleh supervisor ini
+        $query_pelatihan = mysqli_query($koneksi, "
+            SELECT pelatihan.* 
+            FROM pelatihan
+            JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
+            WHERE pegawai.id_supervisor = '$id_supervisor'
+        ");
+
+        // Kumpulkan data pelatihan
+        $pelatihan = [];
+        while ($row_pelatihan = mysqli_fetch_assoc($query_pelatihan)) {
+            $pelatihan[] = $row_pelatihan;
+        }
+
+        return $pelatihan;
+    } else {
+        // Jika supervisor tidak ditemukan, kembalikan array kosong
+        return [];
     }
-    return $pelatihan;
 }
+
 
 function getall_pelatihan_byId(){
     global $koneksi;
@@ -254,6 +374,30 @@ function getall_pelatihan_byId(){
     
     return mysqli_fetch_assoc($sql); // Mengembalikan satu baris saja
 }
+function getall_pelatihan_byIdPelaporan() {
+    global $koneksi;
+
+    // Ambil id_pelaporan dari parameter GET
+    $id_pelaporan = $_GET['id_pelaporan'];
+
+    // Query untuk mengambil data pelaporan beserta data pelatihan terkait
+    $sql = mysqli_query($koneksi, "
+        SELECT 
+            pelaporan.*, 
+            pelatihan.*, 
+            prodi.prodi, 
+            jurusan.jurusan
+        FROM pelaporan
+        JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan
+        JOIN prodi ON pelatihan.id_prodi = prodi.id_prodi
+        JOIN jurusan ON prodi.id_jurusan = jurusan.id_jurusan
+        WHERE pelaporan.id_pelaporan = '$id_pelaporan'
+    ");
+
+    // Mengembalikan satu baris data pelaporan dan pelatihan
+    return mysqli_fetch_assoc($sql);
+}
+
 
 
 
@@ -328,10 +472,8 @@ function getall_pelaporan_supervisor() {
     SELECT pelaporan.*, pelaporan.status AS status_pelaporan, pelatihan.*, pegawai.nama AS nama_pegawai
     FROM pelaporan
     LEFT JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan
-    LEFT JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_user
+    LEFT JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
 ");
-
-
 
     if (!$sql) {
         die("Query Error: " . mysqli_error($koneksi));
@@ -368,6 +510,26 @@ function get_pelaporan_supervisorByID() {
     } else {
         return null; // Query gagal
     }
+}
+
+
+function get_status_pelaporan_byId(){
+    global $koneksi;
+
+    // Ambil id_pelaporan dari parameter GET
+    $id_pelaporan = $_GET['id_pelaporan'];
+
+    // Query untuk mengambil status pelaporan berdasarkan id_pelaporan
+    $sql = mysqli_query($koneksi, "
+        SELECT status 
+        FROM pelaporan 
+        WHERE id_pelaporan = '$id_pelaporan'
+    ");
+
+    // Ambil status dari hasil query
+    $data = mysqli_fetch_assoc($sql);
+
+    return $data ? $data['status'] : null; // Mengembalikan status atau null jika tidak ditemukan
 }
 
 
@@ -462,14 +624,61 @@ function status_pelaporan($data) {
     $status = $data['status'];
     $komentar = $data['komentar'];
 
+    // Insert komentar pelaporan
     $insertKomentarQuery = "INSERT INTO komentar_pelaporan (id_pelaporan, komentar) VALUES ('$id_pelaporan', '$komentar')";
 
     if (mysqli_query($koneksi, $insertKomentarQuery)) {
+        // Update status pelaporan
         $updatePelaporanQuery = "UPDATE pelaporan SET status = '$status' WHERE id_pelaporan = '$id_pelaporan'";
         
         if (mysqli_query($koneksi, $updatePelaporanQuery)) {
+            // Dapatkan informasi tambahan dari tabel pelaporan
+            $getInfoQuery = "SELECT pelaporan.id_pelatihan, pelatihan.kompetensi, pelatihan.id_pegawai 
+                             FROM pelaporan 
+                             JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan 
+                             WHERE pelaporan.id_pelaporan = '$id_pelaporan'";
+            
+            $infoResult = mysqli_query($koneksi, $getInfoQuery);
+            if ($infoResult && mysqli_num_rows($infoResult) > 0) {
+                $info = mysqli_fetch_assoc($infoResult);
+                $kompetensi = $info['kompetensi'];
+                $id_pegawai = $info['id_pegawai'];
+
+                // Dapatkan id_user dari tabel pegawai
+                $getUserQuery = "SELECT id_user FROM pegawai WHERE id_pegawai = '$id_pegawai'";
+                $userResult = mysqli_query($koneksi, $getUserQuery);
+                $userData = mysqli_fetch_assoc($userResult);
+                $id_user = $userData['id_user'];
+
+                // Insert notifikasi
+                $pesan = "Pengajuan pelaporan kompetensi $kompetensi anda $status";
+                $type = "pelaporan";
+                $tgl = date('Y-m-d');
+                $is_read = 0;
+
+                $insertNotifikasiQuery = "INSERT INTO notifikasi (pesan, type, id_user, tgl, is_read) VALUES ('$pesan', '$type', '$id_user', '$tgl', '$is_read')";
+                if (!mysqli_query($koneksi, $insertNotifikasiQuery)) {
+                    echo "<script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan',
+                            text: 'Gagal menyimpan notifikasi: " . mysqli_error($koneksi) . "'
+                        });
+                    </script>";
+                }
+            } else {
+                echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi Kesalahan',
+                        text: 'Gagal mengambil data tambahan: " . mysqli_error($koneksi) . "'
+                    });
+                </script>";
+            }
+
+            // Alert sukses
             echo "<script>
-                alert('Status pelaporan berhasil diperbarui.');
+                alert('Status pelaporan berhasil diperbarui dan notifikasi berhasil dikirim.');
                 window.location.href = 'index.php';
             </script>";
         } else {
@@ -491,6 +700,24 @@ function status_pelaporan($data) {
         </script>";
     }
 }
+
+function read_notifikasi($id) {
+    global $koneksi;
+
+    // Query untuk memperbarui status 'is_read' menjadi 1 (dibaca) menggunakan query biasa
+    $query = "UPDATE notifikasi SET is_read = 1 WHERE id = $id";
+    
+    // Eksekusi query
+    $result = mysqli_query($koneksi, $query);
+    
+    // Cek apakah query berhasil
+    if ($result) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 
 

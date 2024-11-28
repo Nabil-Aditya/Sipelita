@@ -4,9 +4,11 @@
 include '../koneksi.php'; 
 include 'function.php'; 
 
-$pelaporan = get_pelaporan_supervisorByID();
+$pelaporan = getall_pelatihan_byIdPelaporan();
 $jurusan = getall_jurusan();
 $prodi = getall_prodi();
+$peserta = get_peserta_pelaporan();
+$status = get_status_pelaporan_byId();
 
 
 //Jika pengajuan pelatihan di tolak, (edit kesalahan)
@@ -385,20 +387,25 @@ if (isset($_POST['status_pelaporan'])) {
                                     <div class="form-group">
                                         <label for="programStudi" class="font-weight-bold">Program Studi</label>
                                         <input type="text" class="form-control bg-light-200" id="programStudi"
-                                            placeholder="Masukkan Program Studi" value="<?=$pelaporan['nama_prodi']?>"
+                                            placeholder="Masukkan Program Studi" value="<?=$pelaporan['prodi']?>"
                                             readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="jurusan" class="font-weight-bold">Jurusan</label>
                                         <input type="text" class="form-control bg-light-200" id="jurusan"
-                                            placeholder="Masukkan Jurusan" value="<?=$pelaporan['nama_jurusan']?>"
+                                            placeholder="Masukkan Jurusan" value="<?=$pelaporan['jurusan']?>"
                                             readonly>
                                     </div>
                                     <div class="form-group">
-                                        <label for="namaPeserta" class="font-weight-bold">Nama Peserta</label>
-                                        <textarea class="form-control bg-light-200" id="namaPeserta" rows="2"
-                                            placeholder="Masukkan Nama Peserta"
-                                            readonly><?=$pelaporan['nama_peserta']?></textarea>
+                                        <label for="peserta" class="font-weight-bold">Peserta</label>
+                                        <div id="selectedNames" class="d-flex flex-wrap gap-1">
+                                            <?php foreach ($peserta as $data) { ?>
+                                            <p
+                                                class="badge bg-light text-dark rounded-pill px-3 py-2 border border-secondary">
+                                                <?=$data['nama']?></p>
+                                            <?php } ?>
+                                        </div>
+                                        <input type="hidden" name="peserta[]" id="pesertaHidden">
                                     </div>
 
                                     <div class="form-group">
@@ -465,6 +472,16 @@ if (isset($_POST['status_pelaporan'])) {
                                                 Unduh Berkas
                                             </a>
                                         </div>
+                                        <hr>
+                                        <label for="fileLaporan" class="font-weight-bold text-success">Berkas Sertifikat
+                                            (PDF) Tersedia:</label>
+                                        <div class="input-group">
+                                            <a href="../assets/sertifikat_lpj/<?= $pelaporan['sertifikat'] ?>"
+                                                download="<?= basename($pelaporan['sertifikat']) ?>"
+                                                class="btn btn-primary">
+                                                Unduh Berkas
+                                            </a>
+                                        </div>
                                         <?php else : ?>
                                         <label for="fileLaporan" class="font-weight-bold text-danger">*Belum mengupload berkas</label>
                                         <?php endif; ?>
@@ -486,7 +503,7 @@ if (isset($_POST['status_pelaporan'])) {
                             <hr>
 
 
-                            <?php if ($pelaporan['status_pelaporan'] !== 'Belum Mengupload LPJ' && $pelaporan['status_pelaporan'] !== 'Diterima' && $pelaporan['status_pelaporan'] !== 'Ditolak') : ?>
+                            <?php if ($status !== 'Belum Mengupload LPJ' && $status !== 'Diterima' && $status !== 'Ditolak') : ?>
                             <div class="col-12">
                                 <form method="post">
                                     <div class="row">
@@ -511,12 +528,12 @@ if (isset($_POST['status_pelaporan'])) {
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-end mt-4">
-                                        <button type="reset" class="btn btn-danger mr-2" id="resetButton">Reset</button>
                                         <button type="submit" name="status_pelaporan"
                                             class="btn btn-primary">Buat</button>
                                     </div>
                                 </form>
                             </div>
+                            <hr>
                             <?php endif; ?>
 
 

@@ -26,9 +26,9 @@ if (isset($_POST['buat_lpj'])) {
 $berkas = get_berkas_byPelatihan();
 $komentar = get_komentar_byPelatihan();
 
-echo '<pre>'; // Membuat format yang lebih mudah dibaca
-var_dump($komentar); // atau bisa juga menggunakan print_r($komentar);
-echo '</pre>';
+// echo '<pre>'; // Membuat format yang lebih mudah dibaca
+// var_dump($komentar); // atau bisa juga menggunakan print_r($komentar);
+// echo '</pre>';
 ?>
 
 <!DOCTYPE html>
@@ -717,7 +717,7 @@ echo '</pre>';
                             <?php if ($pelatihan['status'] == 'Diterima'): ?>
                             <form method="post" enctype="multipart/form-data">
                                 <div class="alert alert-success" role="alert">
-                                    <strong>Perhatian!</strong> Pengajuan anda diterima, mohon mengajukan LPJ
+                                    <strong>Perhatian!</strong> Pengajuan anda diterima, <?=$komentar['komentar']?>, mohon mengajukan LPJ
                                     <a href="add_lpj.php?id_pelatihan=<?= $pelatihan['id_pelatihan'] ?>">[ Klik
                                         disini ]</a>
                                 </div>

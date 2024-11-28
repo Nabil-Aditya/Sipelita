@@ -427,8 +427,28 @@ if (isset($_POST['create_pelatihan'])) {
                                                 'selectedNames');
                                             let pesertaSelected = [];
 
-                                            // Tambahkan event listener untuk setiap item dropdown
+                                            // Input pencarian
+                                            const searchInput = document.getElementById('searchInput');
                                             const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+                                            // Tambahkan fitur pencarian
+                                            searchInput.addEventListener('input', function() {
+                                                const filter = searchInput.value.toLowerCase();
+
+                                                dropdownItems.forEach(item => {
+                                                    const itemName = item.textContent
+                                                        .toLowerCase();
+
+                                                    // Tampilkan atau sembunyikan item berdasarkan pencarian
+                                                    if (itemName.includes(filter)) {
+                                                        item.style.display = '';
+                                                    } else {
+                                                        item.style.display = 'none';
+                                                    }
+                                                });
+                                            });
+
+                                            // Tambahkan event listener untuk setiap item dropdown
                                             dropdownItems.forEach(item => {
                                                 item.addEventListener('click', function() {
                                                     const id = this.getAttribute('data-id');

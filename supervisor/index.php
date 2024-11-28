@@ -2,13 +2,20 @@
 <?php 
 include '../koneksi.php'; 
 include 'function.php'; 
+$login = get_data_user_login();
 
-$get_pelatihan =  get_all_pelatihan();
-$get_pelaporan =  getall_pelaporan_supervisor();
+$get_pelatihan =  get_pelatihan_supervisor();
+$get_pelaporan = getall_pelaporan_supervisor();
 
 if (isset($_POST['logout'])) {
     logout();
 }
+
+if ($_SESSION['role'] === 'admin') {
+    echo "<script>window.location.href = '../admin/index.php';</script>";
+} else if ($_SESSION['role'] === 'pegawai'){
+    echo "<script>window.location.href = '../pegawai/index.php';</script>";
+} 
 ?>
 
 
@@ -422,9 +429,9 @@ if ($currentHour >= 0 && $currentHour < 12) {
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$login['username']?></span>
                            <img class="img-profile rounded-circle obejct-cover"
-                               src="../img/eren.jpg? $login['foto_profil'] ?>"
+                               src="../assets/foto_supervisor/<?=$login['foto_profil']?>"
                                style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                        </a>
 
@@ -467,10 +474,10 @@ if ($currentHour >= 0 && $currentHour < 12) {
                     </div>
                     
                      <div class="profile-container" style="display: flex; align-items: center;">
-                        <img src="../img/eren.jpg?= $login['foto_profil'] ?>" alt="Profile Picture"
+                        <img src="../assets/foto_supervisor/<?=$login['foto_profil'] ?>" alt="Profile Picture"
                             style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; object-position: center; margin-right: 16px;">
                         <div class="profile-text">
-                            <h4><?php echo $greeting; ?>, <?php echo "Hellow World" ?>!</h4>
+                            <h4><?php echo $greeting; ?>, <?= $login['nama'] ?> !</h4>
                             <p id="timeDisplay">
                                 <!-- Tampilkan waktu awal dengan PHP -->
                                 <?php echo getIndonesianDayName(date('l')) . ', ' . date('j F Y') . ', ' . date('H:i:s'); ?>
