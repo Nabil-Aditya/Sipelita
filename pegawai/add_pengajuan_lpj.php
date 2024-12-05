@@ -536,7 +536,8 @@ $komentar = get_komentar_byPelatihan();
                                                     <?php } ?>
                                                 </ul>
                                             </div>
-
+                                        
+                                            <!-- Test -->
                                             <p class="mt-3">Nama Terpilih:</p>
                                             <div id="selectedNames" class="selected-names-container mt-2">
                                                 <?php 

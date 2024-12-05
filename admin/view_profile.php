@@ -5,7 +5,7 @@ include '../koneksi.php';
 include 'function.php'; 
 
 //get form value
-$get_pegawai_byId = get_data_user_login($_GET['id_user']);
+$get_user_byId = get_admin_byId($_GET['id_user']);
 
 
 //edit pegawai
@@ -340,9 +340,9 @@ if (isset($_POST['edit_pegawai'])) {
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span
-                                    class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$get_pegawai_byId['username']?></span>
+                                    class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$get_user_byId['username']?></span>
                                 <img class="img-profile rounded-circle"
-                                    src="../assets/foto_pegawai/<?=$get_pegawai_byId['foto_profil']?>">
+                                    src="../img/icon-tittle-sipelita.jpg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -384,73 +384,12 @@ if (isset($_POST['edit_pegawai'])) {
 
                             <form method="post" enctype="multipart/form-data" id="pengajuanForm">
                                 <div class="row">
-                                    <!-- Kolom Kiri -->
-                                    <div class="col-md-12 mb-5">
-                                        <div class="form-group d-flex justify-content-center">
-                                            <img src="../assets/foto_pegawai/<?=$get_pegawai_byId['foto_profil']?>"
-                                                alt="Foto" class="img-fluid rounded-circle"
-                                                style="width: 200px; height: 200px; object-fit: cover;">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="nip" class="font-weight-bold">NIP</label>
-                                            <input type="text" class="form-control" id="nip" name="nip" readonly
-                                                value="<?=$get_pegawai_byId['nip']?>" placeholder="Masukkan NIP">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="nama" class="font-weight-bold">Nama </label>
-                                            <input type="text" class="form-control" id="nama" name="nama"
-                                                value="<?=$get_pegawai_byId['nama']?>" placeholder="Masukkan Nama">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="jabatan" class="font-weight-bold">Jabatan</label>
-                                            <select class="form-control" id="jabatan" name="jabatan">
-                                                <option value="">Pilih Jabatan</option>
-                                                <option value="pegawai"
-                                                    <?= ($get_pegawai_byId['role'] == 'pegawai') ? 'selected' : '' ?>>
-                                                    Pegawai</option>
-                                                <option value="supervisor"
-                                                    <?= ($get_pegawai_byId['role'] == 'supervisor') ? 'selected' : '' ?>>
-                                                    Supervisor</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="email" class="font-weight-bold">Email </label>
-                                            <input type="email" class="form-control" id="email" name="email"
-                                                value="<?=$get_pegawai_byId['email']?>" placeholder="Masukkan Email">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="telp" class="font-weight-bold">Telp </label>
-                                            <input type="text" class="form-control" id="telp" name="telp"
-                                                value="<?=$get_pegawai_byId['telp']?>" placeholder="Masukkan Telp">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="alamat" class="font-weight-bold">Alamat</label>
-                                            <textarea class="form-control" id="alamat" name="alamat" rows="3"
-                                                placeholder="Masukkan Alamat"><?=$get_pegawai_byId['alamat']?></textarea>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="fileLaporan" class="font-weight-bold">Foto Profil</label>
-                                            <div class="input-group">
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="fileLaporan"
-                                                        name="foto_profil" accept=".jpg, .jpeg, .png">
-                                                    <label class="custom-file-label" for="fileLaporan">Pilih
-                                                        file</label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
                                     <!-- Kolom Kanan -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="username" class="font-weight-bold">Username</label>
                                             <input type="text" class="form-control" id="username" name="username"
-                                                value="<?=$get_pegawai_byId['username']?>">
+                                                value="<?=$get_user_byId['username']?>">
                                         </div>
                                         <div class="form-group">
                                             <button type="button" id="ubahPasswordBtn" class="btn btn-secondary">Ubah

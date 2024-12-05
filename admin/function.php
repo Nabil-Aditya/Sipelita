@@ -397,6 +397,25 @@ function get_supervisor_byId($id_user) {
 }
 
 
+function get_admin_byId(){
+    global $koneksi;
+
+    // Escape id_user untuk menghindari SQL Injection
+    $id_user = $_GET['id_user'];
+
+    // Query untuk mendapatkan data dari tabel user dan supervisor
+    $sql = mysqli_query($koneksi, 
+        "SELECT * FROM user WHERE id_user = '$id_user'"
+    );
+    // Periksa jika ada hasil yang ditemukan
+    if (mysqli_num_rows($sql) > 0) {
+        return mysqli_fetch_assoc($sql); // Ambil data sebagai array asosiatif
+    } else {
+        return null; 
+    }
+}
+
+
 
 
 // ---------------------------------------------------------------------------JURUSAN-
