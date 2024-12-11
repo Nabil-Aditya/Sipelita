@@ -1,6 +1,8 @@
+<!-- KONEKSI -->
 <?php
-include '../koneksi.php'; 
-include 'function.php'; 
+include '../koneksi.php';
+include '../loader.php';
+include 'function.php';
 
 $jurusan = getall_jurusan();
 $prodi = getall_prodi();
@@ -11,41 +13,159 @@ if (isset($_POST['create_pelatihan'])) {
     pengajuan_pelatihan($_POST);
 }
 
+//logout
+if (isset($_POST['logout'])) {
+    logout();
+}
+
+//notifikasi
+$notifikasi = get_notifikasi();
+
+//notifikasi unread
+$unread = count(array_filter($notifikasi, function ($notif) {
+    return $notif['is_read'] == 0;
+}));
+
+// Read notikasi
+if (isset($_POST['read_notifikasi'])) {
+    $id_notifikasi = $_POST['id_notifikasi']; // Get the ID from the form submission
+    read_notifikasi($id_notifikasi); // Pass the ID to the function
+}
+
+// delete_notifikasi);
+if (isset($_POST['delete_notifikasi'])) {
+    $id_notifikasi = $_POST['id_notifikasi']; // Get the ID from the form submission
+    delete_notifikasi($id_notifikasi); // Pass the ID to the function
+}
+
+//get semua pelatihan
+$pelatihan = getall_pelatihan();
+$jumlah_pelatihan = count($pelatihan);
+$jumlah_pelatihan_diproses = 0;
+foreach ($pelatihan as $item) {
+    if ($item['status'] === 'Diproses') {
+        $jumlah_pelatihan_diproses++;
+    }
+}
+$jumlah_pelatihan_ditolak = 0;
+foreach ($pelatihan as $item) {
+    if ($item['status'] === 'Ditolak') {
+        $jumlah_pelatihan_diproses++;
+    }
+}
+$jumlah_pelatihan_diterima = 0;
+foreach ($pelatihan as $item) {
+    if ($item['status'] === 'Diterima') {
+        $jumlah_pelatihan_diproses++;
+    }
+}
+
+//get supervisor sendiri
+$supervisor = get_supervisor_byPegawai();
+
+//get pelaporan
+$pelaporan = getall_pelaporan();
+$jumlah_pelaporan = count($pelaporan);
+$jumlah_pelaporan_diproses = 0;
+foreach ($pelaporan as $item) {
+    if ($item['status'] === 'Diproses') {
+        $jumlah_pelaporan_diproses++;
+    }
+}
+$jumlah_pelaporan_ditolak = 0;
+foreach ($pelaporan as $item) {
+    if ($item['status'] === 'Ditolak') {
+        $jumlah_pelaporan_diproses++;
+    }
+}
+$jumlah_pelaporan_diterima = 0;
+foreach ($pelaporan as $item) {
+    if ($item['status'] === 'Diterima') {
+        $jumlah_pelaporan_diproses++;
+    }
+}
+
+//get data session login
+$login = get_data_user_login();
+
+//tidak boleh mengakses halaman jika belum login
+if (!$login) {
+    echo "<script>window.location.href = '../login.php';</script>";
+}
+
+if ($_SESSION['role'] === 'admin') {
+    echo "<script>window.location.href = '../admin/index.php';</script>";
+} else if ($_SESSION['role'] === 'supervisor') {
+    echo "<script>window.location.href = '../admin/index.php';</script>";
+}
+
+?>
+
+<?php
+date_default_timezone_set('Asia/Jakarta'); // Sesuaikan timezone jika diperlukan
+
+// Mengambil nama hari dalam Bahasa Indonesia
+function getIndonesianDayName($dayName)
+{
+    $dayNames = array(
+        'Sunday' => 'Minggu',
+        'Monday' => 'Senin',
+        'Tuesday' => 'Selasa',
+        'Wednesday' => 'Rabu',
+        'Thursday' => 'Kamis',
+        'Friday' => 'Jumat',
+        'Saturday' => 'Sabtu'
+    );
+    return $dayNames[$dayName];
+}
+
+// Dapatkan jam saat ini
+$currentHour = date('H');
+
+$greeting = "Selamat Pagi";
+
+if ($currentHour >= 0 && $currentHour < 12) {
+    $greeting = "Selamat Pagi";
+} elseif ($currentHour >= 12 && $currentHour < 18) {
+    $greeting = "Selamat Siang";
+} else {
+    $greeting = "Selamat Malam";
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Add Pengajuan Pelatihan</title>
+    <title>Dashboard Pegawai</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
-    <!-- Custom fonts for this template-->
+    <!-- Font khusus untuk templat ini -->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template-->
+    <!-- Font khusus untuk templat ini -->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-    <!-- Custom styles for this template-->
-    <link href="../css/pegawai/add-pengajuan-pelatihan.css" rel="stylesheet">
-
-    <!-- select -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+    <!-- Kustom khusus untuk templat ini -->
+    <link href="../css/pegawai/index-pegawai.css" rel="stylesheet">
 
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-</head>
+    <!-- Font khusus untuk templat ini -->
+    <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- Memastikan DataTables.js sudah di-link -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js">
+    </script>
+
 
 </head>
 
@@ -101,8 +221,8 @@ if (isset($_POST['create_pelatihan'])) {
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pilih Opsi:</h6>
-                        <a class="collapse-item" href="view_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
-                        <a class="collapse-item" href="view_pengajuan_lpj.php">Pengajuan LPJ</a>
+                        <a class="collapse-item" href="data_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
+                        <a class="collapse-item" href="data_pengajuan_lpj.php">Pengajuan LPJ</a>
                     </div>
                 </div>
             </li>
@@ -115,34 +235,7 @@ if (isset($_POST['create_pelatihan'])) {
             </li>
 
             <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                MENU PENGATURAN
-            </div>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Pengatuan</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Pilih Opsi:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Colors</a>
-                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+            <hr class="sidebar-divider d-none d-md-block mt-2">
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -178,141 +271,63 @@ if (isset($_POST['create_pelatihan'])) {
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                <?php if ($unread > 0) { ?>
+                                    <span class="badge badge-danger badge-counter"><?= $unread ?></span>
+                                <?php } ?>
+
                             </a>
+
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
+                                aria-labelledby="alertsDropdown"
+                                style="max-height: 300px !important; overflow-y: scroll !important; overflow-x: hidden !important;">
                                 <h6 class="dropdown-header">
                                     Pemberitahuan
                                 </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
-                        </li>
+                                <?php foreach ($notifikasi as $data) { ?>
+                                    <div class="d-flex align-items-center w-100 <?php echo ($data['is_read'] == 1) ? 'bg-kustom' : 'bg-light'; ?>">
+                                        <form method="post" class="flex-grow-1 w-100">
+                                            <input type="number" name="id_notifikasi" value="<?= $data['id_notifikasi'] ?>" hidden>
+                                            <button type="submit" name="read_notifikasi"
+                                                class="dropdown-item d-flex align-items-center w-100 <?php echo ($data['is_read'] == 1) ? 'bg-custom' : 'bg-light'; ?>">
+                                                <div class="mr-3">
+                                                    <div
+                                                        class="icon-circle bg-<?php echo (strpos($data['pesan'], 'tolak') !== false) ? 'danger' : (strpos($data['pesan'], 'terima') !== false ? 'success' : 'primary'); ?>">
+                                                        <i class="fas fa-file-alt text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-between w-100">
+                                                    <div>
+                                                        <div class="small text-gray-500"><?= $data['tgl'] ?></div>
+                                                        <span class="font-weight-bold"><?= $data['pesan'] ?></span>
+                                                        <?php if ($data['is_read'] == 0) { ?>
+                                                            <span class="unread-indicator"></span>
+                                                        <?php } ?>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </form>
 
-                        <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Pesan
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="../img/undraw_profile_1.svg" alt="...">
-                                        <div class="status-indicator bg-success"></div>
+                                        <?php if ($data['is_read'] == 1) { ?>
+                                            <form method="post" class="ml-2">
+                                                <input type="hidden" name="id_notifikasi" value="<?= $data['id_notifikasi'] ?>">
+                                                <button type="submit" name="delete_notifikasi" class="btn p-0">
+                                                    <div class="icon-circle bg-danger text-white ml-1 mr-3"
+                                                        style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                                        <i class="fas fa-trash"></i>
+                                                    </div>
+                                                </button>
+                                            </form>
+                                        <?php } ?>
                                     </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                            problem I've been having.</div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg" alt="...">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">I have the photos that you ordered last month, how
-                                            would you like them sent to you?</div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg" alt="...">
-                                        <div class="status-indicator bg-warning"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Last month's report looks great, I am very happy with
-                                            the progress so far, keep up the good work!</div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                            alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                            told me that people say this to all dogs, even if they aren't good...</div>
-                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                                <?php } ?>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
                         </li>
 
@@ -322,23 +337,20 @@ if (isset($_POST['create_pelatihan'])) {
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle" src="../img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"
+                                    style="display: inline-block; vertical-align: middle;">
+                                    <?= $login['username'] ?>
+                                </span>
+                                <img class="img-profile rounded-circle obejct-cover"
+                                    src="../assets/foto_pegawai/<?= $login['foto_profil'] ?>"
+                                    style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="view_profile.php?id_user=<?= $_SESSION['id_user'] ?>">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profil
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Pengaturan
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Aktivitas
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -376,8 +388,8 @@ if (isset($_POST['create_pelatihan'])) {
                                                 <option value="" disabled selected>Pilih Jurusan</option>
 
                                                 <?php foreach ($jurusan as $data) { ?>
-                                                <option value="<?=$data['id_jurusan']?>"><?=$data['jurusan']?></option>
-                                                <?php }?>
+                                                    <option value="<?= $data['id_jurusan'] ?>"><?= $data['jurusan'] ?></option>
+                                                <?php } ?>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -386,8 +398,8 @@ if (isset($_POST['create_pelatihan'])) {
                                                 <option value="" disabled selected>Pilih prodi</option>
 
                                                 <?php foreach ($prodi as $data) { ?>
-                                                <option value="<?=$data['id_prodi']?>"><?=$data['prodi']?></option>
-                                                <?php }?>
+                                                    <option value="<?= $data['id_prodi'] ?>"><?= $data['prodi'] ?></option>
+                                                <?php } ?>
                                             </select>
                                         </div>
 
@@ -405,12 +417,13 @@ if (isset($_POST['create_pelatihan'])) {
                                                         <input type="text" id="searchInput" class="form-control mb-2"
                                                             placeholder="Cari nama..." />
                                                     </li>
-                                                    <?php foreach ($pegawai as $data) { 
-                                                    // Filter hanya menampilkan pegawai dengan ID valid
-                                                    if ($data['id_pegawai'] > 0) { ?>
-                                                    <li class="dropdown-item" data-value="<?=$data['nama']?>"
-                                                        data-id="<?=$data['id_pegawai']?>"><?=$data['nama']?></li>
-                                                    <?php } } ?>
+                                                    <?php foreach ($pegawai as $data) {
+                                                        // Filter hanya menampilkan pegawai dengan ID valid
+                                                        if ($data['id_pegawai'] > 0) { ?>
+                                                            <li class="dropdown-item" data-value="<?= $data['nama'] ?>"
+                                                                data-id="<?= $data['id_pegawai'] ?>"><?= $data['nama'] ?></li>
+                                                    <?php }
+                                                    } ?>
                                                 </ul>
                                             </div>
 
@@ -422,96 +435,96 @@ if (isset($_POST['create_pelatihan'])) {
                                         </div>
 
                                         <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
-                                            let selectedNamesContainer = document.getElementById(
-                                                'selectedNames');
-                                            let pesertaSelected = [];
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                let selectedNamesContainer = document.getElementById(
+                                                    'selectedNames');
+                                                let pesertaSelected = [];
 
-                                            // Input pencarian
-                                            const searchInput = document.getElementById('searchInput');
-                                            const dropdownItems = document.querySelectorAll('.dropdown-item');
+                                                // Input pencarian
+                                                const searchInput = document.getElementById('searchInput');
+                                                const dropdownItems = document.querySelectorAll('.dropdown-item');
 
-                                            // Tambahkan fitur pencarian
-                                            searchInput.addEventListener('input', function() {
-                                                const filter = searchInput.value.toLowerCase();
+                                                // Tambahkan fitur pencarian
+                                                searchInput.addEventListener('input', function() {
+                                                    const filter = searchInput.value.toLowerCase();
 
+                                                    dropdownItems.forEach(item => {
+                                                        const itemName = item.textContent
+                                                            .toLowerCase();
+
+                                                        // Tampilkan atau sembunyikan item berdasarkan pencarian
+                                                        if (itemName.includes(filter)) {
+                                                            item.style.display = '';
+                                                        } else {
+                                                            item.style.display = 'none';
+                                                        }
+                                                    });
+                                                });
+
+                                                // Tambahkan event listener untuk setiap item dropdown
                                                 dropdownItems.forEach(item => {
-                                                    const itemName = item.textContent
-                                                        .toLowerCase();
+                                                    item.addEventListener('click', function() {
+                                                        const id = this.getAttribute('data-id');
+                                                        const nama = this.getAttribute(
+                                                            'data-value');
 
-                                                    // Tampilkan atau sembunyikan item berdasarkan pencarian
-                                                    if (itemName.includes(filter)) {
-                                                        item.style.display = '';
-                                                    } else {
-                                                        item.style.display = 'none';
+                                                        // Validasi: Pastikan ID valid dan bukan 0
+                                                        if (id && id !== "0" && !pesertaSelected
+                                                            .includes(id)) {
+                                                            pesertaSelected.push(id);
+
+                                                            // Elemen nama peserta
+                                                            let selectedNameElement = document
+                                                                .createElement('div');
+                                                            selectedNameElement.classList.add(
+                                                                'selected-name');
+                                                            selectedNameElement.setAttribute(
+                                                                'data-id', id);
+
+                                                            let nameText = document.createElement(
+                                                                'span');
+                                                            nameText.textContent = nama;
+                                                            selectedNameElement.appendChild(
+                                                                nameText);
+
+                                                            // Tombol remove
+                                                            let removeButton = document
+                                                                .createElement('button');
+                                                            removeButton.textContent = 'Hapus';
+                                                            removeButton.classList.add('btn',
+                                                                'btn-danger', 'btn-sm', 'ml-2');
+                                                            selectedNameElement.appendChild(
+                                                                removeButton);
+
+                                                            // Input hidden untuk setiap peserta
+                                                            let hiddenInput = document
+                                                                .createElement('input');
+                                                            hiddenInput.type = 'hidden';
+                                                            hiddenInput.name = 'peserta[]';
+                                                            hiddenInput.value = id;
+                                                            selectedNameElement.appendChild(
+                                                                hiddenInput);
+
+                                                            // Tambahkan elemen ke container
+                                                            selectedNamesContainer.appendChild(
+                                                                selectedNameElement);
+                                                        }
+                                                    });
+                                                });
+
+                                                // Menangani penghapusan peserta
+                                                selectedNamesContainer.addEventListener('click', function(e) {
+                                                    if (e.target && e.target.tagName === 'BUTTON') {
+                                                        let idToRemove = e.target.parentElement
+                                                            .getAttribute('data-id');
+                                                        // Hapus ID dari pesertaSelected
+                                                        pesertaSelected = pesertaSelected.filter(id =>
+                                                            id !== idToRemove);
+                                                        // Hapus elemen dari DOM
+                                                        e.target.parentElement.remove();
                                                     }
                                                 });
                                             });
-
-                                            // Tambahkan event listener untuk setiap item dropdown
-                                            dropdownItems.forEach(item => {
-                                                item.addEventListener('click', function() {
-                                                    const id = this.getAttribute('data-id');
-                                                    const nama = this.getAttribute(
-                                                    'data-value');
-
-                                                    // Validasi: Pastikan ID valid dan bukan 0
-                                                    if (id && id !== "0" && !pesertaSelected
-                                                        .includes(id)) {
-                                                        pesertaSelected.push(id);
-
-                                                        // Elemen nama peserta
-                                                        let selectedNameElement = document
-                                                            .createElement('div');
-                                                        selectedNameElement.classList.add(
-                                                            'selected-name');
-                                                        selectedNameElement.setAttribute(
-                                                            'data-id', id);
-
-                                                        let nameText = document.createElement(
-                                                            'span');
-                                                        nameText.textContent = nama;
-                                                        selectedNameElement.appendChild(
-                                                            nameText);
-
-                                                        // Tombol remove
-                                                        let removeButton = document
-                                                            .createElement('button');
-                                                        removeButton.textContent = 'Hapus';
-                                                        removeButton.classList.add('btn',
-                                                            'btn-danger', 'btn-sm', 'ml-2');
-                                                        selectedNameElement.appendChild(
-                                                            removeButton);
-
-                                                        // Input hidden untuk setiap peserta
-                                                        let hiddenInput = document
-                                                            .createElement('input');
-                                                        hiddenInput.type = 'hidden';
-                                                        hiddenInput.name = 'peserta[]';
-                                                        hiddenInput.value = id;
-                                                        selectedNameElement.appendChild(
-                                                            hiddenInput);
-
-                                                        // Tambahkan elemen ke container
-                                                        selectedNamesContainer.appendChild(
-                                                            selectedNameElement);
-                                                    }
-                                                });
-                                            });
-
-                                            // Menangani penghapusan peserta
-                                            selectedNamesContainer.addEventListener('click', function(e) {
-                                                if (e.target && e.target.tagName === 'BUTTON') {
-                                                    let idToRemove = e.target.parentElement
-                                                        .getAttribute('data-id');
-                                                    // Hapus ID dari pesertaSelected
-                                                    pesertaSelected = pesertaSelected.filter(id =>
-                                                        id !== idToRemove);
-                                                    // Hapus elemen dari DOM
-                                                    e.target.parentElement.remove();
-                                                }
-                                            });
-                                        });
                                         </script>
 
 
@@ -601,36 +614,6 @@ if (isset($_POST['create_pelatihan'])) {
                     </div>
                 </div>
 
-
-
-
-
-
-
-
-
-
-
-                <!-- Bootstrap JS -->
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js">
-                </script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js">
-                </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 <!-- Bootstrap JS -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -641,122 +624,90 @@ if (isset($_POST['create_pelatihan'])) {
                 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
                 <script>
-                // Event listener untuk tombol Reset
-                $('#resetButton').on('click', function(event) {
-                    event.preventDefault(); // Mencegah form langsung di-reset
+                    $(document).ready(function() {
+                        // Ketika tombol "Buat" ditekan, mencegah form submit otomatis dan munculkan modal
+                        $('#pengajuanForm').on('submit', function(event) {
+                            event.preventDefault(); // Mencegah submit form otomatis
 
-                    // Tampilkan SweetAlert untuk konfirmasi reset
-                    Swal.fire({
-                        title: 'Apakah Anda yakin?',
-                        text: "Anda akan mereset semua data yang telah diisi!",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, reset',
-                        cancelButtonText: 'Batal',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Jika pengguna memilih "Ya", reset form
-                            $('#pengajuanForm')[0].reset(); // Reset form secara manual
+                            // Ambil data dari form
+                            const lembaga = $('#lembaga').val();
+                            const programStudi = $('#programStudi').val();
+                            const jurusan = $('#jurusan').val();
+                            const namaPeserta = $('#namaPeserta').val();
+                            const alamat = $('#alamat').val();
+                            const tanggalKegiatan = $('#tanggalKegiatan').val();
+                            const tanggalSelesai = $('#tanggalSelesai').val();
+                            const sumberDana = $('#sumberDana').val();
+                            const kompetensi = $('#kompetensi').val();
+                            const targetKegiatan = $('#targetKegiatan').val();
 
-                            // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
-                            Swal.fire({
-                                title: 'Direset!',
-                                text: 'Formulir telah direset.',
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
-                            });
-                        }
-                    });
-                });
-                </script>
-
-                <script>
-                $(document).ready(function() {
-                    // Ketika tombol "Buat" ditekan, mencegah form submit otomatis dan munculkan modal
-                    $('#pengajuanForm').on('submit', function(event) {
-                        event.preventDefault(); // Mencegah submit form otomatis
-
-                        // Ambil data dari form
-                        const lembaga = $('#lembaga').val();
-                        const programStudi = $('#programStudi').val();
-                        const jurusan = $('#jurusan').val();
-                        const namaPeserta = $('#namaPeserta').val();
-                        const alamat = $('#alamat').val();
-                        const tanggalKegiatan = $('#tanggalKegiatan').val();
-                        const tanggalSelesai = $('#tanggalSelesai').val();
-                        const sumberDana = $('#sumberDana').val();
-                        const kompetensi = $('#kompetensi').val();
-                        const targetKegiatan = $('#targetKegiatan').val();
-
-                        // Cek apakah semua inputan tidak kosong
-                        if (!lembaga || !programStudi || !jurusan || !namaPeserta || !alamat || !
-                            tanggalKegiatan || !tanggalSelesai || !sumberDana || !kompetensi || !
-                            targetKegiatan) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Semua kolom harus diisi!'
-                            });
-                            return;
-                        }
-
-                        // Isi data di modal konfirmasi
-                        $('#confirmLembaga').text(lembaga);
-                        $('#confirmProgramStudi').text(programStudi);
-                        $('#confirmJurusan').text(jurusan);
-                        $('#confirmNamaPeserta').text(namaPeserta);
-                        $('#confirmAlamat').text(alamat);
-                        $('#confirmTanggalKegiatan').text(tanggalKegiatan);
-                        $('#confirmTanggalSelesai').text(tanggalSelesai);
-                        $('#confirmSumberDana').text(sumberDana);
-                        $('#confirmKompetensi').text(kompetensi);
-                        $('#confirmTargetKegiatan').text(targetKegiatan);
-
-                        // Munculkan modal
-                        $('#konfirmasiModal').modal('show');
-                    });
-
-                    // Ketika tombol "Kirim" di modal ditekan, tampilkan SweetAlert dan redirect ke halaman baru
-                    $('#submitPengajuan').on('click', function() {
-                        // Tutup modal
-                        $('#konfirmasiModal').modal('hide');
-
-                        // Ambil data dari form
-                        const formData = $('#pengajuanForm')
-                            .serialize(); // Serialisasi semua input form
-
-                        // Kirim data ke server
-                        $.ajax({
-                            url: 'proses_pengajuan.php', // Ganti dengan URL endpoint untuk proses data
-                            type: 'POST',
-                            data: formData,
-                            success: function(response) {
-                                // Tampilkan SweetAlert sukses jika berhasil
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Pengajuan Pelatihan Berhasil Diajukan',
-                                    showConfirmButton: false,
-                                    timer: 2500
-                                }).then(() => {
-                                    // Redirect ke halaman baru setelah sukses
-                                    window.location.href = 'index.php';
-                                });
-                            },
-                            error: function(error) {
-                                // Tampilkan SweetAlert jika terjadi error
+                            // Cek apakah semua inputan tidak kosong
+                            if (!lembaga || !programStudi || !jurusan || !namaPeserta || !alamat || !
+                                tanggalKegiatan || !tanggalSelesai || !sumberDana || !kompetensi || !
+                                targetKegiatan) {
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Pengajuan Gagal',
-                                    text: 'Terjadi kesalahan saat menyimpan data!'
+                                    title: 'Oops...',
+                                    text: 'Semua kolom harus diisi!'
                                 });
+                                return;
                             }
+
+                            // Isi data di modal konfirmasi
+                            $('#confirmLembaga').text(lembaga);
+                            $('#confirmProgramStudi').text(programStudi);
+                            $('#confirmJurusan').text(jurusan);
+                            $('#confirmNamaPeserta').text(namaPeserta);
+                            $('#confirmAlamat').text(alamat);
+                            $('#confirmTanggalKegiatan').text(tanggalKegiatan);
+                            $('#confirmTanggalSelesai').text(tanggalSelesai);
+                            $('#confirmSumberDana').text(sumberDana);
+                            $('#confirmKompetensi').text(kompetensi);
+                            $('#confirmTargetKegiatan').text(targetKegiatan);
+
+                            // Munculkan modal
+                            $('#konfirmasiModal').modal('show');
                         });
+
+                        // Ketika tombol "Kirim" di modal ditekan, tampilkan SweetAlert dan redirect ke halaman baru
+                        $('#submitPengajuan').on('click', function() {
+                            // Tutup modal
+                            $('#konfirmasiModal').modal('hide');
+
+                            // Ambil data dari form
+                            const formData = $('#pengajuanForm')
+                                .serialize(); // Serialisasi semua input form
+
+                            // Kirim data ke server
+                            $.ajax({
+                                url: 'proses_pengajuan.php', // Ganti dengan URL endpoint untuk proses data
+                                type: 'POST',
+                                data: formData,
+                                success: function(response) {
+                                    // Tampilkan SweetAlert sukses jika berhasil
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Pengajuan Pelatihan Berhasil Diajukan',
+                                        showConfirmButton: false,
+                                        timer: 2500
+                                    }).then(() => {
+                                        // Redirect ke halaman baru setelah sukses
+                                        window.location.href = 'index.php';
+                                    });
+                                },
+                                error: function(error) {
+                                    // Tampilkan SweetAlert jika terjadi error
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Pengajuan Gagal',
+                                        text: 'Terjadi kesalahan saat menyimpan data!'
+                                    });
+                                }
+                            });
+                        });
+
+
                     });
-
-
-                });
                 </script>
 
                 <!-- Logout Modal-->
