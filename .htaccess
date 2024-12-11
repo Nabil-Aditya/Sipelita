@@ -1,1 +1,29 @@
-ErrorDocument 404 http://localhost/SIPELITA-PROJECT/404.html
+# Aktifkan modul rewrite untuk menangani redirect dan pengaturan URL
+RewriteEngine On
+
+# Tangani error 404 (Not Found): Halaman tidak ditemukan
+ErrorDocument 404 /SIPELITA-PROJECT/404.html
+
+# Tangani error 500 (Internal Server Error): Kesalahan internal server
+ErrorDocument 500 /SIPELITA-PROJECT/404.html
+
+# Tangani error 403 (Forbidden): Akses ke file atau folder ditolak
+ErrorDocument 403 /SIPELITA-PROJECT/404.html
+
+# Tangani error 400 (Bad Request): Permintaan tidak valid ke server
+ErrorDocument 400 /SIPELITA-PROJECT/404.html
+
+# Tangani error 401 (Unauthorized): Pengguna tidak terautentikasi dengan benar
+ErrorDocument 401 /SIPELITA-PROJECT/404.html
+
+# Opsional: Mencegah directory listing agar isi folder tidak terlihat
+Options -Indexes
+
+# Nonaktifkan pesan error PHP agar tidak ditampilkan kepada pengguna
+php_flag display_errors Off
+
+# Aktifkan logging error PHP untuk mencatat kesalahan ke file log
+php_flag log_errors On
+
+# Tentukan lokasi file log untuk mencatat kesalahan PHP
+php_value error_log ./report/error.log
