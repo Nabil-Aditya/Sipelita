@@ -5,17 +5,6 @@ include '../loader.php';
 include 'function.php';
 
 
-if (isset($_POST['action']) && $_POST['action'] == 'read_notifikasi' && isset($_POST['id'])) {
-    $id = $_POST['id'];
-    
-    // Panggil fungsi untuk memperbarui status notifikasi
-    if (read_notifikasi($id)) {
-        echo "Notifikasi berhasil dibaca.";  // Pesan untuk respons AJAX
-    } else {
-        echo "Gagal memperbarui status notifikasi.";
-    }
-    exit;  // Pastikan proses berhenti setelah mengirim respons
-}
 //logout
 if (isset($_POST['logout'])) {
     logout();
@@ -23,9 +12,25 @@ if (isset($_POST['logout'])) {
 
 //notifikasi
 $notifikasi = get_notifikasi();
-// echo "<pre>";
-// print_r($notifikasi);  // atau var_dump($notifikasi);
-// echo "</pre>";
+
+//notifikasi unread
+$unread = count(array_filter($notifikasi, function ($notif) {
+    return $notif['is_read'] == 0;
+}));
+
+
+
+// Read notikasi
+if (isset($_POST['read_notifikasi'])) {
+    $id_notifikasi = $_POST['id_notifikasi']; // Get the ID from the form submission
+    read_notifikasi($id_notifikasi); // Pass the ID to the function
+}
+
+// delete_notifikasi);
+if (isset($_POST['delete_notifikasi'])) {
+    $id_notifikasi = $_POST['id_notifikasi']; // Get the ID from the form submission
+    delete_notifikasi($id_notifikasi); // Pass the ID to the function
+}
 
 
 //get semua pelatihan
@@ -87,9 +92,9 @@ if (!$login) {
 
 if ($_SESSION['role'] === 'admin') {
     echo "<script>window.location.href = '../admin/index.php';</script>";
-} else if ($_SESSION['role'] === 'supervisor'){
+} else if ($_SESSION['role'] === 'supervisor') {
     echo "<script>window.location.href = '../admin/index.php';</script>";
-} 
+}
 
 ?>
 
@@ -125,12 +130,10 @@ if ($currentHour >= 0 && $currentHour < 12) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -147,10 +150,9 @@ if ($currentHour >= 0 && $currentHour < 12) {
         rel="stylesheet">
 
     <!-- Font khusus untuk templat ini -->
-    <link href="../css/sb-admin-2.minn.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <!-- Kustom khusus untuk templat ini -->
     <link href="../css/pegawai/index-pegawai.css" rel="stylesheet">
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -187,7 +189,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
             <li class="nav-item active">
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Beranda</span><?= $_SESSION['id_user'] ?></a>
+                    <span>Beranda</span></a>
             </li>
 
             <!-- Divider -->
@@ -215,8 +217,8 @@ if ($currentHour >= 0 && $currentHour < 12) {
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pilih Opsi:</h6>
-                        <a class="collapse-item" href="view_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
-                        <a class="collapse-item" href="view_pengajuan_lpj.php">Pengajuan LPJ</a>
+                        <a class="collapse-item" href="data_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
+                        <a class="collapse-item" href="data_pengajuan_lpj.php">Pengajuan LPJ</a>
                     </div>
                 </div>
             </li>
@@ -229,34 +231,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
             </li>
 
             <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                MENU PENGATURAN
-            </div>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Pengatuan</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Pilih Opsi:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Colors</a>
-                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+            <hr class="sidebar-divider d-none d-md-block mt-2">
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -292,174 +267,63 @@ if ($currentHour >= 0 && $currentHour < 12) {
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Pemberitahuan
-                                </h6>
-
-                                <?php foreach ($notifikasi as $data) { ?>
-                                    <a class="dropdown-item d-flex align-items-center <?php echo ($data['is_read'] == 1) ? 'bg-secondary' : 'bg-light'; ?>" href="#" onclick="read_notifikasi(<?=$data['id_notifikasi']?>)">
-
-                                    <div class="mr-3">
-                                        <div
-                                            class="icon-circle bg-<?php echo (strpos($data['pesan'], 'tolak') !== false) ? 'danger' : (strpos($data['pesan'], 'terima') !== false ? 'success' : 'primary'); ?>">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between w-100">
-                                        <div>
-                                            <div class="small text-gray-500"><?=$data['tgl']?></div>
-                                            <span class="font-weight-bold"><?=$data['pesan']?></span>
-                                            <?php if ($data['is_read'] == 0) { ?>
-                                            <span class="unread-indicator"></span>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-                                </a>
+                                <?php if ($unread > 0) { ?>
+                                    <span class="badge badge-danger badge-counter"><?= $unread ?></span>
                                 <?php } ?>
 
-
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
-
-                            <style>
-                            /* Titik merah untuk notifikasi yang belum dibaca */
-                            .unread-indicator {
-                                width: 10px;
-                                height: 10px;
-                                border-radius: 50%;
-                                background-color: red;
-                                position: absolute;
-                                right: 10px;
-                            }
-                            </style>
-                            <script>
-                            function read_notifikasi(id) {
-                                // Kirim permintaan ke server untuk memperbarui status 'is_read' menjadi 1
-                                fetch('function.php', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/x-www-form-urlencoded',
-                                        },
-                                        body: new URLSearchParams({
-                                            action: 'read_notifikasi',
-                                            id: id
-                                        })
-                                    })
-                                    .then(response => response.text())
-                                    .then(data => {
-                                        console.log(data); // Log untuk memeriksa respons dari server
-
-                                        // Hapus indikator unread jika status berhasil diperbarui
-                                        const unreadIndicator = document.querySelector(
-                                            `[onclick="read_notifikasi(${id})"] .unread-indicator`);
-                                        if (unreadIndicator) {
-                                            unreadIndicator.style.display = 'none';
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('Error:', error);
-                                    });
-                            }
-                            </script>
-
-                        </li>
-
-                        <!-- Nav Item - Messages -->
-                       <!-- Nav Item - Alerts -->
-                       <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
                             </a>
+
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown" style="max-height: 300px; overflow-y: auto;">
+                                aria-labelledby="alertsDropdown"
+                                style="max-height: 300px !important; overflow-y: scroll !important; overflow-x: hidden !important;">
                                 <h6 class="dropdown-header">
                                     Pemberitahuan
                                 </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="../img/undraw_profile_1.svg" alt="...">
-                                        <div class="status-indicator bg-success"></div>
+                                <?php foreach ($notifikasi as $data) { ?>
+                                    <div class="d-flex align-items-center w-100 <?php echo ($data['is_read'] == 1) ? 'bg-kustom' : 'bg-light'; ?>">
+                                        <form method="post" class="flex-grow-1 w-100">
+                                            <input type="number" name="id_notifikasi" value="<?= $data['id_notifikasi'] ?>" hidden>
+                                            <button type="submit" name="read_notifikasi"
+                                                class="dropdown-item d-flex align-items-center w-100 <?php echo ($data['is_read'] == 1) ? 'bg-custom' : 'bg-light'; ?>">
+                                                <div class="mr-3">
+                                                    <div
+                                                        class="icon-circle bg-<?php echo (strpos($data['pesan'], 'tolak') !== false) ? 'danger' : (strpos($data['pesan'], 'terima') !== false ? 'success' : 'primary'); ?>">
+                                                        <i class="fas fa-file-alt text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-between w-100">
+                                                    <div>
+                                                        <div class="small text-gray-500"><?= $data['tgl'] ?></div>
+                                                        <span class="font-weight-bold"><?= $data['pesan'] ?></span>
+                                                        <?php if ($data['is_read'] == 0) { ?>
+                                                            <span class="unread-indicator"></span>
+                                                        <?php } ?>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </form>
+
+                                        <?php if ($data['is_read'] == 1) { ?>
+                                            <form method="post" class="ml-2">
+                                                <input type="hidden" name="id_notifikasi" value="<?= $data['id_notifikasi'] ?>">
+                                                <button type="submit" name="delete_notifikasi" class="btn p-0">
+                                                    <div class="icon-circle bg-danger text-white ml-1 mr-3"
+                                                        style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                                        <i class="fas fa-trash"></i>
+                                                    </div>
+                                                </button>
+                                            </form>
+                                        <?php } ?>
                                     </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                            problem I've been having.</div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="../img/undraw_profile_2.svg" alt="...">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">I have the photos that you ordered last month, how
-                                            would you like them sent to you?</div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="../img/undraw_profile_3.svg" alt="...">
-                                        <div class="status-indicator bg-warning"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Last month's report looks great, I am very happy with
-                                            the progress so far, keep up the good work!</div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                            alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                            told me that people say this to all dogs, even if they aren't good...</div>
-                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                                <?php } ?>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
                         </li>
 
@@ -483,14 +347,6 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                 <a class="dropdown-item" href="view_profile.php?id_user=<?= $_SESSION['id_user'] ?>">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profil
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Pengaturan
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Aktivitas
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -529,68 +385,47 @@ if ($currentHour >= 0 && $currentHour < 12) {
                     </div>
 
                     <script>
-                    function updateClock() {
-                        // Buat objek tanggal baru
-                        var now = new Date();
+                        function updateClock() {
+                            // Buat objek tanggal baru
+                            var now = new Date();
 
-                        // Ambil elemen untuk menampilkan waktu
-                        var timeDisplay = document.getElementById("timeDisplay");
+                            // Ambil elemen untuk menampilkan waktu
+                            var timeDisplay = document.getElementById("timeDisplay");
 
-                        // Array untuk nama hari dalam bahasa Indonesia
-                        var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                            // Array untuk nama hari dalam bahasa Indonesia
+                            var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-                        // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
-                        var day = dayNames[now.getDay()];
-                        var date = now.getDate();
-                        var month = now.toLocaleString('id-ID', {
-                            month: 'long'
-                        }); // Nama bulan dalam bahasa Indonesia
-                        var year = now.getFullYear();
-                        var hours = now.getHours().toString().padStart(2, '0');
-                        var minutes = now.getMinutes().toString().padStart(2, '0');
-                        var seconds = now.getSeconds().toString().padStart(2, '0');
+                            // Ambil hari, tanggal, bulan, tahun, jam, menit, dan detik
+                            var day = dayNames[now.getDay()];
+                            var date = now.getDate();
+                            var month = now.toLocaleString('id-ID', {
+                                month: 'long'
+                            }); // Nama bulan dalam bahasa Indonesia
+                            var year = now.getFullYear();
+                            var hours = now.getHours().toString().padStart(2, '0');
+                            var minutes = now.getMinutes().toString().padStart(2, '0');
+                            var seconds = now.getSeconds().toString().padStart(2, '0');
 
-                        // Format waktu
-                        var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' +
-                            minutes + ':' + seconds;
+                            // Format waktu
+                            var formattedTime = day + ', ' + date + ' ' + month + ' ' + year + ', ' + hours + ':' +
+                                minutes + ':' + seconds;
 
-                        // Update elemen HTML dengan waktu terbaru
-                        timeDisplay.textContent = formattedTime;
-                    }
+                            // Update elemen HTML dengan waktu terbaru
+                            timeDisplay.textContent = formattedTime;
+                        }
 
-                    // Jalankan updateClock setiap detik
-                    setInterval(updateClock, 1000);
+                        // Jalankan updateClock setiap detik
+                        setInterval(updateClock, 1000);
 
-                    // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
-                    updateClock();
+                        // Panggil fungsi sekali untuk menampilkan waktu segera setelah halaman dimuat
+                        updateClock();
                     </script>
 
                     <!-- Content Row -->
                     <div class="row">
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                DATA PENGAJUAN LPJ</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?= $jumlah_pelatihan ?>
-                                                <!-- Mengambil jumlah pengajuan diproses dari PHP -->
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-file fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Earnings (Pengajuan Diproses) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -611,7 +446,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                         </div>
 
                         <!-- Earnings (Pengajuan Diterima) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -636,7 +471,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                         </div>
 
                         <!-- Pending Requests (Pengajuan Ditolak) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-danger shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -656,28 +491,8 @@ if ($currentHour >= 0 && $currentHour < 12) {
                             </div>
                         </div>
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                DATA PELAPORAN</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?= $jumlah_pelaporan ?>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-file fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Earnings (Pengajuan Diproses) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -698,7 +513,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                         </div>
 
                         <!-- Earnings (Pengajuan Diterima) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -723,7 +538,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                         </div>
 
                         <!-- Pending Requests (Pengajuan Ditolak) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-danger shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -742,7 +557,6 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                 </div>
                             </div>
                         </div>
-                        <!-- test -->
 
                         <div class="col-xl-12 col-md-12 mb-4">
                             <div class="card border-left-primary shadow h-100 py-3">
@@ -807,37 +621,40 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                                     cellspacing="0">
                                                     <thead>
                                                         <tr>
+                                                            <th>No</th>
                                                             <th>Institusi</th>
                                                             <th>Kompetensi</th>
                                                             <th>Tgl Pengajuan</th>
                                                             <th>Status</th>
-                                                            <th>View</th>
+                                                            <th>Lihat</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?php foreach ($pelatihan as $data) { ?>
+                                                        <?php
+                                                        $no = 1; // Inisialisasi nomor urut untuk tabel pengajuan
+                                                        foreach ($pelatihan as $data) { ?>
+                                                            <tr>
+                                                                <td><?= $no++ ?></td> <!-- Nomor urut -->
+                                                                <td><?= $data['institusi'] ?></td>
+                                                                <td><?= $data['kompetensi'] ?></td>
+                                                                <td><?= $data['tgl_pengajuan'] ?></td>
 
-                                                        <tr>
-                                                            <td><?= $data['institusi'] ?></td>
-                                                            <td><?= $data['kompetensi'] ?></td>
-                                                            <td><?= $data['tgl_pengajuan'] ?></td>
-
-                                                            <td>
-                                                                <span
-                                                                    class="status-button 
+                                                                <td>
+                                                                    <span
+                                                                        class="status-button 
                                                             <?= $data['status'] === 'Diproses' ? 'in-process' : ($data['status'] === 'Ditolak' ? 'rejected' : ($data['status'] === 'Diterima' ? 'accepted' : '')) ?>">
-                                                                    <span class="dot"></span>
-                                                                    <?= $data['status'] ?>
-                                                                </span>
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <a
-                                                                    href="add_pengajuan_lpj.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button
-                                                                        class="btn btn-primary btn-sm">
-                                                                        <i class="fas fa-eye"></i>
-                                                                    </button></a>
-                                                            </td>
-                                                        </tr>
+                                                                        <span class="dot"></span>
+                                                                        <?= $data['status'] ?>
+                                                                    </span>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <a
+                                                                        href="view_pengajuan_pelatihan.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button
+                                                                            class="btn btn-primary btn-sm">
+                                                                            <i class="fas fa-eye"></i>
+                                                                        </button></a>
+                                                                </td>
+                                                            </tr>
                                                         <?php } ?>
                                                     </tbody>
                                                 </table>
@@ -852,35 +669,39 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                                     cellspacing="0">
                                                     <thead>
                                                         <tr>
+                                                            <th>No</th>
                                                             <th>Institusi</th>
                                                             <th>Kompetensi</th>
                                                             <th>Tgl pengajuan</th>
                                                             <th>Status</th>
-                                                            <th>View</th>
+                                                            <th>Lihat</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?php foreach ($pelaporan as $data) { ?>
-                                                        <tr>
-                                                            <td><?= $data['institusi'] ?></td>
-                                                            <td><?= $data['kompetensi'] ?></td>
-                                                            <td><?= $data['tgl'] ?></td>
-                                                            <td>
-                                                                <span
-                                                                    class="status-button <?= $data['pelaporan_status'] === 'Belum Mengupload LPJ' ? 'in-belum' : ($data['pelaporan_status'] === 'Diproses' ? 'in-process' : ($data['pelaporan_status'] === 'Ditolak' ? 'rejected' : ($data['pelaporan_status'] === 'Diterima' ? 'accepted' : ''))) ?>">
-                                                                    <span class="dot"></span>
-                                                                    <?= $data['pelaporan_status'] ?>
-                                                                </span>
+                                                        <?php
+                                                        $no = 1; // Inisialisasi nomor urut untuk tabel pelaporan
+                                                        foreach ($pelaporan as $data) { ?>
+                                                            <tr>
+                                                                <td><?= $no++ ?></td> <!-- Nomor urut -->
+                                                                <td><?= $data['institusi'] ?></td>
+                                                                <td><?= $data['kompetensi'] ?></td>
+                                                                <td><?= $data['tgl'] ?></td>
+                                                                <td>
+                                                                    <span
+                                                                        class="status-button <?= $data['pelaporan_status'] === 'Belum Mengupload LPJ' ? 'in-belum' : ($data['pelaporan_status'] === 'Diproses' ? 'in-process' : ($data['pelaporan_status'] === 'Ditolak' ? 'rejected' : ($data['pelaporan_status'] === 'Diterima' ? 'accepted' : ''))) ?>">
+                                                                        <span class="dot"></span>
+                                                                        <?= $data['pelaporan_status'] ?>
+                                                                    </span>
 
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <a
-                                                                    href="add_lpj.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button
-                                                                        class="btn btn-primary btn-sm">
-                                                                        <i class="fas fa-eye"></i>
-                                                                    </button></a>
-                                                            </td>
-                                                        </tr>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <a
+                                                                        href="add_pengajuan_lpj.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button
+                                                                            class="btn btn-primary btn-sm">
+                                                                            <i class="fas fa-eye"></i>
+                                                                        </button></a>
+                                                                </td>
+                                                            </tr>
                                                         <?php } ?>
                                                     </tbody>
                                                 </table>
@@ -897,19 +718,19 @@ if ($currentHour >= 0 && $currentHour < 12) {
                     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
                     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
                     <script>
-                    $(document).ready(function() {
-                        // Inisialisasi DataTables di awal
-                        $('#pengajuanTable').DataTable();
+                        $(document).ready(function() {
+                            // Inisialisasi DataTables di awal
+                            $('#pengajuanTable').DataTable();
 
-                        // Saat tab pelaporan diklik, inisialisasi DataTables di tabel pelaporan
-                        $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-                            var target = $(e.target).attr("data-bs-target");
+                            // Saat tab pelaporan diklik, inisialisasi DataTables di tabel pelaporan
+                            $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                                var target = $(e.target).attr("data-bs-target");
 
-                            if (target === '#pelaporan') {
-                                $('#pelaporanTable').DataTable();
-                            }
+                                if (target === '#pelaporan') {
+                                    $('#pelaporanTable').DataTable();
+                                }
+                            });
                         });
-                    });
                     </script>
 
                 </div>
