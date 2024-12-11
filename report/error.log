@@ -1,0 +1,21 @@
+[11-Dec-2024 12:26:53 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'rooti'@'localhost' (using password: NO) in C:\xampp\htdocs\SIPELITA-PROJECT\koneksi.php:2
+Stack trace:
+#0 C:\xampp\htdocs\SIPELITA-PROJECT\koneksi.php(2): mysqli_connect('localhost', 'rooti', Object(SensitiveParameterValue), 'sipelita')
+#1 C:\xampp\htdocs\SIPELITA-PROJECT\function.php(13): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\SIPELITA-PROJECT\login.php(31): include('C:\\xampp\\htdocs...')
+#3 {main}
+  thrown in C:\xampp\htdocs\SIPELITA-PROJECT\koneksi.php on line 2
+[11-Dec-2024 13:01:30 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'rooti'@'localhost' (using password: NO) in C:\xampp\htdocs\SIPELITA-PROJECT\koneksi.php:2
+Stack trace:
+#0 C:\xampp\htdocs\SIPELITA-PROJECT\koneksi.php(2): mysqli_connect('localhost', 'rooti', Object(SensitiveParameterValue), 'sipelita')
+#1 C:\xampp\htdocs\SIPELITA-PROJECT\function.php(13): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\SIPELITA-PROJECT\login.php(31): include('C:\\xampp\\htdocs...')
+#3 {main}
+  thrown in C:\xampp\htdocs\SIPELITA-PROJECT\koneksi.php on line 2
+[11-Dec-2024 13:01:38 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'rooti'@'localhost' (using password: NO) in C:\xampp\htdocs\SIPELITA-PROJECT\koneksi.php:2
+Stack trace:
+#0 C:\xampp\htdocs\SIPELITA-PROJECT\koneksi.php(2): mysqli_connect('localhost', 'rooti', Object(SensitiveParameterValue), 'sipelita')
+#1 C:\xampp\htdocs\SIPELITA-PROJECT\function.php(13): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\SIPELITA-PROJECT\login.php(31): include('C:\\xampp\\htdocs...')
+#3 {main}
+  thrown in C:\xampp\htdocs\SIPELITA-PROJECT\koneksi.php on line 2
