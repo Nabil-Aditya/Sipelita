@@ -137,3 +137,19 @@ h3,
     display: inline-block;
     margin-right: 5px;
 }
+
+/* Titik merah untuk notifikasi yang belum dibaca */
+.unread-indicator {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50% !important;
+    background-color: red !important;
+    position: absolute !important;
+    right: 10px !important;
+}
+
+    .bg-kustom {
+        background-color: #e3f5f5 !important;
+    }
+
+
