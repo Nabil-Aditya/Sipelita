@@ -1,8 +1,8 @@
 <!-- KONEKSI -->
-<?php 
+<?php
 
-include '../koneksi.php'; 
-include 'function.php'; 
+include '../koneksi.php';
+include 'function.php';
 
 //get form value
 $get_pegawai_byId = get_pegawai_byId($_GET['id_user']);
@@ -386,25 +386,22 @@ if (isset($_POST['edit_pegawai'])) {
                                     <!-- Kolom Kiri -->
                                     <div class="col-md-12 mb-5">
                                         <div class="form-group d-flex justify-content-center">
-                                            <img src="../assets/foto_pegawai/<?=$get_pegawai_byId['foto_profil']?>"
+                                            <img src="../assets/foto_pegawai/<?= $get_pegawai_byId['foto_profil'] ?>"
                                                 alt="Foto" class="img-fluid rounded-circle"
                                                 style="width: 200px; height: 200px; object-fit: cover;">
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
-
-
-
                                         <div class="form-group">
                                             <label for="nip" class="font-weight-bold">NIP</label>
                                             <input type="text" class="form-control" id="nip" name="nip"
-                                                value="<?=$get_pegawai_byId['nip']?>" placeholder="Masukkan NIP">
+                                                value="<?= $get_pegawai_byId['nip'] ?>" placeholder="Masukkan NIP" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label for="nama" class="font-weight-bold">Nama </label>
                                             <input type="text" class="form-control" id="nama" name="nama"
-                                                value="<?=$get_pegawai_byId['nama']?>" placeholder="Masukkan Nama">
+                                                value="<?= $get_pegawai_byId['nama'] ?>" placeholder="Masukkan Nama">
                                         </div>
                                         <div class="form-group">
                                             <label for="jabatan" class="font-weight-bold">Jabatan</label>
@@ -421,17 +418,17 @@ if (isset($_POST['edit_pegawai'])) {
                                         <div class="form-group">
                                             <label for="email" class="font-weight-bold">Email </label>
                                             <input type="email" class="form-control" id="email" name="email"
-                                                value="<?=$get_pegawai_byId['email']?>" placeholder="Masukkan Email">
+                                                value="<?= $get_pegawai_byId['email'] ?>" placeholder="Masukkan Email">
                                         </div>
                                         <div class="form-group">
                                             <label for="telp" class="font-weight-bold">Telp </label>
                                             <input type="text" class="form-control" id="telp" name="telp"
-                                                value="<?=$get_pegawai_byId['telp']?>" placeholder="Masukkan Telp">
+                                                value="<?= $get_pegawai_byId['telp'] ?>" placeholder="Masukkan Telp">
                                         </div>
                                         <div class="form-group">
                                             <label for="alamat" class="font-weight-bold">Alamat</label>
                                             <textarea class="form-control" id="alamat" name="alamat" rows="3"
-                                                placeholder="Masukkan Alamat"><?=$get_pegawai_byId['alamat']?></textarea>
+                                                placeholder="Masukkan Alamat"><?= $get_pegawai_byId['alamat'] ?></textarea>
                                         </div>
 
                                         <div class="form-group">
@@ -453,7 +450,7 @@ if (isset($_POST['edit_pegawai'])) {
                                         <div class="form-group">
                                             <label for="username" class="font-weight-bold">Username</label>
                                             <input type="text" class="form-control" id="username" name="username"
-                                                value="<?=$get_pegawai_byId['username']?>">
+                                                value="<?= $get_pegawai_byId['username'] ?>">
                                         </div>
                                         <div class="form-group">
                                             <button type="button" id="ubahPasswordBtn" class="btn btn-secondary">Ubah
@@ -484,7 +481,6 @@ if (isset($_POST['edit_pegawai'])) {
 
                                 <!-- Tombol Aksi -->
                                 <div class="d-flex justify-content-between mt-4">
-                                    <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
                                     <button type="submit" name="edit_pegawai" class="btn btn-primary">Buat</button>
                                 </div>
                             </form>
@@ -492,8 +488,6 @@ if (isset($_POST['edit_pegawai'])) {
                     </div>
                 </div>
                 <!-- /.container-fluid -->
-
-
 
                 <!-- Bootstrap JS -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -503,40 +497,6 @@ if (isset($_POST['edit_pegawai'])) {
 
                 <!-- jQuery -->
                 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-                <script>
-                // Event listener untuk tombol Reset
-                $('#resetButton').on('click', function(event) {
-                    event.preventDefault(); // Mencegah form langsung di-reset
-
-                    // Tampilkan SweetAlert untuk konfirmasi reset
-                    Swal.fire({
-                        title: 'Apakah Anda yakin?',
-                        text: "Anda akan mereset semua data yang telah diisi!",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, reset',
-                        cancelButtonText: 'Batal',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Jika pengguna memilih "Ya", reset form
-                            $('#pengajuanForm')[0].reset(); // Reset form secara manual
-
-                            // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
-                            Swal.fire({
-                                title: 'Direset!',
-                                text: 'Formulir telah direset.',
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
-                            });
-                        }
-                    });
-                });
-                </script>
-
-
 
                 <!-- Logout Modal-->
                 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -578,36 +538,36 @@ if (isset($_POST['edit_pegawai'])) {
 
 
                 <script>
-                // Update nama file pada label ketika file dipilih
-                document.getElementById('fileLaporan').addEventListener('change', function() {
-                    const fileName = this.files[0] ? this.files[0].name : "Pilih file";
-                    this.nextElementSibling.textContent = fileName;
-                });
+                    // Update nama file pada label ketika file dipilih
+                    document.getElementById('fileLaporan').addEventListener('change', function() {
+                        const fileName = this.files[0] ? this.files[0].name : "Pilih file";
+                        this.nextElementSibling.textContent = fileName;
+                    });
                 </script>
 
 
 
                 <script>
-                document.getElementById('ubahPasswordBtn').addEventListener('click', function() {
-                    const passwordFields = document.getElementById('passwordFields');
-                    if (passwordFields.style.display === 'none' || passwordFields.style
-                        .display === '') {
-                        passwordFields.style.display = 'block';
-                        this.textContent = 'Batal Ubah Password';
-                        this.classList.remove('btn-secondary');
-                        this.classList.add('btn-danger');
-                    } else {
-                        passwordFields.style.display = 'none';
-                        this.textContent = 'Ubah Password';
-                        this.classList.remove('btn-danger');
-                        this.classList.add('btn-secondary');
+                    document.getElementById('ubahPasswordBtn').addEventListener('click', function() {
+                        const passwordFields = document.getElementById('passwordFields');
+                        if (passwordFields.style.display === 'none' || passwordFields.style
+                            .display === '') {
+                            passwordFields.style.display = 'block';
+                            this.textContent = 'Batal Ubah Password';
+                            this.classList.remove('btn-secondary');
+                            this.classList.add('btn-danger');
+                        } else {
+                            passwordFields.style.display = 'none';
+                            this.textContent = 'Ubah Password';
+                            this.classList.remove('btn-danger');
+                            this.classList.add('btn-secondary');
 
-                        // Reset nilai input saat dibatalkan
-                        document.getElementById('old_password').value = '';
-                        document.getElementById('password').value = '';
-                        document.getElementById('password2').value = '';
-                    }
-                });
+                            // Reset nilai input saat dibatalkan
+                            document.getElementById('old_password').value = '';
+                            document.getElementById('password').value = '';
+                            document.getElementById('password2').value = '';
+                        }
+                    });
                 </script>
 </body>
 
