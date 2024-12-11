@@ -610,13 +610,6 @@ function edit_pelaporan($data) {
 
 
 
-
-
-
-
-
-
-
 function status_pelaporan($data) {
     global $koneksi;
 
@@ -701,26 +694,164 @@ function status_pelaporan($data) {
     }
 }
 
-function read_notifikasi($id) {
-    global $koneksi;
 
-    // Query untuk memperbarui status 'is_read' menjadi 1 (dibaca) menggunakan query biasa
-    $query = "UPDATE notifikasi SET is_read = 1 WHERE id = $id";
+
+function get_notifikasi(){
+    global $koneksi;
+    $id_supervisor = $_SESSION['id_user'];
     
-    // Eksekusi query
-    $result = mysqli_query($koneksi, $query);
+    $sql = mysqli_query($koneksi, "SELECT * FROM notifikasi WHERE id_user = '$id_supervisor' ORDER BY id_notifikasi DESC");
     
-    // Cek apakah query berhasil
-    if ($result) {
-        return true;
+    $notifikasi = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $notifikasi[] = $row;
+    }
+    
+    return $notifikasi;
+}
+function read_notifikasi($id_notifikasi) {
+    global $koneksi;
+    
+    // Prepare the query to update the 'is_read' status to 1 (true) for the specific notification
+    $sql = "UPDATE notifikasi SET is_read = 1 WHERE id_notifikasi = $id_notifikasi";
+    
+    // Execute the query
+    if (mysqli_query($koneksi, $sql)) {
+        echo "<script>window.location.href = location.href</script>";
     } else {
-        return false;
+        return false; // Query failed
     }
 }
 
 
+function delete_notifikasi($id_notifikasi) {
+    global $koneksi;
+    
+    // Prepare the query to update the 'is_read' status to 1 (true) for the specific notification
+    $sql = "DELETE FROM notifikasi WHERE id_notifikasi = $id_notifikasi";
+    
+    // Execute the query
+    if (mysqli_query($koneksi, $sql)) {
+        echo "<script>window.location.href = location.href</script>";
+    } else {
+        return false; // Query failed
+    }
+}
 
 
+function edit_supervisor($data, $id_user) {
+    global $koneksi;
 
+    // Sanitasi dan validasi input
+    $nip = strtolower(stripslashes($data['nip']));
+    $nama = strtolower(stripslashes($data['nama']));
+    $jabatan = strtolower(stripslashes($data['jabatan']));
+    $email = strtolower(stripslashes($data['email']));
+    $telp = mysqli_real_escape_string($koneksi, $data['telp']);
+    $alamat = mysqli_real_escape_string($koneksi, $data['alamat']);
+    $username = mysqli_real_escape_string($koneksi, $data['username']);
+    $password = mysqli_real_escape_string($koneksi, $data['password']);
+    $password2 = mysqli_real_escape_string($koneksi, $data['password2']);
+    $old_password = mysqli_real_escape_string($koneksi, $data['old_password']);
+
+    // Penanganan upload foto profil
+    $foto_profil = $_FILES['foto_profil']['name'];
+    $tmpname = $_FILES['foto_profil']['tmp_name'];
+    $folder = $_SERVER['DOCUMENT_ROOT'] . '/SIPELITA-PROJECT/assets/foto_supervisor/' . $foto_profil;
+
+    // Ambil data user lama dari database
+    $result = mysqli_query($koneksi, "SELECT username, password FROM user WHERE id_user = '$id_user'");
+    if (!$result || mysqli_num_rows($result) === 0) {
+        echo "<script>alert('User tidak ditemukan.');</script>";
+        return false;
+    }
+
+    $currentData = mysqli_fetch_assoc($result);
+    $currentUsername = $currentData['username'];
+    $currentPassword = $currentData['password'];
+
+    // Cek apakah username diubah dan sudah ada yang memakai username baru
+    if ($username !== $currentUsername) {
+        $cek_username = mysqli_query($koneksi, "SELECT id_user FROM user WHERE username = '$username'");
+        if (mysqli_num_rows($cek_username) > 0) {
+            echo "<script>alert('Username sudah digunakan.');</script>";
+            return false;
+        }
+    }
+
+    // Validasi password lama jika ada perubahan password
+    if (!empty($password) && !empty($old_password)) {
+        if (!password_verify($old_password, $currentPassword)) {
+            echo "<script>alert('Password lama tidak sesuai!');</script>";
+            return false;
+        }
+    }
+
+    // Cek konfirmasi password jika ada perubahan password
+    if (!empty($password) && $password !== $password2) {
+        echo "<script>alert('Konfirmasi password tidak sesuai.');</script>";
+        return false;
+    }
+
+    // Update tabel user
+    if (!empty($password)) {
+        $password_hashed = password_hash($password, PASSWORD_DEFAULT);
+        $updateUser = mysqli_query($koneksi, 
+            "UPDATE user SET username = '$username', password = '$password_hashed', role = '$jabatan' WHERE id_user = '$id_user'");
+    } else {
+        $updateUser = mysqli_query($koneksi, 
+            "UPDATE user SET username = '$username', role = '$jabatan' WHERE id_user = '$id_user'");
+    }
+
+    // Update tabel pegawai
+    if ($foto_profil) {
+        if (move_uploaded_file($tmpname, $folder)) {
+            $updatePegawai = mysqli_query($koneksi, 
+                "UPDATE supervisor SET nip = '$nip', nama = '$nama', email = '$email', telp = '$telp', alamat = '$alamat', foto_profil = '$foto_profil' WHERE id_user = '$id_user'");
+        } else {
+            echo "<script>alert('Gagal mengunggah foto.');</script>";
+            return false;
+        }
+    } else {
+        $updatePegawai = mysqli_query($koneksi, 
+            "UPDATE supervisor SET nip = '$nip', nama = '$nama', email = '$email', telp = '$telp', alamat = '$alamat' WHERE id_user = '$id_user'");
+    }
+
+    // Validasi keberhasilan query
+    if ($updateUser && $updatePegawai) {
+        $_SESSION['username'] = $username; // Update session username jika diperlukan
+        echo "<script>alert('Data berhasil diperbarui!'); window.location.href = 'index.php';</script>";
+        return true;
+    } else {
+        echo "<script>alert('Gagal memperbarui data.');</script>";
+        return false;
+    }
+}
+
+function get_pegawai() {
+    global $koneksi;
+    $id_supervisor = $_SESSION['id_user'];
+
+    // Query untuk mendapatkan id_supervisor berdasarkan id_user
+    $get_id_supervisor_query = "SELECT id_supervisor FROM supervisor WHERE id_user = '$id_supervisor'";
+    $result = mysqli_query($koneksi, $get_id_supervisor_query);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $id_supervisor_value = $row['id_supervisor'];
+
+        // Query untuk mendapatkan data pegawai berdasarkan id_supervisor
+        $sql = mysqli_query($koneksi, "SELECT * FROM pegawai WHERE id_supervisor = '$id_supervisor_value'");
+        $pegawai = [];
+
+        while ($row = mysqli_fetch_assoc($sql)) {
+            $pegawai[] = $row;
+        }
+
+        return $pegawai;
+    } else {
+        return []; // Kembalikan array kosong jika tidak ada data
+    }
+}
 
 ?>
