@@ -1,0 +1,351 @@
+:root {
+    --primary-gradient: linear-gradient(135deg, #2b06c0 0%, #0d0970 100%);
+    --secondary-gradient: linear-gradient(to right, #1f0860, #4a00e0);
+    --soft-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.4s;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7f6;
+    color: #2c3e50;
+}
+
+.section-title {
+    text-align: center;
+    margin-top: 50px;
+    /* Sesuaikan jarak dari atas */
+    margin-right: 60px;
+    /* Tambahkan margin kanan untuk menyejajarkan dengan hamburger menu */
+}
+
+/* Responsive Logo Styling */
+@media (max-width: 991.98px) {
+    .logo-image {
+        max-width: 50%;
+        /* Adjust logo size on smaller screens */
+        height: auto;
+        border-radius: 10px;
+    }
+
+    .navbar-toggler {
+        position: absolute;
+        top: 20px;
+        /* Sesuaikan jarak dari atas */
+        right: 20px;
+        /* Posisikan di sisi kanan */
+    }
+
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+
+    /* Elegant Hamburger Menu */
+    .navbar-toggler-icon {
+        background-image: none;
+        position: relative;
+        width: 30px;
+        height: 2px;
+        background-color: #FFA500;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+
+    .navbar-toggler-icon::before,
+    .navbar-toggler-icon::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 30px;
+        height: 2px;
+        background-color: #FFA500;
+        transition: all 0.3s ease;
+    }
+
+    .navbar-toggler-icon::before {
+        top: -8px;
+    }
+
+    .navbar-toggler-icon::after {
+        top: 8px;
+    }
+
+    /* Hamburger Animation on Expand */
+    .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+        background-color: transparent;
+    }
+
+    .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
+        transform: rotate(45deg);
+        top: 0;
+    }
+
+    .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
+        transform: rotate(-45deg);
+        top: 0;
+    }
+
+    @media (max-width: 991.98px) {
+        .navbar-collapse {
+            position: absolute;
+            top: 100%;
+            /* Posisi tepat di bawah navbar */
+            left: 0;
+            width: 100%;
+            background: white;
+            z-index: 1000;
+            /* Pastikan berada di atas konten lain */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 0 0 10px 10px;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-brand {
+        flex-grow: 1;
+    }
+
+    .navbar-toggler {
+        margin-left: auto;
+    }
+}
+
+.navbar-nav .nav-item .nav-link {
+    font-size: 14px; /* Ukuran font lebih besar */
+    font-weight: bold; /* Ketebalan teks */
+    text-transform: uppercase; /* Opsional: membuat semua huruf kapital */
+    color: #FFA500; /* Warna teks default */
+    transition: color 0.3s ease; /* Efek transisi warna */
+    padding: 8px 12px; /* Jarak lebih kecil */
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+    color: #007bff; /* Warna teks saat hover */
+}
+
+/* Hover Effect Adjustment */
+.navbar .nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.navbar .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -3px; /* Jarak lebih dekat dengan teks */
+    left: 0;
+    background-color: #FFA500; /* Warna garis hover */
+    transition: width 0.3s ease;
+}
+
+.navbar .nav-link:hover::after {
+    width: 100%;
+}
+
+
+.navbar {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: transparent;
+    box-shadow: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+/* Saat di-scroll */
+.navbar.scrolled {
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo-image {
+    max-width: 15%;
+    height: auto;
+    border-radius: 5px;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 991.98px) {
+    .navbar-brand .logo-image {
+        max-height: 15%;
+        /* Slightly smaller on mobile */
+    }
+}
+
+/* Optional: Add hover effect */
+.navbar-brand .logo-image:hover {
+    transform: scale(1.05);
+}
+
+.hero-section {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 120px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-image {
+    border-radius: 15px;
+    box-shadow: var(--soft-shadow);
+    transition: transform var(--transition-speed) ease;
+}
+
+.hero-image:hover {
+    transform: scale(1.05);
+}
+
+.service-card {
+    background: white;
+    border: none;
+    border-radius: 15px;
+    box-shadow: var(--soft-shadow);
+    transition: all var(--transition-speed) ease;
+}
+
+.service-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.service-icon {
+    background: var(--secondary-gradient);
+    color: white;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    transition: transform var(--transition-speed) ease;
+}
+
+.service-card:hover .service-icon {
+    transform: rotate(360deg);
+}
+
+.testimonial-card {
+    background: white;
+    border: none;
+    border-radius: 15px;
+    box-shadow: var(--soft-shadow);
+    transition: all var(--transition-speed) ease;
+}
+
+.testimonial-card:hover {
+    transform: scale(1.02);
+}
+
+.contact-section {
+    background: var(--secondary-gradient);
+    color: white;
+}
+
+.footer {
+    background: #1a1a2e;
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        text-align: center;
+    }
+}
+
+/* Additional map styling to match the site's elegant design */
+.map-container {
+    transition: all var(--transition-speed) ease;
+}
+
+.map-container:hover {
+    transform: scale(1.02);
+}
+
+.map-iframe {
+    transition: all var(--transition-speed) ease;
+}
+
+.map-container:hover .map-iframe {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+
+.why-icon {
+    display: inline-block;
+    animation: bounce 2s infinite;
+}
+
+/* Animasi untuk naik-turun */
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Styling tambahan */
+.why-choose-us {
+    background-color: #f9f9f9;
+}
+
+.why-item {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.why-item h3 {
+    margin-top: 15px;
+    font-size: 1.5rem;
+}
+
+.why-item p {
+    color: #555;
+}
+
+.why-icon i {
+    color: #FFA500;
+}
+
+.btn-outline-primary {
+    border: 2px solid #FFA500;
+    color: #FFA500;
+    transition: all var(--transition-speed) ease;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-gradient);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Titik merah untuk notifikasi yang belum dibaca */
+.unread-indicator {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50% !important;
+    background-color: red !important;
+    position: absolute !important;
+    right: 10px !important;
+}
+
+    .bg-kustom {
+        background-color: #e3f5f5 !important;
+    }
