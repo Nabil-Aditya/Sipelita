@@ -12,9 +12,6 @@ function logout(){
 }
 
 
-
-
-
 //GET data user login
 function get_data_user_login() {
     global $koneksi;
@@ -79,7 +76,7 @@ function tambah_pegawai($data)
     $tmpname = $_FILES['foto_profil']['tmp_name'];
 
     // Tentukan folder penyimpanan berdasarkan jabatan
-    $folder = $_SERVER['DOCUMENT_ROOT'] . '/pelita2/SIPELITA-PROJECT/assets/';
+    $folder = $_SERVER['DOCUMENT_ROOT'] . '/SIPELITA-PROJECT/assets/';
     $folder .= ($jabatan == 'supervisor') ? 'foto_supervisor/' : 'foto_pegawai/';
     $folder .= $foto_profil;
 
@@ -128,9 +125,6 @@ function tambah_pegawai($data)
 }
 
 
-
-
-
 // Fungsi edit pegawai
 function edit_pegawai($data, $id_user) {
     global $koneksi;
@@ -150,7 +144,7 @@ function edit_pegawai($data, $id_user) {
     // Penanganan upload foto profil
     $foto_profil = $_FILES['foto_profil']['name'];
     $tmpname = $_FILES['foto_profil']['tmp_name'];
-    $folder = $_SERVER['DOCUMENT_ROOT'] . '/pelita2/SIPELITA-PROJECT/assets/foto_pegawai/' . $foto_profil;
+    $folder = $_SERVER['DOCUMENT_ROOT'] . '/SIPELITA-PROJECT/assets/foto_pegawai/' . $foto_profil;
 
     // Ambil data user lama dari database
     $result = mysqli_query($koneksi, "SELECT username, password FROM user WHERE id_user = '$id_user'");
@@ -242,7 +236,7 @@ function edit_supervisor($data, $id_user) {
     // Penanganan upload foto profil
     $foto_profil = $_FILES['foto_profil']['name'];
     $tmpname = $_FILES['foto_profil']['tmp_name'];
-    $folder = $_SERVER['DOCUMENT_ROOT'] . '/pelita2/SIPELITA-PROJECT/assets/foto_supervisor/' . $foto_profil;
+    $folder = $_SERVER['DOCUMENT_ROOT'] . '/SIPELITA-PROJECT/assets/foto_supervisor/' . $foto_profil;
 
     // Ambil data user lama dari database
     $result = mysqli_query($koneksi, "SELECT username, password FROM user WHERE id_user = '$id_user'");
