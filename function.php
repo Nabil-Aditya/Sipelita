@@ -29,14 +29,20 @@ function login($data)
 
     // Verifikasi CAPTCHA
     if (!isset($_SESSION['captcha']) || $captcha_input !== $_SESSION['captcha']) {
-        echo "<script>Swal.fire('Proses Masuk Gagal', 'CAPTCHA yang Anda masukkan salah', 'error');</script>";
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Proses Masuk Gagal',
+                    text: 'CAPTCHA yang Anda masukkan salah.',
+                    showConfirmButton: true
+                });
+              </script>";
         // Buat CAPTCHA baru setelah percobaan gagal
         $_SESSION['captcha'] = rand(10000,99999);
         return false;
     }
 
     // Reset CAPTCHA setelah verifikasi
-    $old_captcha = $_SESSION['captcha'];
     $_SESSION['captcha'] = rand(10000,99999);
 
     // Menggunakan prepared statements untuk mencegah SQL injection
@@ -90,16 +96,28 @@ function login($data)
                         }).then(() => {
                             window.location.href = 'admin/index.php';
                         });
-                    </script>";
+                      </script>";
                 exit;
             }
-        } 
-        else {
-            echo "<script>Swal.fire('Proses Masuk Gagal', 'Kata Sandi Anda Salah', 'error');</script>";
+        } else {
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Proses Masuk Gagal',
+                        text: 'Kata sandi Anda salah.',
+                        showConfirmButton: true
+                    });
+                  </script>";
         }
-    } 
-    else {
-        echo "<script>Swal.fire('Proses Masuk Gagal', 'Nama Pengguna Tidak Ditemukan', 'error');</script>";
+    } else {
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Proses Masuk Gagal',
+                    text: 'Nama pengguna tidak ditemukan.',
+                    showConfirmButton: true
+                });
+              </script>";
     }
 
     mysqli_stmt_close($stmt);
@@ -112,8 +130,6 @@ function logout(){
     session_destroy();
     echo "<script>alert('Logout'); window.location.href='login.php'</script>";
 }
-
-
 
 ?>
 
