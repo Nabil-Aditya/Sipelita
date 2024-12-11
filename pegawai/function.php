@@ -2,14 +2,11 @@
 session_start();
 include '../koneksi.php';
 
-
 function logout(){
     session_unset();
     session_destroy();
     echo "<script>alert('Logout'); window.location.href='../login.php'</script>";
 }
-
-
 
 function get_supervisor_byPegawai(){
     global $koneksi;
@@ -45,7 +42,7 @@ function edit_pegawai($data, $id_user) {
     // Penanganan upload foto profil
     $foto_profil = $_FILES['foto_profil']['name'];
     $tmpname = $_FILES['foto_profil']['tmp_name'];
-    $folder = $_SERVER['DOCUMENT_ROOT'] . '/pelita2/SIPELITA-PROJECT/assets/foto_pegawai/' . $foto_profil;
+    $folder = $_SERVER['DOCUMENT_ROOT'] . '/SIPELITA-PROJECT/assets/foto_pegawai/' . $foto_profil;
 
     // Ambil data user lama dari database
     $result = mysqli_query($koneksi, "SELECT username, password FROM user WHERE id_user = '$id_user'");
@@ -115,7 +112,6 @@ function edit_pegawai($data, $id_user) {
         return false;
     }
 }
-
 
 
 // --------------------------------------------PENGAJUAN PELATIHAN----------------------------------------------
@@ -402,7 +398,6 @@ function get_peserta(){
     return $peserta;
 }
 
-
 function add_lpj($data) {
     global $koneksi;
 
@@ -421,11 +416,27 @@ function add_lpj($data) {
     $upload_dir_berkas = '../assets/berkas_lpj/';
     $upload_dir_sertifikat = '../assets/sertifikat_lpj/';
 
-    // Proses unggah file berkas
+    // Validasi file berkas
+    $allowed_types = ['application/pdf'];
+    $max_file_size = 100 * 1024 * 1024; // 100 MB
+
     if ($berkas['error'] === UPLOAD_ERR_OK) {
         $tmp_name_berkas = $berkas['tmp_name'];
         $name_berkas = basename($berkas['name']);
         $path_berkas = $upload_dir_berkas . $name_berkas;
+        $file_type_berkas = mime_content_type($tmp_name_berkas);
+        $file_size_berkas = $berkas['size'];
+
+        // Validasi tipe dan ukuran file berkas
+        if (!in_array($file_type_berkas, $allowed_types)) {
+            echo "<script>alert('Berkas harus berupa file PDF.')</script>";
+            return;
+        }
+
+        if ($file_size_berkas > $max_file_size) {
+            echo "<script>alert('Ukuran berkas tidak boleh lebih dari 100 MB.')</script>";
+            return;
+        }
 
         if (move_uploaded_file($tmp_name_berkas, $path_berkas)) {
             // Proses unggah file sertifikat
@@ -433,6 +444,19 @@ function add_lpj($data) {
                 $tmp_name_sertifikat = $sertifikat['tmp_name'];
                 $name_sertifikat = basename($sertifikat['name']);
                 $path_sertifikat = $upload_dir_sertifikat . $name_sertifikat;
+                $file_type_sertifikat = mime_content_type($tmp_name_sertifikat);
+                $file_size_sertifikat = $sertifikat['size'];
+
+                // Validasi tipe dan ukuran file sertifikat
+                if (!in_array($file_type_sertifikat, $allowed_types)) {
+                    echo "<script>alert('Sertifikat harus berupa file PDF.')</script>";
+                    return;
+                }
+
+                if ($file_size_sertifikat > $max_file_size) {
+                    echo "<script>alert('Ukuran sertifikat tidak boleh lebih dari 100 MB.')</script>";
+                    return;
+                }
 
                 if (move_uploaded_file($tmp_name_sertifikat, $path_sertifikat)) {
                     // Update data ke database
@@ -459,6 +483,7 @@ function add_lpj($data) {
         echo "<script>alert('Error saat mengunggah file berkas.')</script>";
     }
 }
+
 
 
 
@@ -621,4 +646,36 @@ function get_notifikasi(){
     
     return $pelaporan;
 }
-?>
+
+
+
+
+function read_notifikasi($id_notifikasi) {
+    global $koneksi;
+    
+    // Prepare the query to update the 'is_read' status to 1 (true) for the specific notification
+    $sql = "UPDATE notifikasi SET is_read = 1 WHERE id_notifikasi = $id_notifikasi";
+    
+    // Execute the query
+    if (mysqli_query($koneksi, $sql)) {
+        echo "<script>window.location.href = location.href</script>";
+    } else {
+        return false; // Query failed
+    }
+}
+
+
+
+function delete_notifikasi($id_notifikasi) {
+    global $koneksi;
+    
+    // Prepare the query to update the 'is_read' status to 1 (true) for the specific notification
+    $sql = "DELETE FROM notifikasi WHERE id_notifikasi = $id_notifikasi";
+    
+    // Execute the query
+    if (mysqli_query($koneksi, $sql)) {
+        echo "<script>window.location.href = location.href</script>";
+    } else {
+        return false; // Query failed
+    }
+}
