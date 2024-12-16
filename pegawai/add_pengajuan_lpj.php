@@ -510,7 +510,7 @@ $komentar = get_komentar_byPelaporan();
                                     <?php 
                                     // Misalnya $status adalah status dari LPJ yang sudah ada
                                     if ($berkas['status'] === 'Ditolak' || $berkas['status'] === 'Belum Mengupload LPJ') { ?>
-                                    <a href='index.php' type="button" class="btn btn-danger">Back</a>
+                                    <a href='index.php' type="button" class="btn btn-danger">Kembali</a>
                                     <button type="submit" class="btn btn-primary" name="buat_lpj">Buat</button>
                                     <?php } else { ?>
                                     <a href="index.php" class="btn btn-primary">Back</a>
