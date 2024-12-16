@@ -14,10 +14,9 @@ include 'koneksi.php';
 
 // Fungsi untuk membuat CAPTCHA
 if (!isset($_SESSION['captcha'])) {
-    $buat_captcha = rand(10000,99999);
+    $buat_captcha = rand(10000, 99999);
     $_SESSION['captcha'] = $buat_captcha;
 }
-
 function login($data)
 {
     global $koneksi;
@@ -38,15 +37,16 @@ function login($data)
                 });
               </script>";
         // Buat CAPTCHA baru setelah percobaan gagal
-        $_SESSION['captcha'] = rand(10000,99999);
+        $_SESSION['captcha'] = rand(10000, 99999);
         return false;
     }
 
     // Reset CAPTCHA setelah verifikasi
-    $_SESSION['captcha'] = rand(10000,99999);
+    $_SESSION['captcha'] = rand(10000, 99999);
 
     // Menggunakan prepared statements untuk mencegah SQL injection
-    $stmt = mysqli_prepare($koneksi, "SELECT * FROM user WHERE username = ?");
+    // Menambahkan BINARY untuk membuat perbandingan username case-sensitive
+    $stmt = mysqli_prepare($koneksi, "SELECT * FROM user WHERE BINARY username = ?");
     mysqli_stmt_bind_param($stmt, "s", $username);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
@@ -72,8 +72,7 @@ function login($data)
                         });
                       </script>";
                 exit;
-            } 
-            else if ($data_from_username['role'] == 'supervisor') {
+            } else if ($data_from_username['role'] == 'supervisor') {
                 echo "<script>
                         Swal.fire({
                             icon: 'success',
@@ -85,8 +84,7 @@ function login($data)
                         });
                       </script>";
                 exit;
-            } 
-            else {
+            } else {
                 echo "<script>
                         Swal.fire({
                             icon: 'success',
@@ -123,9 +121,8 @@ function login($data)
     mysqli_stmt_close($stmt);
     return false;
 }
-
-
-function logout(){
+function logout()
+{
     session_unset();
     session_destroy();
     echo "<script>alert('Logout'); window.location.href='login.php'</script>";
