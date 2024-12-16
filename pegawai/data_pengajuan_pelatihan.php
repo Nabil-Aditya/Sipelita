@@ -489,7 +489,6 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                                                 <td><?= $data['institusi'] ?></td>
                                                                 <td><?= $data['kompetensi'] ?></td>
                                                                 <td><?= $data['tgl_pengajuan'] ?></td>
-
                                                                 <td>
                                                                     <span
                                                                         class="status-button 
