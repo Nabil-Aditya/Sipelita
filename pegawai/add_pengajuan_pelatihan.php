@@ -151,6 +151,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Font khusus untuk templat ini -->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
@@ -527,8 +528,6 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             });
                                         </script>
 
-
-
                                         <div class="form-group">
                                             <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
                                             <textarea class="form-control" id="alamat" rows="2" name="alamat"
@@ -572,44 +571,10 @@ if ($currentHour >= 0 && $currentHour < 12) {
 
                                 <!-- Tombol Aksi -->
                                 <div class="d-flex justify-content-between mt-4">
-                                    <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
-                                    <button type="submit" name="create_pelatihan" class="btn btn-primary">Buat</button>
+                                <a href='index.php' type="button" class="btn btn-danger">Kembali</a>
+                                <button type="submit" name="create_pelatihan" class="btn btn-primary">Buat</button>
                                 </div>
                             </form>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- /.container-fluid -->
-
-                <!-- Modal Konfirmasi Pengajuan -->
-                <div class="modal fade" id="konfirmasiModal" tabindex="-1" role="dialog"
-                    aria-labelledby="konfirmasiModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="m-0 font-weight-bold text-primary" id="konfirmasiModalLabel">Konfirmasi
-                                    Pengajuan Pelatihan</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p><strong>Lembaga / Institusi:</strong> <span id="confirmLembaga"></span></p>
-                                <p><strong>Program Studi:</strong> <span id="confirmProgramStudi"></span></p>
-                                <p><strong>Jurusan:</strong> <span id="confirmJurusan"></span></p>
-                                <p><strong>Nama Peserta:</strong> <span id="confirmNamaPeserta"></span></p>
-                                <p><strong>Alamat:</strong> <span id="confirmAlamat"></span></p>
-                                <p><strong>Tanggal Kegiatan:</strong> <span id="confirmTanggalKegiatan"></span></p>
-                                <p><strong>Tanggal Selesai:</strong> <span id="confirmTanggalSelesai"></span></p>
-                                <p><strong>Sumber Dana:</strong> <span id="confirmSumberDana"></span></p>
-                                <p><strong>Kompetensi:</strong> <span id="confirmKompetensi"></span></p>
-                                <p><strong>Target Kegiatan:</strong> <span id="confirmTargetKegiatan"></span></p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Kirim</button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -623,92 +588,6 @@ if ($currentHour >= 0 && $currentHour < 12) {
                 <!-- jQuery -->
                 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-                <script>
-                    $(document).ready(function() {
-                        // Ketika tombol "Buat" ditekan, mencegah form submit otomatis dan munculkan modal
-                        $('#pengajuanForm').on('submit', function(event) {
-                            event.preventDefault(); // Mencegah submit form otomatis
-
-                            // Ambil data dari form
-                            const lembaga = $('#lembaga').val();
-                            const programStudi = $('#programStudi').val();
-                            const jurusan = $('#jurusan').val();
-                            const namaPeserta = $('#namaPeserta').val();
-                            const alamat = $('#alamat').val();
-                            const tanggalKegiatan = $('#tanggalKegiatan').val();
-                            const tanggalSelesai = $('#tanggalSelesai').val();
-                            const sumberDana = $('#sumberDana').val();
-                            const kompetensi = $('#kompetensi').val();
-                            const targetKegiatan = $('#targetKegiatan').val();
-
-                            // Cek apakah semua inputan tidak kosong
-                            if (!lembaga || !programStudi || !jurusan || !namaPeserta || !alamat || !
-                                tanggalKegiatan || !tanggalSelesai || !sumberDana || !kompetensi || !
-                                targetKegiatan) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: 'Semua kolom harus diisi!'
-                                });
-                                return;
-                            }
-
-                            // Isi data di modal konfirmasi
-                            $('#confirmLembaga').text(lembaga);
-                            $('#confirmProgramStudi').text(programStudi);
-                            $('#confirmJurusan').text(jurusan);
-                            $('#confirmNamaPeserta').text(namaPeserta);
-                            $('#confirmAlamat').text(alamat);
-                            $('#confirmTanggalKegiatan').text(tanggalKegiatan);
-                            $('#confirmTanggalSelesai').text(tanggalSelesai);
-                            $('#confirmSumberDana').text(sumberDana);
-                            $('#confirmKompetensi').text(kompetensi);
-                            $('#confirmTargetKegiatan').text(targetKegiatan);
-
-                            // Munculkan modal
-                            $('#konfirmasiModal').modal('show');
-                        });
-
-                        // Ketika tombol "Kirim" di modal ditekan, tampilkan SweetAlert dan redirect ke halaman baru
-                        $('#submitPengajuan').on('click', function() {
-                            // Tutup modal
-                            $('#konfirmasiModal').modal('hide');
-
-                            // Ambil data dari form
-                            const formData = $('#pengajuanForm')
-                                .serialize(); // Serialisasi semua input form
-
-                            // Kirim data ke server
-                            $.ajax({
-                                url: 'proses_pengajuan.php', // Ganti dengan URL endpoint untuk proses data
-                                type: 'POST',
-                                data: formData,
-                                success: function(response) {
-                                    // Tampilkan SweetAlert sukses jika berhasil
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Pengajuan Pelatihan Berhasil Diajukan',
-                                        showConfirmButton: false,
-                                        timer: 2500
-                                    }).then(() => {
-                                        // Redirect ke halaman baru setelah sukses
-                                        window.location.href = 'index.php';
-                                    });
-                                },
-                                error: function(error) {
-                                    // Tampilkan SweetAlert jika terjadi error
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Pengajuan Gagal',
-                                        text: 'Terjadi kesalahan saat menyimpan data!'
-                                    });
-                                }
-                            });
-                        });
-
-
-                    });
-                </script>
 
                 <!-- Logout Modal-->
                 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
