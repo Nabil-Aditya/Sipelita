@@ -18,8 +18,6 @@ $unread = count(array_filter($notifikasi, function ($notif) {
     return $notif['is_read'] == 0;
 }));
 
-
-
 // Read notikasi
 if (isset($_POST['read_notifikasi'])) {
     $id_notifikasi = $_POST['id_notifikasi']; // Get the ID from the form submission
