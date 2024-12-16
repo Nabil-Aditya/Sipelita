@@ -14,11 +14,12 @@
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    
+
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- styles this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <!-- Custom styles for this template-->
@@ -43,7 +44,7 @@ if (isset($_SESSION['role'])) {
     } else if ($_SESSION['role'] === 'supervisor') {
         echo "<script>window.location.href = 'supervisor/index.php';</script>";
     }
-    exit(); 
+    exit();
 }
 ?>
 
@@ -64,8 +65,8 @@ if (isset($_SESSION['role'])) {
                                 <img src="./img/sipelita.jpg" alt="Logo" class="img-fluid"> V.1.0
                                 <img src="./img/login_img.jpg" alt="Login Image" class="login-image">
                                 <div class="text-center mt-1">
-                                <a href="assets/MANUAL-BOOK-SIPELITA.pdf" target="_blank" class="btn btn-link custom-link">Buku Panduan</a>
-                                <a href="https://wa.me/6287842033231" class="btn btn-link custom-link"
+                                    <a href="assets/MANUAL-BOOK-SIPELITA.pdf" target="_blank" class="btn btn-link custom-link">Buku Panduan</a>
+                                    <a href="https://wa.me/6287842033231" class="btn btn-link custom-link"
                                         target="_blank">Hubungi Kami</a> |
                                     <a href="#" class="btn btn-link custom-link" id="developerTeam">Tim Pengembang</a>
                                 </div>
@@ -87,10 +88,13 @@ if (isset($_SESSION['role'])) {
                                         </div>
 
                                         <span class="bold-black-text">Kata Sandi</span>
-                                        <div class="form-group">
+                                        <div class="form-group position-relative">
                                             <input type="password" class="form-control form-control-user"
                                                 name="password" id="exampleInputPassword"
                                                 placeholder="Masukkan Kata Sandi..." minlength="6" required>
+                                            <span class="position-absolute" style="right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; margin-right: 4px;">
+                                                <i class="fa fa-eye-slash" id="togglePassword" style="color: grey;"></i>
+                                            </span>
                                         </div>
 
                                         <span class="bold-black-text">CAPTCHA</span>
@@ -116,6 +120,43 @@ if (isset($_SESSION['role'])) {
         </div>
     </div>
 
+    <!-- Kata sandi dengan mata-->
+
+    <script>
+        const togglePassword = document.querySelector("#togglePassword");
+        const passwordField = document.querySelector("#exampleInputPassword");
+
+        togglePassword.addEventListener("click", function() {
+            // Toggle tipe input antara password dan text
+            const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+            passwordField.setAttribute("type", type);
+
+            // Toggle ikon antara fa-eye dan fa-eye-slash
+            if (type === "text") {
+                this.classList.remove("fa-eye-slash");
+                this.classList.add("fa-eye");
+                this.style.color = "red"; // Warna biru saat mata terbuka
+            } else {
+                this.classList.remove("fa-eye");
+                this.classList.add("fa-eye-slash");
+                this.style.color = "grey"; // Warna abu-abu saat mata tertutup
+            }
+        });
+
+        // Efek hover untuk ikon
+        togglePassword.addEventListener("mouseenter", function() {
+            this.style.color = "red"; // Warna biru saat hover
+        });
+
+        togglePassword.addEventListener("mouseleave", function() {
+            if (passwordField.getAttribute("type") === "password") {
+                this.style.color = "grey"; // Kembali ke abu-abu jika password tersembunyi
+            } else {
+                this.style.color = "red"; // Tetap biru jika password terlihat
+            }
+        });
+    </script>
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -126,38 +167,36 @@ if (isset($_SESSION['role'])) {
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
-      <!-- SweetAlert2 JavaScript -->
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+    <!-- SweetAlert2 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
 
-<script>
-    document.getElementById("developerTeam").addEventListener("click", function(event) {
-        event.preventDefault(); // Prevent default action of the link
+    <script>
+        document.getElementById("developerTeam").addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent default action of the link
 
-        Swal.fire({
-            title: 'Tim Pengembang',
-            html: `
+            Swal.fire({
+                title: 'Tim Pengembang',
+                html: `
             <div class="popup-content">
                 <!-- Logo at the center -->
                 <img src="./img/sipelita.jpg" alt="Logo" class="popup-logo">
                 <hr>
-
                 <!-- Developer team image -->
                 <img src="./img/developer.jpg" alt="Tim Pengembang" class="popup-image">
-                
                 <!-- Footer content with "Tutup" button -->
                 <div class="popup-footer">
                     <button class="swal2-confirm swal2-styled" onclick="Swal.close()">Tutup</button>
                 </div>
             </div>
         `,
-            showConfirmButton: false, // Hide default confirm button
-            showCloseButton: true, // Enable the "X" close button
-            customClass: {
-                popup: 'swal2-full-popup', // Custom class untuk memperbesar popup
-            }
+                showConfirmButton: false, // Hide default confirm button
+                showCloseButton: true, // Enable the "X" close button
+                customClass: {
+                    popup: 'swal2-full-popup', // Custom class untuk memperbesar popup
+                }
+            });
         });
-    });
-</script>
+    </script>
 
 
 </body>
