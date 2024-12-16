@@ -1,8 +1,8 @@
 <!-- KONEKSI -->
-<?php 
+<?php
 
-include '../koneksi.php'; 
-include 'function.php'; 
+include '../koneksi.php';
+include 'function.php';
 
 $notifikasi = get_notifikasi();
 
@@ -296,338 +296,338 @@ $komentar = get_komentar_byPelatihan();
 
                             <?php if ($pelatihan['status'] == 'Diproses'): ?>
 
-                            <form id="pengajuanForm">
-                                <div class="alert alert-warning" role="alert">
-                                    <strong>Perhatian!</strong> Pengajuan anda sedang diproses, mohon menunggu beberapa
-                                    saat. Terimakasih <br>
-                                    <strong></strong>
-                                </div>
+                                <form id="pengajuanForm">
+                                    <div class="alert alert-warning" role="alert">
+                                        <strong>Perhatian!</strong> Pengajuan anda sedang diproses, mohon menunggu beberapa
+                                        saat. Terimakasih <br>
+                                        <strong></strong>
+                                    </div>
 
-                                <div class="row">
-                                    <!-- Kolom Kiri -->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
-                                            <input type="text" class="form-control bg-light-200" id="lembaga"
-                                                placeholder="Masukkan Lembaga / Institusi"
-                                                value="<?=$pelatihan['institusi']?>" readonly>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="programStudi" class="font-weight-bold">Program Studi</label>
-                                            <input type="text" class="form-control bg-light-200" id="programStudi"
-                                                placeholder="Masukkan Program Studi" value="<?=$pelatihan['prodi']?>"
-                                                readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="jurusan" class="font-weight-bold">Jurusan</label>
-                                            <input type="text" class="form-control bg-light-200" id="jurusan"
-                                                placeholder="Masukkan Jurusan" value="<?=$pelatihan['jurusan']?>"
-                                                readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="peserta" class="font-weight-bold">Peserta</label>
-                                            <div id="selectedNames" class="d-flex flex-wrap gap-1">
-                                                <?php foreach ($peserta as $data) { ?>
-                                                <p
-                                                    class="badge bg-light text-dark rounded-pill px-3 py-2 border border-secondary">
-                                                    <?=$data['nama']?></p>
-                                                <?php } ?>
+                                    <div class="row">
+                                        <!-- Kolom Kiri -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
+                                                <input type="text" class="form-control bg-light-200" id="lembaga"
+                                                    placeholder="Masukkan Lembaga / Institusi"
+                                                    value="<?= $pelatihan['institusi'] ?>" readonly>
                                             </div>
-                                            <input type="hidden" name="peserta[]" id="pesertaHidden">
+
+                                            <div class="form-group">
+                                                <label for="programStudi" class="font-weight-bold">Program Studi</label>
+                                                <input type="text" class="form-control bg-light-200" id="programStudi"
+                                                    placeholder="Masukkan Program Studi" value="<?= $pelatihan['prodi'] ?>"
+                                                    readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="jurusan" class="font-weight-bold">Jurusan</label>
+                                                <input type="text" class="form-control bg-light-200" id="jurusan"
+                                                    placeholder="Masukkan Jurusan" value="<?= $pelatihan['jurusan'] ?>"
+                                                    readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="peserta" class="font-weight-bold">Peserta</label>
+                                                <div id="selectedNames" class="d-flex flex-wrap gap-1">
+                                                    <?php foreach ($peserta as $data) { ?>
+                                                        <p
+                                                            class="badge bg-light text-dark rounded-pill px-3 py-2 border border-secondary">
+                                                            <?= $data['nama'] ?></p>
+                                                    <?php } ?>
+                                                </div>
+                                                <input type="hidden" name="peserta[]" id="pesertaHidden">
+                                            </div>
+
+
+
+                                            <div class="form-group">
+                                                <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
+                                                <textarea class="form-control bg-light-200" id="alamat" rows="2"
+                                                    placeholder="Masukkan Tempat / Alamat"
+                                                    readonly><?= $pelatihan['alamat'] ?></textarea>
+                                            </div>
                                         </div>
 
-
-
-                                        <div class="form-group">
-                                            <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
-                                            <textarea class="form-control bg-light-200" id="alamat" rows="2"
-                                                placeholder="Masukkan Tempat / Alamat"
-                                                readonly><?=$pelatihan['alamat']?></textarea>
+                                        <!-- Kolom Kanan -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="tanggalKegiatan" class="font-weight-bold">Tanggal
+                                                    Kegiatan</label>
+                                                <input type="date" class="form-control bg-light-200" id="tanggalKegiatan"
+                                                    value="<?= $pelatihan['tgl_start'] ?>" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan
+                                                    Selesai</label>
+                                                <input type="date" class="form-control bg-light-200" id="tanggalSelesai"
+                                                    value="<?= $pelatihan['tgl_end'] ?>" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual
+                                                    Account)</label>
+                                                <input type="number" class="form-control bg-light-200" id="sumberDana"
+                                                    placeholder="Masukkan Sumber Dana (Virtual Account)"
+                                                    value="<?= $pelatihan['no_dana'] ?>" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
+                                                <input type="text" class="form-control bg-light-200" id="kompetensi"
+                                                    placeholder="Masukkan Kompetensi" value="<?= $pelatihan['kompetensi'] ?>"
+                                                    readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="targetKegiatan" class="font-weight-bold">Target yang ingin
+                                                    dicapai kegiatan</label>
+                                                <textarea class="form-control bg-light-200" id="targetKegiatan" rows="2"
+                                                    placeholder="Target yang ingin dicapai kegiatan"
+                                                    readonly><?= $pelatihan['target'] ?></textarea>
+                                            </div>
                                         </div>
                                     </div>
+                                    <hr>
 
-                                    <!-- Kolom Kanan -->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="tanggalKegiatan" class="font-weight-bold">Tanggal
-                                                Kegiatan</label>
-                                            <input type="date" class="form-control bg-light-200" id="tanggalKegiatan"
-                                                value="<?=$pelatihan['tgl_start']?>" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan
-                                                Selesai</label>
-                                            <input type="date" class="form-control bg-light-200" id="tanggalSelesai"
-                                                value="<?=$pelatihan['tgl_end']?>" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual
-                                                Account)</label>
-                                            <input type="number" class="form-control bg-light-200" id="sumberDana"
-                                                placeholder="Masukkan Sumber Dana (Virtual Account)"
-                                                value="<?=$pelatihan['no_dana']?>" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
-                                            <input type="text" class="form-control bg-light-200" id="kompetensi"
-                                                placeholder="Masukkan Kompetensi" value="<?=$pelatihan['kompetensi']?>"
-                                                readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="targetKegiatan" class="font-weight-bold">Target yang ingin
-                                                dicapai kegiatan</label>
-                                            <textarea class="form-control bg-light-200" id="targetKegiatan" rows="2"
-                                                placeholder="Target yang ingin dicapai kegiatan"
-                                                readonly><?=$pelatihan['target']?></textarea>
-                                        </div>
+                                    <!-- Tombol Aksi -->
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <a href="index.php" class="btn btn-primary">Kembali</a>
                                     </div>
-                                </div>
-                                <hr>
 
-                                <!-- Tombol Aksi -->
-                                <div class="d-flex justify-content-between mt-4">
-                                    <a href="index.php" class="btn btn-primary">Kembali</a>
-                                </div>
-
-                            </form>
+                                </form>
                             <?php endif; ?>
 
 
                             <?php if ($pelatihan['status'] == 'Ditolak'): ?>
-                            <form method="post">
-                                <div class="alert alert-danger" role="alert">
-                                    <strong>Perhatian!</strong> Pengajuan anda ditolak, <?=$komentar['komentar']?> mohon
-                                    mengajukan kembali
-                                </div>
-                                <div class="row">
-                                    <!-- Kolom Kiri -->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
-                                            <input type="text" class="form-control" id="lembaga" name="institusi"
-                                                placeholder="Masukkan Lembaga / Institusi"
-                                                value="<?=$pelatihan['institusi']?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="programStudi" class="font-weight-bold">Program Studi</label>
-                                            <select class="form-control" id="programStudi" name="prodi">
-                                                <option value="" disabled>Pilih Prodi</option>
-                                                <?php foreach ($prodi as $data) { ?>
-                                                <option value="<?=$data['id_prodi']?>"
-                                                    <?= $data['id_prodi'] == $pelatihan['id_prodi'] ? 'selected' : '' ?>>
-                                                    <?=$data['prodi']?>
-                                                </option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="jurusan" class="font-weight-bold">Jurusan</label>
-                                            <select class="form-control" id="jurusan" name="jurusan">
-                                                <option value="" disabled>Pilih Jurusan</option>
-                                                <?php foreach ($jurusan as $data) { ?>
-                                                <option value="<?=$data['id_jurusan']?>"
-                                                    <?= $data['id_jurusan'] == $pelatihan['id_jurusan'] ? 'selected' : '' ?>>
-                                                    <?=$data['jurusan']?>
-                                                </option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="peserta" class="font-weight-bold">Peserta</label>
-                                            <div class="dropdown">
-                                                <button class="btn btn-primary dropdown-toggle" type="button"
-                                                    id="dropdownMenuButton" data-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                    Pilih Nama
-                                                </button>
-
-                                                <ul class="dropdown-menu dropdown-search"
-                                                    aria-labelledby="dropdownMenuButton">
-                                                    <li>
-                                                        <input type="text" id="searchInput" class="form-control mb-2"
-                                                            placeholder="Cari nama...">
-                                                    </li>
-                                                    <?php foreach ($pegawai as $data) { ?>
-                                                    <li class="dropdown-item" data-value="<?=$data['nama']?>"
-                                                        data-id="<?=$data['id_pegawai']?>"><?=$data['nama']?></li>
+                                <form method="post">
+                                    <div class="alert alert-danger" role="alert">
+                                        <strong>Perhatian!</strong> Pengajuan anda ditolak, <?= $komentar['komentar'] ?> mohon
+                                        mengajukan kembali
+                                    </div>
+                                    <div class="row">
+                                        <!-- Kolom Kiri -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
+                                                <input type="text" class="form-control" id="lembaga" name="institusi"
+                                                    placeholder="Masukkan Lembaga / Institusi"
+                                                    value="<?= $pelatihan['institusi'] ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="programStudi" class="font-weight-bold">Program Studi</label>
+                                                <select class="form-control" id="programStudi" name="prodi">
+                                                    <option value="" disabled>Pilih Prodi</option>
+                                                    <?php foreach ($prodi as $data) { ?>
+                                                        <option value="<?= $data['id_prodi'] ?>"
+                                                            <?= $data['id_prodi'] == $pelatihan['id_prodi'] ? 'selected' : '' ?>>
+                                                            <?= $data['prodi'] ?>
+                                                        </option>
                                                     <?php } ?>
-                                                </ul>
+                                                </select>
                                             </div>
-                                        
-                                            <!-- Test -->
-                                            <p class="mt-3">Nama Terpilih:</p>
-                                            <div id="selectedNames" class="selected-names-container mt-2">
-                                                <?php 
-                                                $peserta = get_peserta();
-                                                foreach ($peserta as $p) { ?>
-                                                <div class="selected-name" data-id="<?=$p['id_pegawai']?>">
-                                                    <span><?=$p['nama']?></span>
-                                                    <button type="button"
-                                                        class="btn btn-danger btn-sm ml-2">Hapus</button>
-                                                    <input type="hidden" name="peserta[]" value="<?=$p['id_pegawai']?>">
+                                            <div class="form-group">
+                                                <label for="jurusan" class="font-weight-bold">Jurusan</label>
+                                                <select class="form-control" id="jurusan" name="jurusan">
+                                                    <option value="" disabled>Pilih Jurusan</option>
+                                                    <?php foreach ($jurusan as $data) { ?>
+                                                        <option value="<?= $data['id_jurusan'] ?>"
+                                                            <?= $data['id_jurusan'] == $pelatihan['id_jurusan'] ? 'selected' : '' ?>>
+                                                            <?= $data['jurusan'] ?>
+                                                        </option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="peserta" class="font-weight-bold">Peserta</label>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-primary dropdown-toggle" type="button"
+                                                        id="dropdownMenuButton" data-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                        Pilih Nama
+                                                    </button>
+
+                                                    <ul class="dropdown-menu dropdown-search"
+                                                        aria-labelledby="dropdownMenuButton">
+                                                        <li>
+                                                            <input type="text" id="searchInput" class="form-control mb-2"
+                                                                placeholder="Cari nama...">
+                                                        </li>
+                                                        <?php foreach ($pegawai as $data) { ?>
+                                                            <li class="dropdown-item" data-value="<?= $data['nama'] ?>"
+                                                                data-id="<?= $data['id_pegawai'] ?>"><?= $data['nama'] ?></li>
+                                                        <?php } ?>
+                                                    </ul>
                                                 </div>
-                                                <?php } ?>
+
+                                                <!-- Test -->
+                                                <p class="mt-3">Nama Terpilih:</p>
+                                                <div id="selectedNames" class="selected-names-container mt-2">
+                                                    <?php
+                                                    $peserta = get_peserta();
+                                                    foreach ($peserta as $p) { ?>
+                                                        <div class="selected-name" data-id="<?= $p['id_pegawai'] ?>">
+                                                            <span><?= $p['nama'] ?></span>
+                                                            <button type="button"
+                                                                class="btn btn-danger btn-sm ml-2">Hapus</button>
+                                                            <input type="hidden" name="peserta[]" value="<?= $p['id_pegawai'] ?>">
+                                                        </div>
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
+
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function() {
+                                                    // Inisialisasi komponen yang dibutuhkan
+                                                    const selectedNamesContainer = document.getElementById(
+                                                        'selectedNames');
+                                                    const searchInput = document.getElementById('searchInput');
+                                                    const dropdownItems = document.querySelectorAll('.dropdown-item');
+                                                    const dropdownButton = document.getElementById(
+                                                        'dropdownMenuButton');
+                                                    let pesertaSelected =
+                                                        <?= json_encode(array_column($peserta, 'id_pegawai')) ?>;
+
+                                                    // Inisialisasi dropdown untuk Bootstrap 4
+                                                    $(dropdownButton).dropdown();
+
+                                                    // Fungsi untuk filter pencarian
+                                                    searchInput.addEventListener('input', function(e) {
+                                                        const searchText = e.target.value.toLowerCase();
+                                                        dropdownItems.forEach(item => {
+                                                            if (item.getAttribute('data-value')) {
+                                                                const itemText = item.getAttribute(
+                                                                    'data-value').toLowerCase();
+                                                                if (itemText.includes(searchText)) {
+                                                                    item.style.display = 'block';
+                                                                } else {
+                                                                    item.style.display = 'none';
+                                                                }
+                                                            }
+                                                        });
+                                                    });
+
+                                                    // Handle pemilihan peserta
+                                                    dropdownItems.forEach(item => {
+                                                        item.addEventListener('click', function() {
+                                                            const id = this.getAttribute('data-id');
+                                                            const nama = this.getAttribute(
+                                                                'data-value');
+
+                                                            if (id && !pesertaSelected.includes(id)) {
+                                                                pesertaSelected.push(id);
+
+                                                                const selectedNameElement = document
+                                                                    .createElement('div');
+                                                                selectedNameElement.classList.add(
+                                                                    'selected-name');
+                                                                selectedNameElement.setAttribute(
+                                                                    'data-id', id);
+
+                                                                const nameText = document.createElement(
+                                                                    'span');
+                                                                nameText.textContent = nama;
+                                                                selectedNameElement.appendChild(
+                                                                    nameText);
+
+                                                                const removeButton = document
+                                                                    .createElement('button');
+                                                                removeButton.textContent = 'Hapus';
+                                                                removeButton.classList.add('btn',
+                                                                    'btn-danger', 'btn-sm', 'ml-2', 'mt-2');
+                                                                selectedNameElement.appendChild(
+                                                                    removeButton);
+
+                                                                const hiddenInput = document
+                                                                    .createElement('input');
+                                                                hiddenInput.type = 'hidden';
+                                                                hiddenInput.name = 'peserta[]';
+                                                                hiddenInput.value = id;
+                                                                selectedNameElement.appendChild(
+                                                                    hiddenInput);
+
+                                                                selectedNamesContainer.appendChild(
+                                                                    selectedNameElement);
+                                                            }
+
+                                                            // Tutup dropdown setelah memilih menggunakan jQuery
+                                                            $(dropdownButton).dropdown('toggle');
+                                                        });
+                                                    });
+
+                                                    // Handle penghapusan peserta
+                                                    selectedNamesContainer.addEventListener('click', function(e) {
+                                                        if (e.target && e.target.tagName === 'BUTTON') {
+                                                            const idToRemove = e.target.parentElement
+                                                                .getAttribute('data-id');
+                                                            pesertaSelected = pesertaSelected.filter(id =>
+                                                                id !== idToRemove);
+                                                            e.target.parentElement.remove();
+                                                        }
+                                                    });
+
+                                                    // Mencegah dropdown tertutup saat mengetik di search input
+                                                    searchInput.addEventListener('click', function(e) {
+                                                        e.stopPropagation();
+                                                    });
+
+                                                    // Tambahkan handler untuk menutup dropdown saat mengklik di luar
+                                                    $(document).on('click', function(e) {
+                                                        if (!$(e.target).closest('.dropdown').length) {
+                                                            $(dropdownButton).dropdown('hide');
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+
+                                            <div class="form-group">
+                                                <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
+                                                <textarea class="form-control" id="alamat" rows="2"
+                                                    placeholder="Masukkan Tempat / Alamat"
+                                                    name="alamat"><?= $pelatihan['alamat'] ?></textarea>
                                             </div>
                                         </div>
 
-                                        <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
-                                            // Inisialisasi komponen yang dibutuhkan
-                                            const selectedNamesContainer = document.getElementById(
-                                                'selectedNames');
-                                            const searchInput = document.getElementById('searchInput');
-                                            const dropdownItems = document.querySelectorAll('.dropdown-item');
-                                            const dropdownButton = document.getElementById(
-                                                'dropdownMenuButton');
-                                            let pesertaSelected =
-                                                <?=json_encode(array_column($peserta, 'id_pegawai'))?>;
+                                        <!-- Kolom Kanan -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="tanggalKegiatan" class="font-weight-bold">Tanggal
+                                                    Kegiatan</label>
+                                                <input type="date" class="form-control" id="tanggalKegiatan"
+                                                    name="tgl_start" value="<?= $pelatihan['tgl_start'] ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan
+                                                    Selesai</label>
+                                                <input type="date" class="form-control" id="tanggalSelesai" name="tgl_end"
+                                                    value="<?= $pelatihan['tgl_end'] ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual
+                                                    Account)</label>
+                                                <input type="number" class="form-control" id="sumberDana" name="no_dana"
+                                                    placeholder="Masukkan Sumber Dana (Virtual Account)"
+                                                    value="<?= $pelatihan['no_dana'] ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
+                                                <input type="text" class="form-control" id="kompetensi" name="kompetensi"
+                                                    placeholder="Masukkan Kompetensi" value="<?= $pelatihan['kompetensi'] ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="targetKegiatan" class="font-weight-bold">Target yang ingin
+                                                    dicapai kegiatan</label>
+                                                <textarea class="form-control" id="targetKegiatan" rows="2" name="target"
+                                                    placeholder="Target yang ingin dicapai kegiatan"><?= $pelatihan['target'] ?></textarea>
+                                            </div>
 
-                                            // Inisialisasi dropdown untuk Bootstrap 4
-                                            $(dropdownButton).dropdown();
 
-                                            // Fungsi untuk filter pencarian
-                                            searchInput.addEventListener('input', function(e) {
-                                                const searchText = e.target.value.toLowerCase();
-                                                dropdownItems.forEach(item => {
-                                                    if (item.getAttribute('data-value')) {
-                                                        const itemText = item.getAttribute(
-                                                            'data-value').toLowerCase();
-                                                        if (itemText.includes(searchText)) {
-                                                            item.style.display = 'block';
-                                                        } else {
-                                                            item.style.display = 'none';
-                                                        }
-                                                    }
-                                                });
-                                            });
-
-                                            // Handle pemilihan peserta
-                                            dropdownItems.forEach(item => {
-                                                item.addEventListener('click', function() {
-                                                    const id = this.getAttribute('data-id');
-                                                    const nama = this.getAttribute(
-                                                        'data-value');
-
-                                                    if (id && !pesertaSelected.includes(id)) {
-                                                        pesertaSelected.push(id);
-
-                                                        const selectedNameElement = document
-                                                            .createElement('div');
-                                                        selectedNameElement.classList.add(
-                                                            'selected-name');
-                                                        selectedNameElement.setAttribute(
-                                                            'data-id', id);
-
-                                                        const nameText = document.createElement(
-                                                            'span');
-                                                        nameText.textContent = nama;
-                                                        selectedNameElement.appendChild(
-                                                            nameText);
-
-                                                        const removeButton = document
-                                                            .createElement('button');
-                                                        removeButton.textContent = 'Hapus';
-                                                        removeButton.classList.add('btn',
-                                                        'btn-danger', 'btn-sm', 'ml-2', 'mt-2');
-                                                        selectedNameElement.appendChild(
-                                                            removeButton);
-
-                                                        const hiddenInput = document
-                                                            .createElement('input');
-                                                        hiddenInput.type = 'hidden';
-                                                        hiddenInput.name = 'peserta[]';
-                                                        hiddenInput.value = id;
-                                                        selectedNameElement.appendChild(
-                                                            hiddenInput);
-
-                                                        selectedNamesContainer.appendChild(
-                                                            selectedNameElement);
-                                                    }
-
-                                                    // Tutup dropdown setelah memilih menggunakan jQuery
-                                                    $(dropdownButton).dropdown('toggle');
-                                                });
-                                            });
-
-                                            // Handle penghapusan peserta
-                                            selectedNamesContainer.addEventListener('click', function(e) {
-                                                if (e.target && e.target.tagName === 'BUTTON') {
-                                                    const idToRemove = e.target.parentElement
-                                                        .getAttribute('data-id');
-                                                    pesertaSelected = pesertaSelected.filter(id =>
-                                                        id !== idToRemove);
-                                                    e.target.parentElement.remove();
-                                                }
-                                            });
-
-                                            // Mencegah dropdown tertutup saat mengetik di search input
-                                            searchInput.addEventListener('click', function(e) {
-                                                e.stopPropagation();
-                                            });
-
-                                            // Tambahkan handler untuk menutup dropdown saat mengklik di luar
-                                            $(document).on('click', function(e) {
-                                                if (!$(e.target).closest('.dropdown').length) {
-                                                    $(dropdownButton).dropdown('hide');
-                                                }
-                                            });
-                                        });
-                                        </script>
-
-                                        <div class="form-group">
-                                            <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
-                                            <textarea class="form-control" id="alamat" rows="2"
-                                                placeholder="Masukkan Tempat / Alamat"
-                                                name="alamat"><?=$pelatihan['alamat']?></textarea>
                                         </div>
                                     </div>
+                                    <hr>
 
-                                    <!-- Kolom Kanan -->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="tanggalKegiatan" class="font-weight-bold">Tanggal
-                                                Kegiatan</label>
-                                            <input type="date" class="form-control" id="tanggalKegiatan"
-                                                name="tgl_start" value="<?=$pelatihan['tgl_start']?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan
-                                                Selesai</label>
-                                            <input type="date" class="form-control" id="tanggalSelesai" name="tgl_end"
-                                                value="<?=$pelatihan['tgl_end']?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual
-                                                Account)</label>
-                                            <input type="number" class="form-control" id="sumberDana" name="no_dana"
-                                                placeholder="Masukkan Sumber Dana (Virtual Account)"
-                                                value="<?=$pelatihan['no_dana']?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
-                                            <input type="text" class="form-control" id="kompetensi" name="kompetensi"
-                                                placeholder="Masukkan Kompetensi" value="<?=$pelatihan['kompetensi']?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="targetKegiatan" class="font-weight-bold">Target yang ingin
-                                                dicapai kegiatan</label>
-                                            <textarea class="form-control" id="targetKegiatan" rows="2" name="target"
-                                                placeholder="Target yang ingin dicapai kegiatan"><?=$pelatihan['target']?></textarea>
-                                        </div>
-
-
+                                    <!-- Tombol Aksi -->
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
+                                        <button type="submit" name="edit_pelatihan" class="btn btn-primary">Buat</button>
                                     </div>
-                                </div>
-                                <hr>
-
-                                <!-- Tombol Aksi -->
-                                <div class="d-flex justify-content-between mt-4">
-                                    <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
-                                    <button type="submit" name="edit_pelatihan" class="btn btn-primary">Buat</button>
-                                </div>
-                            </form>
+                                </form>
                             <?php endif; ?>
 
 
@@ -635,100 +635,100 @@ $komentar = get_komentar_byPelatihan();
 
 
                             <?php if ($pelatihan['status'] == 'Diterima'): ?>
-                            <form method="post" enctype="multipart/form-data">
-                                <div class="alert alert-success" role="alert">
-                                    <strong>Perhatian!</strong> Pengajuan anda diterima, <?=$komentar['komentar']?>, mohon mengajukan LPJ
-                                    <a href="add_pengajuan_lpj.php?id_pelatihan=<?= $pelatihan['id_pelatihan'] ?>">[ Klik
-                                        disini ]</a>
-                                </div>
-                                <div class="row">
-                                    <!-- Kolom Kiri -->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
-                                            <input type="text" class="form-control bg-light-200" id="lembaga"
-                                                placeholder="Masukkan Lembaga / Institusi"
-                                                value="<?=$pelatihan['institusi']?>" readonly>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="programStudi" class="font-weight-bold">Program Studi</label>
-                                            <input type="text" class="form-control bg-light-200" id="programStudi"
-                                                placeholder="Masukkan Program Studi" value="<?=$pelatihan['prodi']?>"
-                                                readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="jurusan" class="font-weight-bold">Jurusan</label>
-                                            <input type="text" class="form-control bg-light-200" id="jurusan"
-                                                placeholder="Masukkan Jurusan" value="<?=$pelatihan['jurusan']?>"
-                                                readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="peserta" class="font-weight-bold">Peserta</label>
-                                            <div id="selectedNames" class="d-flex flex-wrap gap-1">
-                                                <?php foreach ($peserta as $data) { ?>
-                                                <p
-                                                    class="badge bg-light text-dark rounded-pill px-3 py-2 border border-secondary">
-                                                    <?=$data['nama']?></p>
-                                                <?php } ?>
+                                <form method="post" enctype="multipart/form-data">
+                                    <div class="alert alert-success" role="alert">
+                                        <strong>Perhatian!</strong> Pengajuan anda diterima, <?= $komentar['komentar'] ?>, mohon mengajukan LPJ
+                                        <a href="add_pengajuan_lpj.php?id_pelatihan=<?= $pelatihan['id_pelatihan'] ?>">[ Klik
+                                            disini ]</a>
+                                    </div>
+                                    <div class="row">
+                                        <!-- Kolom Kiri -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
+                                                <input type="text" class="form-control bg-light-200" id="lembaga"
+                                                    placeholder="Masukkan Lembaga / Institusi"
+                                                    value="<?= $pelatihan['institusi'] ?>" readonly>
                                             </div>
-                                            <input type="hidden" name="peserta[]" id="pesertaHidden">
+
+                                            <div class="form-group">
+                                                <label for="programStudi" class="font-weight-bold">Program Studi</label>
+                                                <input type="text" class="form-control bg-light-200" id="programStudi"
+                                                    placeholder="Masukkan Program Studi" value="<?= $pelatihan['prodi'] ?>"
+                                                    readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="jurusan" class="font-weight-bold">Jurusan</label>
+                                                <input type="text" class="form-control bg-light-200" id="jurusan"
+                                                    placeholder="Masukkan Jurusan" value="<?= $pelatihan['jurusan'] ?>"
+                                                    readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="peserta" class="font-weight-bold">Peserta</label>
+                                                <div id="selectedNames" class="d-flex flex-wrap gap-1">
+                                                    <?php foreach ($peserta as $data) { ?>
+                                                        <p
+                                                            class="badge bg-light text-dark rounded-pill px-3 py-2 border border-secondary">
+                                                            <?= $data['nama'] ?></p>
+                                                    <?php } ?>
+                                                </div>
+                                                <input type="hidden" name="peserta[]" id="pesertaHidden">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
+                                                <textarea class="form-control bg-light-200" id="alamat" rows="2"
+                                                    placeholder="Masukkan Tempat / Alamat"
+                                                    readonly><?= $pelatihan['alamat'] ?></textarea>
+                                            </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
-                                            <textarea class="form-control bg-light-200" id="alamat" rows="2"
-                                                placeholder="Masukkan Tempat / Alamat"
-                                                readonly><?=$pelatihan['alamat']?></textarea>
+                                        <!-- Kolom Kanan -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="tanggalKegiatan" class="font-weight-bold">Tanggal
+                                                    Kegiatan</label>
+                                                <input type="date" class="form-control bg-light-200" id="tanggalKegiatan"
+                                                    value="<?= $pelatihan['tgl_start'] ?>" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan
+                                                    Selesai</label>
+                                                <input type="date" class="form-control bg-light-200" id="tanggalSelesai"
+                                                    value="<?= $pelatihan['tgl_end'] ?>" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual
+                                                    Account)</label>
+                                                <input type="number" class="form-control bg-light-200" id="sumberDana"
+                                                    placeholder="Masukkan Sumber Dana (Virtual Account)"
+                                                    value="<?= $pelatihan['no_dana'] ?>" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
+                                                <input type="text" class="form-control bg-light-200" id="kompetensi"
+                                                    placeholder="Masukkan Kompetensi" value="<?= $pelatihan['kompetensi'] ?>"
+                                                    readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="targetKegiatan" class="font-weight-bold">Target yang ingin
+                                                    dicapai kegiatan</label>
+                                                <textarea class="form-control bg-light-200" id="targetKegiatan" rows="2"
+                                                    placeholder="Target yang ingin dicapai kegiatan"
+                                                    readonly><?= $pelatihan['target'] ?></textarea>
+                                            </div>
                                         </div>
                                     </div>
+                                    <hr>
 
-                                    <!-- Kolom Kanan -->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="tanggalKegiatan" class="font-weight-bold">Tanggal
-                                                Kegiatan</label>
-                                            <input type="date" class="form-control bg-light-200" id="tanggalKegiatan"
-                                                value="<?=$pelatihan['tgl_start']?>" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan
-                                                Selesai</label>
-                                            <input type="date" class="form-control bg-light-200" id="tanggalSelesai"
-                                                value="<?=$pelatihan['tgl_end']?>" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual
-                                                Account)</label>
-                                            <input type="number" class="form-control bg-light-200" id="sumberDana"
-                                                placeholder="Masukkan Sumber Dana (Virtual Account)"
-                                                value="<?=$pelatihan['no_dana']?>" readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
-                                            <input type="text" class="form-control bg-light-200" id="kompetensi"
-                                                placeholder="Masukkan Kompetensi" value="<?=$pelatihan['kompetensi']?>"
-                                                readonly>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="targetKegiatan" class="font-weight-bold">Target yang ingin
-                                                dicapai kegiatan</label>
-                                            <textarea class="form-control bg-light-200" id="targetKegiatan" rows="2"
-                                                placeholder="Target yang ingin dicapai kegiatan"
-                                                readonly><?=$pelatihan['target']?></textarea>
-                                        </div>
+                                    <!-- Tombol Aksi -->
+                                    <div class="d-flex justify-content-between mt-4">
+
+                                        <a href="index.php" class="btn btn-primary">Back</a>
+
+
                                     </div>
-                                </div>
-                                <hr>
-
-                                <!-- Tombol Aksi -->
-                                <div class="d-flex justify-content-between mt-4">
-
-                                    <a href="index.php" class="btn btn-primary">Back</a>
-
-
-                                </div>
-                            </form>
+                                </form>
                             <?php endif; ?>
 
                         </div>
@@ -781,127 +781,127 @@ $komentar = get_komentar_byPelatihan();
                 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
                 <script>
-                // Event listener untuk tombol Reset
-                $('#resetButton').on('click', function(event) {
-                    event.preventDefault(); // Mencegah form langsung di-reset
+                    // Event listener untuk tombol Reset
+                    $('#resetButton').on('click', function(event) {
+                        event.preventDefault(); // Mencegah form langsung di-reset
 
-                    // Tampilkan SweetAlert untuk konfirmasi reset
-                    Swal.fire({
-                        title: 'Apakah Anda yakin?',
-                        text: "Anda akan mereset semua data yang telah diisi!",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, reset',
-                        cancelButtonText: 'Batal',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Jika pengguna memilih "Ya", reset form
-                            $('#pengajuanForm')[0].reset(); // Reset form secara manual
+                        // Tampilkan SweetAlert untuk konfirmasi reset
+                        Swal.fire({
+                            title: 'Apakah Anda yakin?',
+                            text: "Anda akan mereset semua data yang telah diisi!",
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, reset',
+                            cancelButtonText: 'Batal',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Jika pengguna memilih "Ya", reset form
+                                $('#pengajuanForm')[0].reset(); // Reset form secara manual
 
-                            // Reset input file secara manual
-                            $('#fileLaporan').val(null); // Set input file ke null
+                                // Reset input file secara manual
+                                $('#fileLaporan').val(null); // Set input file ke null
 
-                            // Reset label file dan hapus kelas 'selected'
-                            var fileLabel = $('.custom-file-label');
-                            fileLabel.text('Pilih file'); // Mengembalikan teks label ke default
-                            fileLabel.removeClass('selected'); // Hapus kelas 'selected' jika ada
+                                // Reset label file dan hapus kelas 'selected'
+                                var fileLabel = $('.custom-file-label');
+                                fileLabel.text('Pilih file'); // Mengembalikan teks label ke default
+                                fileLabel.removeClass('selected'); // Hapus kelas 'selected' jika ada
 
-                            // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
-                            Swal.fire({
-                                title: 'Direset!',
-                                text: 'Formulir telah direset.',
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
-                            });
-                        }
+                                // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
+                                Swal.fire({
+                                    title: 'Direset!',
+                                    text: 'Formulir telah direset.',
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
+                                });
+                            }
+                        });
                     });
-                });
 
-                // Event listener untuk perubahan file input
-                document.querySelector('.custom-file-input').addEventListener('change', function(e) {
-                    var fileName = e.target.files[0].name;
-                    var nextSibling = e.target.nextElementSibling;
+                    // Event listener untuk perubahan file input
+                    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+                        var fileName = e.target.files[0].name;
+                        var nextSibling = e.target.nextElementSibling;
 
-                    // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
-                    nextSibling.innerText = fileName;
-                    nextSibling.classList.add('selected');
-                });
+                        // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
+                        nextSibling.innerText = fileName;
+                        nextSibling.classList.add('selected');
+                    });
                 </script>
 
                 <script>
-                $('#pengajuanForm').on('submit', function(event) {
-                    event.preventDefault(); // Mencegah submit form otomatis
+                    $('#pengajuanForm').on('submit', function(event) {
+                        event.preventDefault(); // Mencegah submit form otomatis
 
-                    // Ambil data dari form
-                    const lembaga = $('#lembaga').val();
-                    const programStudi = $('#programStudi').val();
-                    const jurusan = $('#jurusan').val();
-                    const namaPeserta = $('#namaPeserta').val();
-                    const alamat = $('#alamat').val();
-                    const tanggalKegiatan = $('#tanggalKegiatan').val();
-                    const tanggalSelesai = $('#tanggalSelesai').val();
-                    const sumberDana = $('#sumberDana').val();
-                    const kompetensi = $('#kompetensi').val();
-                    const targetKegiatan = $('#targetKegiatan').val();
-                    const fileLaporan = $('#fileLaporan')[0].files[0]; // Ambil file yang diunggah
+                        // Ambil data dari form
+                        const lembaga = $('#lembaga').val();
+                        const programStudi = $('#programStudi').val();
+                        const jurusan = $('#jurusan').val();
+                        const namaPeserta = $('#namaPeserta').val();
+                        const alamat = $('#alamat').val();
+                        const tanggalKegiatan = $('#tanggalKegiatan').val();
+                        const tanggalSelesai = $('#tanggalSelesai').val();
+                        const sumberDana = $('#sumberDana').val();
+                        const kompetensi = $('#kompetensi').val();
+                        const targetKegiatan = $('#targetKegiatan').val();
+                        const fileLaporan = $('#fileLaporan')[0].files[0]; // Ambil file yang diunggah
 
-                    // Validasi jika ada kolom yang kosong
-                    if (!lembaga || !programStudi || !jurusan || !namaPeserta || !alamat ||
-                        !tanggalKegiatan || !tanggalSelesai || !sumberDana || !kompetensi ||
-                        !targetKegiatan || !fileLaporan) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Semua kolom harus diisi, termasuk file laporan!'
-                        });
-                        return;
-                    }
+                        // Validasi jika ada kolom yang kosong
+                        if (!lembaga || !programStudi || !jurusan || !namaPeserta || !alamat ||
+                            !tanggalKegiatan || !tanggalSelesai || !sumberDana || !kompetensi ||
+                            !targetKegiatan || !fileLaporan) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Semua kolom harus diisi, termasuk file laporan!'
+                            });
+                            return;
+                        }
 
-                    // Validasi format file PDF
-                    if (fileLaporan.type !== 'application/pdf') {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'File laporan harus berformat PDF!'
-                        });
-                        return;
-                    }
+                        // Validasi format file PDF
+                        if (fileLaporan.type !== 'application/pdf') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'File laporan harus berformat PDF!'
+                            });
+                            return;
+                        }
 
-                    // Buat URL untuk file yang diunggah agar bisa ditampilkan
-                    const fileUrl = URL.createObjectURL(fileLaporan);
+                        // Buat URL untuk file yang diunggah agar bisa ditampilkan
+                        const fileUrl = URL.createObjectURL(fileLaporan);
 
-                    // Isi data di modal konfirmasi
-                    $('#confirmLembaga').text(lembaga);
-                    $('#confirmProgramStudi').text(programStudi);
-                    $('#confirmJurusan').text(jurusan);
-                    $('#confirmNamaPeserta').text(namaPeserta);
-                    $('#confirmAlamat').text(alamat);
-                    $('#confirmTanggalKegiatan').text(tanggalKegiatan);
-                    $('#confirmTanggalSelesai').text(tanggalSelesai);
-                    $('#confirmSumberDana').text(sumberDana);
-                    $('#confirmKompetensi').text(kompetensi);
-                    $('#confirmTargetKegiatan').text(targetKegiatan);
-                    $('#confirmFileLaporan').attr('href', fileUrl); // Set href untuk link file
+                        // Isi data di modal konfirmasi
+                        $('#confirmLembaga').text(lembaga);
+                        $('#confirmProgramStudi').text(programStudi);
+                        $('#confirmJurusan').text(jurusan);
+                        $('#confirmNamaPeserta').text(namaPeserta);
+                        $('#confirmAlamat').text(alamat);
+                        $('#confirmTanggalKegiatan').text(tanggalKegiatan);
+                        $('#confirmTanggalSelesai').text(tanggalSelesai);
+                        $('#confirmSumberDana').text(sumberDana);
+                        $('#confirmKompetensi').text(kompetensi);
+                        $('#confirmTargetKegiatan').text(targetKegiatan);
+                        $('#confirmFileLaporan').attr('href', fileUrl); // Set href untuk link file
 
-                    // Munculkan modal konfirmasi
-                    $('#konfirmasiModal').modal('show');
-                });
-
-                // Ketika tombol "Kirim" ditekan, tampilkan notifikasi dan redirect
-                $('#submitPengajuan').on('click', function() {
-                    $('#konfirmasiModal').modal('hide');
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Pengajuan Pelatihan Berhasil Diajukan',
-                        showConfirmButton: false,
-                        timer: 2500
-                    }).then(() => {
-                        window.location.href = 'index.php'; // Redirect setelah sukses
+                        // Munculkan modal konfirmasi
+                        $('#konfirmasiModal').modal('show');
                     });
-                });
+
+                    // Ketika tombol "Kirim" ditekan, tampilkan notifikasi dan redirect
+                    $('#submitPengajuan').on('click', function() {
+                        $('#konfirmasiModal').modal('hide');
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pengajuan Pelatihan Berhasil Diajukan',
+                            showConfirmButton: false,
+                            timer: 2500
+                        }).then(() => {
+                            window.location.href = 'index.php'; // Redirect setelah sukses
+                        });
+                    });
                 </script>
 
                 <!-- Logout Modal-->
