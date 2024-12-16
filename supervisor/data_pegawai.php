@@ -220,30 +220,6 @@ if ($currentHour >= 0 && $currentHour < 12) {
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -251,7 +227,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
                                 <?php if ($unread > 0) { ?>
-                                <span class="badge badge-danger badge-counter"><?= $unread ?></span>
+                                    <span class="badge badge-danger badge-counter"><?= $unread ?></span>
                                 <?php } ?>
 
                             </a>
@@ -264,43 +240,43 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                     Pemberitahuan
                                 </h6>
                                 <?php foreach ($notifikasi as $data) { ?>
-                                <div
-                                    class="d-flex align-items-center w-100 <?php echo ($data['is_read'] == 1) ? 'bg-kustom' : 'bg-light'; ?>">
-                                    <form method="post" class="flex-grow-1 w-100">
-                                        <input type="number" name="id_notifikasi" value="<?= $data['id_notifikasi'] ?>"
-                                            hidden>
-                                        <button type="submit" name="read_notifikasi"
-                                            class="dropdown-item d-flex align-items-center w-100 <?php echo ($data['is_read'] == 1) ? 'bg-kustom' : 'bg-light'; ?>">
-                                            <div class="mr-3">
-                                                <div
-                                                    class="icon-circle bg-<?php echo (strpos($data['pesan'], 'tolak') !== false) ? 'danger' : (strpos($data['pesan'], 'terima') !== false ? 'success' : 'primary'); ?>">
-                                                    <i class="fas fa-file-alt text-white"></i>
+                                    <div
+                                        class="d-flex align-items-center w-100 <?php echo ($data['is_read'] == 1) ? 'bg-kustom' : 'bg-light'; ?>">
+                                        <form method="post" class="flex-grow-1 w-100">
+                                            <input type="number" name="id_notifikasi" value="<?= $data['id_notifikasi'] ?>"
+                                                hidden>
+                                            <button type="submit" name="read_notifikasi"
+                                                class="dropdown-item d-flex align-items-center w-100 <?php echo ($data['is_read'] == 1) ? 'bg-kustom' : 'bg-light'; ?>">
+                                                <div class="mr-3">
+                                                    <div
+                                                        class="icon-circle bg-<?php echo (strpos($data['pesan'], 'tolak') !== false) ? 'danger' : (strpos($data['pesan'], 'terima') !== false ? 'success' : 'primary'); ?>">
+                                                        <i class="fas fa-file-alt text-white"></i>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="d-flex justify-content-between w-100">
-                                                <div>
-                                                    <div class="small text-gray-500"><?= $data['tgl'] ?></div>
-                                                    <span class="font-weight-bold"><?= $data['pesan'] ?></span>
-                                                    <?php if ($data['is_read'] == 0) { ?>
-                                                    <span class="unread-indicator"></span>
-                                                    <?php } ?>
+                                                <div class="d-flex justify-content-between w-100">
+                                                    <div>
+                                                        <div class="small text-gray-500"><?= $data['tgl'] ?></div>
+                                                        <span class="font-weight-bold"><?= $data['pesan'] ?></span>
+                                                        <?php if ($data['is_read'] == 0) { ?>
+                                                            <span class="unread-indicator"></span>
+                                                        <?php } ?>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </button>
-                                    </form>
+                                            </button>
+                                        </form>
 
-                                    <?php if ($data['is_read'] == 1) { ?>
-                                    <form method="post" class="ml-2">
-                                        <input type="hidden" name="id_notifikasi" value="<?= $data['id_notifikasi'] ?>">
-                                        <button type="submit" name="delete_notifikasi" class="btn p-0">
-                                            <div class="icon-circle bg-danger text-white ml-1 mr-3"
-                                                style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
-                                                <i class="fas fa-trash"></i>
-                                            </div>
-                                        </button>
-                                    </form>
-                                    <?php } ?>
-                                </div>
+                                        <?php if ($data['is_read'] == 1) { ?>
+                                            <form method="post" class="ml-2">
+                                                <input type="hidden" name="id_notifikasi" value="<?= $data['id_notifikasi'] ?>">
+                                                <button type="submit" name="delete_notifikasi" class="btn p-0">
+                                                    <div class="icon-circle bg-danger text-white ml-1 mr-3"
+                                                        style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                                        <i class="fas fa-trash"></i>
+                                                    </div>
+                                                </button>
+                                            </form>
+                                        <?php } ?>
+                                    </div>
                                 <?php } ?>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
@@ -350,98 +326,40 @@ if ($currentHour >= 0 && $currentHour < 12) {
 
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
-
-
                             <div class="card-body">
-                                <div class="tab-content" id="myTabContent">
-                                    <!-- Tabel Pengajuan -->
-                                    <div class="tab-pane fade show active" id="pengajuan" role="tabpanel"
-                                        aria-labelledby="pengajuan-tab">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" id="pengajuanTable" width="100%"
-                                                cellspacing="0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>NIP</th>
-                                                        <th>Nama</th>
-                                                        <th>Alamat</th>
-                                                        <th>Telp</th>
-                                                        <th>Email</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                        $no = 1; // Inisialisasi nomor urut untuk tabel pengajuan
-                                                        foreach ($pegawai as $data) { ?>
-                                                    <tr>
-                                                        <td><?= $no++ ?></td> <!-- Nomor urut -->
-                                                        <td><?= $data['nip'] ?></td>
-                                                        <td><?= $data['nama'] ?></td>
-                                                        <td><?= $data['alamat'] ?></td>
-                                                        <td><?= $data['telp'] ?></td>
-                                                        <td><?= $data['email'] ?></td>
-                                                        <!-- <td>
-                                                            <span
-                                                                class="status-button 
-                                                                    <?= $data['status'] === 'Diproses' ? 'in-process' : ($data['status'] === 'Ditolak' ? 'rejected' : ($data['status'] === 'Diterima' ? 'accepted' : '')) ?>">
-                                                                <span class="dot"></span>
-                                                                <?= $data['status'] ?>
-                                                            </span>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <a
-                                                                href="detail_pengajuan_pelatihan.php?id_pelatihan=<?= $data['id_pelatihan'] ?>"><button
-                                                                    class="btn btn-primary btn-sm">
-                                                                    <i class="fas fa-eye"></i>
-                                                                </button></a>
-                                                        </td> -->
-                                                    </tr>
-                                                    <?php } ?>
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <!-- Tabel Pelaporan -->
-
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" width="100%"
+                                        cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>NIP</th>
+                                                <th>Nama</th>
+                                                <th>Alamat</th>
+                                                <th>Telp</th>
+                                                <th>Email</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $no = 1; // Inisialisasi nomor urut untuk tabel pengajuan
+                                            foreach ($pegawai as $data) { ?>
+                                                <tr>
+                                                    <td><?= $no++ ?></td> <!-- Nomor urut -->
+                                                    <td><?= $data['nip'] ?></td>
+                                                    <td><?= $data['nama'] ?></td>
+                                                    <td><?= $data['alamat'] ?></td>
+                                                    <td><?= $data['telp'] ?></td>
+                                                    <td><?= $data['email'] ?></td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- /.container-fluid -->
-
-                <!-- Inisialisasi DataTables dan Bootstrap Tab -->
-                <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-                <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-                <script>
-                $(document).ready(function() {
-                    // Inisialisasi DataTables di awal
-                    $('#pengajuanTable').DataTable();
-
-                    // Saat tab pelaporan diklik, inisialisasi DataTables di tabel pelaporan
-                    $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-                        var target = $(e.target).attr("data-bs-target");
-
-                        if (target === '#pelaporan') {
-                            $('#pelaporanTable').DataTable();
-                        }
-                    });
-                });
-                </script>
-
-                <script>
-                function openPopup() {
-                    document.getElementById('popupForm').style.display = 'flex';
-                }
-
-                function closePopup() {
-                    document.getElementById('popupForm').style.display = 'none';
-                }
-                </script>
-
             </div>
             <!-- End of Main Content -->
 
