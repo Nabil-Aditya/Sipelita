@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sipelita - Beranda</title>
+    <title>SIPELITA | Sistem Informasi Pelaporan Latihan Kegiatan</title>
     <link rel="icon" type="image/x-icon" href="./img/icon-tittle-sipelita.jpg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -54,11 +54,11 @@
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link" href="#beranda">Beranda</a></li>
                     <li class="nav-item"><a class="nav-link" href="#layanan">Layanan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#kenapakami">Kenapa kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#kenapakami">Kenapa&nbsp;kami</a></li>
                     <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
                     <li class="nav-item ms-3 mt-2">
                         <a href="login.php" class="btn btn-outline-primary rounded-pill px-4 py-2">
-                            <i class="fas fa-sign-in-alt me-2"></i>Masuk
+                            <i class="fas fa-sign-in-alt me-2"></i>&nbsp;Masuk
                         </a>
                     </li>
                 </ul>
@@ -216,7 +216,7 @@
     </div>
     <div class="map-container mt-3" style="margin:0 10%;">
         <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d237.66661578993637!2d101.44901008951264!3d0.47327566565364004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4696be3d3ac84971%3A0x55e23d98264b5c5b!2sDigision.id!5e1!3m2!1sid!2sid!4v1733384318041!5m2!1sid!2sid"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3038.540186967666!2d104.04639665762097!3d1.1186615015316728!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d98921856ddfab%3A0xf9d9fc65ca00c9d!2sPoliteknik%20Negeri%20Batam!5e1!3m2!1sid!2sid!4v1735045068555!5m2!1sid!2sid"
             width="100%" height="280" 
             style="border: 0; display: block;" 
             allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
