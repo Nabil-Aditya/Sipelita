@@ -143,7 +143,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Pegawai</title>
+    <title>SIPELITA | Buat Pengajuan Pelatihan</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Font khusus untuk templat ini -->
@@ -151,7 +151,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Font khusus untuk templat ini -->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
@@ -366,218 +366,254 @@ if ($currentHour >= 0 && $currentHour < 12) {
                 </nav>
                 <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid mt-4">
-                    <!-- Basic Card Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Formulir Pengajuan Pelatihan</h6>
+          <!-- Begin Page Content -->
+<div class="container-fluid mt-4">
+    <!-- Basic Card Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Formulir Pengajuan Pelatihan</h6>
+        </div>
+        <div class="card-body">
+            <form method="post" id="formPengajuan">
+                <div class="row">
+                    <!-- Kolom Kiri -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
+                            <input type="text" class="form-control" id="lembaga" name="institusi" placeholder="Masukkan Lembaga / Institusi" required>
                         </div>
-                        <div class="card-body">
-                            <form method="post">
-                                <div class="row">
-                                    <!-- Kolom Kiri -->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="lembaga" class="font-weight-bold">Lembaga / Institusi</label>
-                                            <input type="text" class="form-control" id="lembaga" name="institusi"
-                                                placeholder="Masukkan Lembaga / Institusi">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="jurusan" class="font-weight-bold">Jurusan</label>
-                                            <select class="form-control" id="jurusan" name="jurusan">
-                                                <option value="" disabled selected>Pilih Jurusan</option>
+                        <div class="form-group">
+                            <label for="jurusan" class="font-weight-bold">Jurusan</label>
+                            <select class="form-control" id="jurusan" name="jurusan" required>
+                                <option value="" disabled selected>Pilih Jurusan</option>
+                                <?php foreach ($jurusan as $data) { ?>
+                                    <option value="<?= $data['id_jurusan'] ?>"><?= $data['jurusan'] ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="prodi" class="font-weight-bold">Prodi</label>
+                            <select class="form-control" id="prodi" name="prodi" required>
+                                <option value="" disabled selected>Pilih prodi</option>
+                                <?php foreach ($prodi as $data) { ?>
+                                    <option value="<?= $data['id_prodi'] ?>"><?= $data['prodi'] ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
 
-                                                <?php foreach ($jurusan as $data) { ?>
-                                                    <option value="<?= $data['id_jurusan'] ?>"><?= $data['jurusan'] ?></option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="prodi" class="font-weight-bold">Prodi</label>
-                                            <select class="form-control" id="prodi" name="prodi">
-                                                <option value="" disabled selected>Pilih prodi</option>
+                        <div class="form-group">
+                            <label for="peserta" class="font-weight-bold">Peserta</label>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Pilih Nama
+                                </button>
+                                <ul class="dropdown-menu dropdown-search" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <input type="text" id="searchInput" class="form-control mb-2" placeholder="Cari nama..."/>
+                                    </li>
+                                    <?php foreach ($pegawai as $data) {
+                                        // Filter hanya menampilkan pegawai dengan ID valid
+                                        if ($data['id_pegawai'] > 0) { ?>
+                                            <li class="dropdown-item" data-value="<?= $data['nama'] ?>" data-id="<?= $data['id_pegawai'] ?>"><?= $data['nama'] ?></li>
+                                        <?php }
+                                    } ?>
+                                </ul>
+                            </div>
 
-                                                <?php foreach ($prodi as $data) { ?>
-                                                    <option value="<?= $data['id_prodi'] ?>"><?= $data['prodi'] ?></option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
+                            <p class="mt-3">Nama Terpilih:</p>
+                            <div id="selectedNames" class="selected-names-container mt-2">
+                                <!-- Nama yang dipilih akan muncul di sini -->
+                            </div>
+                            <input type="hidden" name="peserta[]" id="pesertaHidden" required>
+                        </div>
 
-                                        <div class="form-group">
-                                            <label for="peserta" class="font-weight-bold">Peserta</label>
-                                            <div class="dropdown">
-                                                <button class="btn btn-primary dropdown-toggle" type="button"
-                                                    id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                    Pilih Nama
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-search"
-                                                    aria-labelledby="dropdownMenuButton">
-                                                    <li>
-                                                        <input type="text" id="searchInput" class="form-control mb-2"
-                                                            placeholder="Cari nama..." />
-                                                    </li>
-                                                    <?php foreach ($pegawai as $data) {
-                                                        // Filter hanya menampilkan pegawai dengan ID valid
-                                                        if ($data['id_pegawai'] > 0) { ?>
-                                                            <li class="dropdown-item" data-value="<?= $data['nama'] ?>"
-                                                                data-id="<?= $data['id_pegawai'] ?>"><?= $data['nama'] ?></li>
-                                                    <?php }
-                                                    } ?>
-                                                </ul>
-                                            </div>
+                        <div class="form-group">
+                            <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
+                            <textarea class="form-control" id="alamat" rows="2" name="alamat" placeholder="Masukkan Tempat / Alamat" required></textarea>
+                        </div>
+                    </div>
 
-                                            <p class="mt-3">Nama Terpilih:</p>
-                                            <div id="selectedNames" class="selected-names-container mt-2">
-                                                <!-- Nama yang dipilih akan muncul di sini -->
-                                            </div>
-                                            <input type="hidden" name="peserta[]" id="pesertaHidden">
-                                        </div>
-
-                                        <script>
-                                            document.addEventListener('DOMContentLoaded', function() {
-                                                let selectedNamesContainer = document.getElementById(
-                                                    'selectedNames');
-                                                let pesertaSelected = [];
-
-                                                // Input pencarian
-                                                const searchInput = document.getElementById('searchInput');
-                                                const dropdownItems = document.querySelectorAll('.dropdown-item');
-
-                                                // Tambahkan fitur pencarian
-                                                searchInput.addEventListener('input', function() {
-                                                    const filter = searchInput.value.toLowerCase();
-
-                                                    dropdownItems.forEach(item => {
-                                                        const itemName = item.textContent
-                                                            .toLowerCase();
-
-                                                        // Tampilkan atau sembunyikan item berdasarkan pencarian
-                                                        if (itemName.includes(filter)) {
-                                                            item.style.display = '';
-                                                        } else {
-                                                            item.style.display = 'none';
-                                                        }
-                                                    });
-                                                });
-
-                                                // Tambahkan event listener untuk setiap item dropdown
-                                                dropdownItems.forEach(item => {
-                                                    item.addEventListener('click', function() {
-                                                        const id = this.getAttribute('data-id');
-                                                        const nama = this.getAttribute(
-                                                            'data-value');
-
-                                                        // Validasi: Pastikan ID valid dan bukan 0
-                                                        if (id && id !== "0" && !pesertaSelected
-                                                            .includes(id)) {
-                                                            pesertaSelected.push(id);
-
-                                                            // Elemen nama peserta
-                                                            let selectedNameElement = document
-                                                                .createElement('div');
-                                                            selectedNameElement.classList.add(
-                                                                'selected-name');
-                                                            selectedNameElement.setAttribute(
-                                                                'data-id', id);
-
-                                                            let nameText = document.createElement(
-                                                                'span');
-                                                            nameText.textContent = nama;
-                                                            selectedNameElement.appendChild(
-                                                                nameText);
-
-                                                            // Tombol remove
-                                                            let removeButton = document
-                                                                .createElement('button');
-                                                            removeButton.textContent = 'Hapus';
-                                                            removeButton.classList.add('btn',
-                                                                'btn-danger', 'btn-sm', 'ml-2');
-                                                            selectedNameElement.appendChild(
-                                                                removeButton);
-
-                                                            // Input hidden untuk setiap peserta
-                                                            let hiddenInput = document
-                                                                .createElement('input');
-                                                            hiddenInput.type = 'hidden';
-                                                            hiddenInput.name = 'peserta[]';
-                                                            hiddenInput.value = id;
-                                                            selectedNameElement.appendChild(
-                                                                hiddenInput);
-
-                                                            // Tambahkan elemen ke container
-                                                            selectedNamesContainer.appendChild(
-                                                                selectedNameElement);
-                                                        }
-                                                    });
-                                                });
-
-                                                // Menangani penghapusan peserta
-                                                selectedNamesContainer.addEventListener('click', function(e) {
-                                                    if (e.target && e.target.tagName === 'BUTTON') {
-                                                        let idToRemove = e.target.parentElement
-                                                            .getAttribute('data-id');
-                                                        // Hapus ID dari pesertaSelected
-                                                        pesertaSelected = pesertaSelected.filter(id =>
-                                                            id !== idToRemove);
-                                                        // Hapus elemen dari DOM
-                                                        e.target.parentElement.remove();
-                                                    }
-                                                });
-                                            });
-                                        </script>
-
-                                        <div class="form-group">
-                                            <label for="alamat" class="font-weight-bold">Tempat / Alamat</label>
-                                            <textarea class="form-control" id="alamat" rows="2" name="alamat"
-                                                placeholder="Masukkan Tempat / Alamat"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <!-- Kolom Kanan -->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="tanggalKegiatan" class="font-weight-bold">Tanggal
-                                                Kegiatan</label>
-                                            <input type="date" class="form-control" id="tanggalKegiatan"
-                                                name="tgl_start">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan
-                                                Selesai</label>
-                                            <input type="date" class="form-control" id="tanggalSelesai" name="tgl_end">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual
-                                                Account)</label>
-                                            <input type="number" class="form-control" id="sumberDana" name="no_dana"
-                                                placeholder="Masukkan Sumber Dana (Virtual Account)">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
-                                            <input type="text" class="form-control" id="kompetensi" name="kompetensi"
-                                                placeholder="Masukkan Kompetensi">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="targetKegiatan" class="font-weight-bold">Target yang ingin
-                                                dicapai kegiatan</label>
-                                            <textarea class="form-control" id="targetKegiatan" rows="2" name="target"
-                                                placeholder="Target yang ingin dicapai kegiatan"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-
-                                <!-- Tombol Aksi -->
-                                <div class="d-flex justify-content-between mt-4">
-                                <a href='index.php' type="button" class="btn btn-danger">Kembali</a>
-                                <button type="submit" name="create_pelatihan" class="btn btn-primary">Buat</button>
-                                </div>
-                            </form>
+                    <!-- Kolom Kanan -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tanggalKegiatan" class="font-weight-bold">Tanggal Kegiatan</label>
+                            <input type="date" class="form-control" id="tanggalKegiatan" name="tgl_start" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggalSelesai" class="font-weight-bold">Tanggal Kegiatan Selesai</label>
+                            <input type="date" class="form-control" id="tanggalSelesai" name="tgl_end" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sumberDana" class="font-weight-bold">Sumber Dana (Virtual Account)</label>
+                            <input type="number" class="form-control" id="sumberDana" name="no_dana" placeholder="Masukkan Sumber Dana (Virtual Account)" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="kompetensi" class="font-weight-bold">Kompetensi</label>
+                            <input type="text" class="form-control" id="kompetensi" name="kompetensi" placeholder="Masukkan Kompetensi" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="targetKegiatan" class="font-weight-bold">Target yang ingin dicapai kegiatan</label>
+                            <textarea class="form-control" id="targetKegiatan" rows="2" name="target" placeholder="Target yang ingin dicapai kegiatan" required></textarea>
                         </div>
                     </div>
                 </div>
+                <hr>
+
+                <!-- Tombol Aksi -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href='index.php' type="button" class="btn btn-danger">Kembali</a>
+                    <button type="submit" name="create_pelatihan" class="btn btn-primary">Buat</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    let selectedNamesContainer = document.getElementById('selectedNames');
+    let pesertaSelected = []; // Menyimpan ID peserta yang telah dipilih
+    const searchInput = document.getElementById('searchInput');
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    const pesertaHidden = document.getElementById('pesertaHidden');
+    const form = document.getElementById('formPengajuan');
+    const tanggalKegiatan = document.getElementById('tanggalKegiatan');
+    const tanggalSelesai = document.getElementById('tanggalSelesai');
+
+    // Fungsi untuk memperbarui atribut min pada tanggal selesai
+    function updateMinTanggalSelesai() {
+        if (tanggalKegiatan.value) {
+            const tglMulai = new Date(tanggalKegiatan.value);
+            const tglMulaiFormatted = tglMulai.toISOString().split('T')[0];
+            tanggalSelesai.min = tglMulaiFormatted; // Set min attribute
+            tanggalSelesai.disabled = false; // Aktifkan input tanggal selesai
+        } else {
+            tanggalSelesai.value = ''; // Kosongkan tanggal selesai jika tanggal kegiatan kosong
+            tanggalSelesai.disabled = true; // Nonaktifkan input tanggal selesai
+            tanggalSelesai.removeAttribute('min'); // Hapus atribut min
+        }
+    }
+
+    // Event listener untuk memperbarui tanggal selesai ketika tanggal kegiatan berubah
+    tanggalKegiatan.addEventListener('change', updateMinTanggalSelesai);
+
+    // Awal: Nonaktifkan tanggal selesai jika tanggal kegiatan belum diisi
+    if (!tanggalKegiatan.value) {
+        tanggalSelesai.disabled = true;
+    }
+
+    // Input pencarian
+    searchInput.addEventListener('input', function() {
+        const filter = searchInput.value.toLowerCase();
+
+        dropdownItems.forEach(item => {
+            const itemName = item.textContent.toLowerCase();
+
+            // Tampilkan atau sembunyikan item berdasarkan pencarian
+            if (itemName.includes(filter)) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+
+    // Menangani pemilihan peserta
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const nama = this.getAttribute('data-value');
+
+            // Validasi: Pastikan ID peserta belum ada di array pesertaSelected
+            if (id && id !== "0" && !pesertaSelected.includes(id)) {
+                pesertaSelected.push(id); // Tambahkan ID peserta ke array
+
+                // Elemen nama peserta
+                let selectedNameElement = document.createElement('div');
+                selectedNameElement.classList.add('selected-name');
+                selectedNameElement.setAttribute('data-id', id);
+
+                let nameText = document.createElement('span');
+                nameText.textContent = nama;
+                selectedNameElement.appendChild(nameText);
+
+                // Tombol remove
+                let removeButton = document.createElement('button');
+                removeButton.textContent = 'Hapus';
+                removeButton.classList.add('btn', 'btn-danger', 'btn-sm', 'ml-2', 'mt-2', 'mb-2');
+                selectedNameElement.appendChild(removeButton);
+
+                // Input hidden untuk setiap peserta
+                let hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'peserta[]';
+                hiddenInput.value = id;
+                selectedNameElement.appendChild(hiddenInput);
+
+                // Tambahkan elemen ke container
+                selectedNamesContainer.appendChild(selectedNameElement);
+
+                // Update input hidden dengan ID peserta yang terpilih
+                updatePesertaHiddenInput();
+            }
+        });
+    });
+
+    // Menangani penghapusan peserta
+    selectedNamesContainer.addEventListener('click', function(e) {
+        if (e.target && e.target.tagName === 'BUTTON') {
+            let idToRemove = e.target.parentElement.getAttribute('data-id');
+            // Hapus ID dari pesertaSelected
+            pesertaSelected = pesertaSelected.filter(id => id !== idToRemove);
+            // Hapus elemen dari DOM
+            e.target.parentElement.remove();
+            
+            // Update input hidden dengan ID peserta yang terpilih
+            updatePesertaHiddenInput();
+        }
+    });
+
+    // Fungsi untuk memperbarui input tersembunyi dengan peserta yang dipilih
+    function updatePesertaHiddenInput() {
+        // Menghapus nilai lama di input hidden
+        pesertaHidden.value = '';
+
+        // Menambahkan ID peserta yang terpilih ke dalam input hidden
+        if (pesertaSelected.length > 0) {
+            pesertaHidden.value = pesertaSelected.join(','); // Gabungkan ID peserta menjadi satu string
+        }
+    }
+
+    // Fungsi untuk mereset semua peserta yang dipilih ketika form dikosongkan
+    function resetForm() {
+        // Kosongkan peserta yang dipilih
+        pesertaSelected = [];
+        
+        // Hapus semua elemen nama peserta dari container
+        selectedNamesContainer.innerHTML = '';
+        
+        // Reset nilai input hidden
+        pesertaHidden.value = '';
+    }
+
+    // Validasi form sebelum disubmit
+    form.addEventListener('submit', function(e) {
+        if (pesertaSelected.length === 0) {
+            e.preventDefault(); // Cegah form disubmit jika tidak ada peserta yang dipilih
+            alert('Peserta wajib dipilih!');
+        } else {
+            // Set nilai input tersembunyi dengan ID peserta yang dipilih
+            updatePesertaHiddenInput();
+        }
+    });
+
+    // Event listener untuk mereset form jika kosongkan form (misalnya tombol reset)
+    document.getElementById('resetFormButton')?.addEventListener('click', resetForm);
+});
+
+</script>
+
+
 
                 <!-- Bootstrap JS -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -603,13 +639,14 @@ if ($currentHour >= 0 && $currentHour < 12) {
                             <div class="modal-body">Pilih "Keluar" di bawah jika Anda siap untuk mengakhiri
                                 sesi Anda saat ini.</div>
                             <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                                <a class="btn btn-primary" href="login.php">Keluar</a>
+                                <form method="post">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                                    <button class="btn btn-primary" type="submit" name="logout">Keluar</button>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <!-- Bootstrap core JavaScript-->
                 <script src="../vendor/jquery/jquery.min.js"></script>
                 <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
