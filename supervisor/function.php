@@ -65,6 +65,76 @@ function get_pelatihan_supervisor() {
 
     return $pelatihan;
 }
+function total_pelatihan_supervisor_diproses() {
+    global $koneksi;
+    $id_supervisor = $_SESSION['id_user']; // Supervisor login
+
+    $sql = mysqli_query($koneksi, "
+        SELECT pelatihan.*, pegawai.nama AS nama_pegawai
+        FROM pelatihan
+        INNER JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
+        INNER JOIN supervisor ON supervisor.id_supervisor = pegawai.id_supervisor
+        WHERE supervisor.id_user = $id_supervisor AND pelatihan.status = 'Diproses'
+    ");
+
+    if (!$sql) {
+        die("Query error: " . mysqli_error($koneksi));
+    }
+
+    $pelatihan = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pelatihan[] = $row;
+    }
+
+    return $pelatihan;
+}
+function total_pelatihan_supervisor_diterima() {
+    global $koneksi;
+    $id_supervisor = $_SESSION['id_user']; // Supervisor login
+
+    $sql = mysqli_query($koneksi, "
+        SELECT pelatihan.*, pegawai.nama AS nama_pegawai
+        FROM pelatihan
+        INNER JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
+        INNER JOIN supervisor ON supervisor.id_supervisor = pegawai.id_supervisor
+        WHERE supervisor.id_user = $id_supervisor AND pelatihan.status = 'Diterima'
+    ");
+
+    if (!$sql) {
+        die("Query error: " . mysqli_error($koneksi));
+    }
+
+    $pelatihan = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pelatihan[] = $row;
+    }
+
+    return $pelatihan;
+}
+
+function total_pelatihan_supervisor_ditolak() {
+    global $koneksi;
+    $id_supervisor = $_SESSION['id_user']; // Supervisor login
+
+    $sql = mysqli_query($koneksi, "
+        SELECT pelatihan.*, pegawai.nama AS nama_pegawai
+        FROM pelatihan
+        INNER JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
+        INNER JOIN supervisor ON supervisor.id_supervisor = pegawai.id_supervisor
+        WHERE supervisor.id_user = $id_supervisor AND pelatihan.status = 'Ditolak'
+    ");
+
+    if (!$sql) {
+        die("Query error: " . mysqli_error($koneksi));
+    }
+
+    $pelatihan = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pelatihan[] = $row;
+    }
+
+    return $pelatihan;
+}
 
 
 
@@ -467,13 +537,17 @@ function getall_pelaporan(){
 
 function getall_pelaporan_supervisor() {
     global $koneksi;
+    $id_supervisor = $_SESSION['id_user']; // Supervisor login
 
     $sql = mysqli_query($koneksi, "
-    SELECT pelaporan.*, pelaporan.status AS status_pelaporan, pelatihan.*, pegawai.nama AS nama_pegawai
-    FROM pelaporan
-    LEFT JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan
-    LEFT JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
-");
+        SELECT pelaporan.*, pelaporan.status AS status_pelaporan, 
+               pelatihan.*, pegawai.nama AS nama_pegawai
+        FROM pelaporan
+        LEFT JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan
+        LEFT JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
+        LEFT JOIN supervisor ON supervisor.id_supervisor = pegawai.id_supervisor
+        WHERE supervisor.id_user = $id_supervisor
+    ");
 
     if (!$sql) {
         die("Query Error: " . mysqli_error($koneksi));
@@ -486,6 +560,88 @@ function getall_pelaporan_supervisor() {
 
     return $pelaporan;
 }
+
+
+function total_pelaporan_supervisor_diproses() {
+    global $koneksi;
+    $id_supervisor = $_SESSION['id_user']; // Supervisor login
+
+    $sql = mysqli_query($koneksi, "
+        SELECT pelaporan.*, pelaporan.status AS status_pelaporan, 
+               pelatihan.*, pegawai.nama AS nama_pegawai
+        FROM pelaporan
+        LEFT JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan
+        LEFT JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
+        LEFT JOIN supervisor ON supervisor.id_supervisor = pegawai.id_supervisor
+        WHERE supervisor.id_user = $id_supervisor AND pelaporan.status = 'Diproses'
+    ");
+
+    if (!$sql) {
+        die("Query Error: " . mysqli_error($koneksi));
+    }
+
+    $pelaporan = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pelaporan[] = $row;
+    }
+
+    return $pelaporan;
+}
+
+
+function total_pelaporan_supervisor_ditolak() {
+    global $koneksi;
+    $id_supervisor = $_SESSION['id_user']; // Supervisor login
+
+    $sql = mysqli_query($koneksi, "
+        SELECT pelaporan.*, pelaporan.status AS status_pelaporan, 
+               pelatihan.*, pegawai.nama AS nama_pegawai
+        FROM pelaporan
+        LEFT JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan
+        LEFT JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
+        LEFT JOIN supervisor ON supervisor.id_supervisor = pegawai.id_supervisor
+        WHERE supervisor.id_user = $id_supervisor AND pelaporan.status = 'Ditolak'
+    ");
+
+    if (!$sql) {
+        die("Query Error: " . mysqli_error($koneksi));
+    }
+
+    $pelaporan = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pelaporan[] = $row;
+    }
+
+    return $pelaporan;
+}
+
+function total_pelaporan_supervisor_diterima() {
+    global $koneksi;
+    $id_supervisor = $_SESSION['id_user']; // Supervisor login
+
+    $sql = mysqli_query($koneksi, "
+        SELECT pelaporan.*, pelaporan.status AS status_pelaporan, 
+               pelatihan.*, pegawai.nama AS nama_pegawai
+        FROM pelaporan
+        LEFT JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan
+        LEFT JOIN pegawai ON pelatihan.id_pegawai = pegawai.id_pegawai
+        LEFT JOIN supervisor ON supervisor.id_supervisor = pegawai.id_supervisor
+        WHERE supervisor.id_user = $id_supervisor AND pelaporan.status = 'Diterima'
+    ");
+
+    if (!$sql) {
+        die("Query Error: " . mysqli_error($koneksi));
+    }
+
+    $pelaporan = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pelaporan[] = $row;
+    }
+
+    return $pelaporan;
+}
+
+
 
 
 function get_pelaporan_supervisorByID() {
