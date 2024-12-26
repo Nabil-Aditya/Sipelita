@@ -52,7 +52,7 @@ if (isset($_POST['edit_supervisor'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Add Pengajuan Pelatihan</title>
+    <title>SIPELITA | Profil Supervisor</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template-->
@@ -122,8 +122,8 @@ if (isset($_POST['edit_supervisor'])) {
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pilih Opsi:</h6>
-                        <a class="collapse-item" href="view_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
-                        <a class="collapse-item" href="view_pengajuan_lpj.php">Pengajuan LPJ</a>
+                        <a class="collapse-item" href="data_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
+                        <a class="collapse-item" href="data_pengajuan_lpj.php">Pengajuan LPJ</a>
                     </div>
                 </div>
             </li>
@@ -395,8 +395,8 @@ if (isset($_POST['edit_supervisor'])) {
 
                                 <!-- Tombol Aksi -->
                                 <div class="d-flex justify-content-between mt-4">
-                                    <a href='index.php' type="button" class="btn btn-danger" >Back</a>
-                                    <button type="submit" name="edit_supervisor" class="btn btn-primary">Buat</button>
+                                    <a href='index.php' type="button" class="btn btn-danger" >Kembali</a>
+                                    <button type="submit" name="edit_supervisor" class="btn btn-primary">Simpan</button>
                                 </div>
                             </form>
                         </div>
