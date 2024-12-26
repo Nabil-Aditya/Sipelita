@@ -248,11 +248,6 @@ function pengajuan_pelatihan($data) {
     }
 }
 
-
-
-
-
-
 //edit pelatihan
 function edit_pelatihan($data) {
     global $koneksi;
@@ -334,8 +329,6 @@ function edit_pelatihan($data) {
 }
 
 
-
-
 function getall_pelatihan(){
     global $koneksi;
     $id = $_SESSION['id_user'];
@@ -345,6 +338,52 @@ function getall_pelatihan(){
     $row_pegawai = mysqli_fetch_assoc($sql_pegawai);
     $id_pegawai = $row_pegawai['id_pegawai']; 
     $sql = mysqli_query($koneksi, "SELECT * FROM pelatihan WHERE id_pegawai = '$id_pegawai'");
+    $pelatihan = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pelatihan[] = $row;
+    }
+    return $pelatihan;
+}
+function total_pelatihan_diproses(){
+    global $koneksi;
+    $id = $_SESSION['id_user'];
+    $sql_pegawai = mysqli_query($koneksi, "
+    SELECT id_pegawai FROM pegawai WHERE id_user = $id
+    ");
+    $row_pegawai = mysqli_fetch_assoc($sql_pegawai);
+    $id_pegawai = $row_pegawai['id_pegawai']; 
+    $sql = mysqli_query($koneksi, "SELECT * FROM pelatihan WHERE id_pegawai = '$id_pegawai' AND status = 'Diproses'");
+    $pelatihan = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pelatihan[] = $row;
+    }
+    return $pelatihan;
+}
+function total_pelatihan_ditolak(){
+    global $koneksi;
+    $id = $_SESSION['id_user'];
+    $sql_pegawai = mysqli_query($koneksi, "
+    SELECT id_pegawai FROM pegawai WHERE id_user = $id
+    ");
+    $row_pegawai = mysqli_fetch_assoc($sql_pegawai);
+    $id_pegawai = $row_pegawai['id_pegawai']; 
+    $sql = mysqli_query($koneksi, "SELECT * FROM pelatihan WHERE id_pegawai = '$id_pegawai' AND status = 'Ditolak'");
+    $pelatihan = [];
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $pelatihan[] = $row;
+    }
+    return $pelatihan;
+}
+
+function total_pelatihan_diterima(){
+    global $koneksi;
+    $id = $_SESSION['id_user'];
+    $sql_pegawai = mysqli_query($koneksi, "
+    SELECT id_pegawai FROM pegawai WHERE id_user = $id
+    ");
+    $row_pegawai = mysqli_fetch_assoc($sql_pegawai);
+    $id_pegawai = $row_pegawai['id_pegawai']; 
+    $sql = mysqli_query($koneksi, "SELECT * FROM pelatihan WHERE id_pegawai = '$id_pegawai' AND status = 'Diterima'");
     $pelatihan = [];
     while ($row = mysqli_fetch_assoc($sql)) {
         $pelatihan[] = $row;
@@ -485,8 +524,6 @@ function add_lpj($data) {
 }
 
 
-
-
 function getall_pelaporan(){
     global $koneksi;
     // Dapatkan id_user dari session
@@ -521,6 +558,105 @@ function getall_pelaporan(){
     }
 }
 
+function total_pelaporan_diproses(){
+    global $koneksi;
+    // Dapatkan id_user dari session
+    $id_user = $_SESSION['id_user'];
+    
+    // Cari id_pegawai berdasarkan id_user
+    $getIdPegawaiQuery = "SELECT id_pegawai FROM pegawai WHERE id_user = '$id_user'";
+    $result = mysqli_query($koneksi, $getIdPegawaiQuery);
+    
+    if ($result && mysqli_num_rows($result) > 0) {
+        $pegawai = mysqli_fetch_assoc($result);
+        $id_pegawai = $pegawai['id_pegawai'];
+        
+        // Lakukan query untuk mendapatkan pelaporan berdasarkan id_pegawai
+        $sql = mysqli_query($koneksi, "
+            SELECT pelaporan.*, pelatihan.*, pelaporan.status AS pelaporan_status, pelatihan.status AS pelatihan_status
+            FROM pelaporan 
+            INNER JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan 
+            WHERE pelatihan.id_pegawai = '$id_pegawai' AND pelaporan.status = 'Diproses'
+        ");
+        
+        $pelaporan = [];
+        while ($row = mysqli_fetch_assoc($sql)) {
+            $pelaporan[] = $row;
+        }
+        
+        return $pelaporan;
+    } else {
+        // Jika id_pegawai tidak ditemukan berdasarkan id_user, Anda bisa menangani error di sini
+        echo "Error: id_pegawai tidak ditemukan untuk id_user: $id_user";
+        return [];
+    }
+}
+function total_pelaporan_diterima(){
+    global $koneksi;
+    // Dapatkan id_user dari session
+    $id_user = $_SESSION['id_user'];
+    
+    // Cari id_pegawai berdasarkan id_user
+    $getIdPegawaiQuery = "SELECT id_pegawai FROM pegawai WHERE id_user = '$id_user'";
+    $result = mysqli_query($koneksi, $getIdPegawaiQuery);
+    
+    if ($result && mysqli_num_rows($result) > 0) {
+        $pegawai = mysqli_fetch_assoc($result);
+        $id_pegawai = $pegawai['id_pegawai'];
+        
+        // Lakukan query untuk mendapatkan pelaporan berdasarkan id_pegawai
+        $sql = mysqli_query($koneksi, "
+            SELECT pelaporan.*, pelatihan.*, pelaporan.status AS pelaporan_status, pelatihan.status AS pelatihan_status
+            FROM pelaporan 
+            INNER JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan 
+            WHERE pelatihan.id_pegawai = '$id_pegawai' AND pelaporan.status = 'Diterima'
+        ");
+        
+        $pelaporan = [];
+        while ($row = mysqli_fetch_assoc($sql)) {
+            $pelaporan[] = $row;
+        }
+        
+        return $pelaporan;
+    } else {
+        // Jika id_pegawai tidak ditemukan berdasarkan id_user, Anda bisa menangani error di sini
+        echo "Error: id_pegawai tidak ditemukan untuk id_user: $id_user";
+        return [];
+    }
+}
+function total_pelaporan_ditolak(){
+    global $koneksi;
+    // Dapatkan id_user dari session
+    $id_user = $_SESSION['id_user'];
+    
+    // Cari id_pegawai berdasarkan id_user
+    $getIdPegawaiQuery = "SELECT id_pegawai FROM pegawai WHERE id_user = '$id_user'";
+    $result = mysqli_query($koneksi, $getIdPegawaiQuery);
+    
+    if ($result && mysqli_num_rows($result) > 0) {
+        $pegawai = mysqli_fetch_assoc($result);
+        $id_pegawai = $pegawai['id_pegawai'];
+        
+        // Lakukan query untuk mendapatkan pelaporan berdasarkan id_pegawai
+        $sql = mysqli_query($koneksi, "
+            SELECT pelaporan.*, pelatihan.*, pelaporan.status AS pelaporan_status, pelatihan.status AS pelatihan_status
+            FROM pelaporan 
+            INNER JOIN pelatihan ON pelaporan.id_pelatihan = pelatihan.id_pelatihan 
+            WHERE pelatihan.id_pegawai = '$id_pegawai' AND pelaporan.status = 'Ditolak'
+        ");
+        
+        $pelaporan = [];
+        while ($row = mysqli_fetch_assoc($sql)) {
+            $pelaporan[] = $row;
+        }
+        
+        return $pelaporan;
+    } else {
+        // Jika id_pegawai tidak ditemukan berdasarkan id_user, Anda bisa menangani error di sini
+        echo "Error: id_pegawai tidak ditemukan untuk id_user: $id_user";
+        return [];
+    }
+}
 
 
 
@@ -537,9 +673,6 @@ function get_berkas_byPelatihan(){
 //     $sql = mysqli_query($koneksi, "SELECT * FROM pelaporan WHERE id_pelatihan = '$id_pelatihan'");
 //     return mysqli_fetch_assoc($sql);
 // }
-
-
-
 
 
 //JOIN pelatihan dan pelaporan
@@ -582,9 +715,6 @@ function get_komentar_byPelaporan(){
     return mysqli_fetch_assoc($sql);
 
 }
-
-
-
 
 
 
