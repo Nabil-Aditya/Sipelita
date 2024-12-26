@@ -59,7 +59,7 @@ $jurusan = getall_jurusan();
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Beranda</span></a>
@@ -114,7 +114,7 @@ $jurusan = getall_jurusan();
             </li>
 
             <!-- Nav Item - prodi Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseprodi"
                     aria-expanded="true" aria-controls="collapseprodi">
                     <i class="fas fa-fw fa-graduation-cap"></i>
@@ -124,7 +124,7 @@ $jurusan = getall_jurusan();
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pilih Opsi:</h6>
                         <a class="collapse-item" href="prodi.php">Data Prodi</a>
-                        <a class="collapse-item" href="add_prodi.php">Tambah Prodi</a>
+                        <a class="collapse-item active" href="add_prodi.php">Tambah Prodi</a>
                     </div>
                 </div>
             </li>
@@ -173,6 +173,7 @@ $jurusan = getall_jurusan();
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $login['username'] ?></span>
+                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">admin</span>
                                 <img class="img-profile rounded-circle" src="../img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
