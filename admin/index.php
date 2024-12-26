@@ -64,7 +64,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>View Pengajuan LPJ</title>
+    <title>SIPELITA | Beranda Admin</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template -->
@@ -314,7 +314,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 JUMLAH AKUN</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                20
+                                                2
                                                 <!-- Mengambil jumlah supervisor dari PHP -->
                                             </div>
                                         </div>
@@ -335,7 +335,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 JUMLAH SUPERVISOR</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                20
+                                                1
                                                 <!-- Mengambil jumlah akun supervisor dari PHP -->
                                             </div>
                                         </div>
@@ -358,14 +358,14 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        11
+                                                        1
                                                         <!-- Mengambil jumlah akun yang aktif dari PHP -->
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-check fa-2x text-gray-300"></i>
+                                             <i class="fas fa-user fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -375,7 +375,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                         <div class="container-fluid">
 
                             <!-- Page Heading -->
-                            <h1 class="h3 mt-4 mb-2 text-gray-800">Riwayat</h1>
+                            <h1 class="h3 mt-4 mb-2 text-gray-800">Daftar akun</h1>
 
                             <!-- DataTales Example -->
                             <div class="card shadow mb-4">
@@ -446,6 +446,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                                     cellspacing="0">
                                                     <thead>
                                                         <tr>
+                                                            <th>No</th>
                                                             <th>NIP</th>
                                                             <th>Nama</th>
                                                             <th>Telp</th>
@@ -468,7 +469,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                                                         href="view_supervisor.php?id_user=<?= $data['id_user'] ?>"><button
                                                                             class="btn btn-primary btn-sm">
                                                                             <i class="fas fa-eye"></i>
-                                                                        </button></a>
+                                                                    </button></a>
                                                                 </td>
                                                             </tr>
                                                         <?php } ?>
