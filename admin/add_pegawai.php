@@ -1,5 +1,5 @@
 <!-- KONEKSI -->
-<?php include 'function.php'; 
+<?php include 'function.php';
 
 $supervisor = get_supervisor();
 
@@ -37,7 +37,7 @@ $get_supervisor = get_supervisor();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Add Pegawai</title>
+    <title>SIPELITA | Tambah Pegawai</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Font khusus untuk templat ini -->
@@ -113,9 +113,9 @@ $get_supervisor = get_supervisor();
                 </div>
             </li>
 
-           
-             <!-- Nav Item - jurusan Collapse Menu -->
-             <li class="nav-item">
+
+            <!-- Nav Item - jurusan Collapse Menu -->
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsejurusan"
                     aria-expanded="true" aria-controls="collapsejurusan">
                     <i class="fas fa-fw fa-graduation-cap"></i>
@@ -146,7 +146,7 @@ $get_supervisor = get_supervisor();
                     </div>
                 </div>
             </li>
-            
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -252,17 +252,15 @@ $get_supervisor = get_supervisor();
                                         <div class="form-group">
                                             <label for="nip" class="font-weight-bold">NIP</label>
                                             <input type="text" class="form-control" id="nip" name="nip"
-                                                placeholder="Masukkan NIP">
+                                                placeholder="Masukkan NIP" minlength="10" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="nama" class="font-weight-bold">Nama</label>
-                                            <input type="text" class="form-control" id="nama" name="nama"
-                                                placeholder="Masukkan Nama">
+                                            <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="jabatan" class="font-weight-bold">Jabatan</label>
-                                            <select class="form-control" id="jabatan" name="jabatan"
-                                                onchange="toggleSupervisorSelect()">
+                                            <select class="form-control" id="jabatan" name="jabatan" onchange="toggleSupervisorSelect()" required>
                                                 <option value="">Pilih Jabatan</option>
                                                 <option value="pegawai">Pegawai</option>
                                                 <option value="supervisor">Supervisor</option>
@@ -274,30 +272,27 @@ $get_supervisor = get_supervisor();
                                             <select class="form-control" id="supervisor" name="supervisor">
                                                 <option value="">Pilih Supervisor</option>
                                                 <?php foreach ($supervisor as $key) { ?>
-                                                <option value="<?=$key['id_supervisor']?>"><?=$key['nama']?></option>
-                                                <?php }?>
+                                                    <option value="<?= $key['id_supervisor'] ?>"><?= $key['nama'] ?></option>
+                                                <?php } ?>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="email" class="font-weight-bold">Email</label>
-                                            <input type="email" class="form-control" id="email" name="email"
-                                                placeholder="Masukkan Email">
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan Email" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="telp" class="font-weight-bold">Telp</label>
                                             <input type="text" class="form-control" id="telp" name="telp"
-                                                placeholder="Masukkan Telp">
+                                                placeholder="Masukkan Telp" minlength="12" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="alamat" class="font-weight-bold">Alamat</label>
-                                            <textarea class="form-control" id="alamat" name="alamat" rows="3"
-                                                placeholder="Masukkan Alamat"></textarea>
+                                            <textarea class="form-control" id="alamat" name="alamat" rows="3" placeholder="Masukkan Alamat" required></textarea>
                                         </div>
                                         <label for="fileLaporan" class="font-weight-bold">Foto Profil</label>
                                         <div class="input-group">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="fileLaporan"
-                                                    name="foto_profil" accept=".jpg, .jpeg, .png">
+                                                <input type="file" class="custom-file-input" id="fileLaporan" name="foto_profil" accept=".jpg, .jpeg, .png" required>
                                                 <label class="custom-file-label" for="fileLaporan">Pilih file</label>
                                             </div>
                                         </div>
@@ -306,42 +301,59 @@ $get_supervisor = get_supervisor();
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="username" class="font-weight-bold">Username</label>
-                                            <input type="text" class="form-control" id="username" name="username">
+                                            <input type="text" class="form-control" id="username" name="username" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="password" class="font-weight-bold">Password</label>
-                                            <input type="password" class="form-control" minlength="6" id="password" name="password">
+                                            <input type="password" class="form-control" minlength="6" id="password" name="password" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="password2" class="font-weight-bold">Konfirmasi Password</label>
-                                            <input type="password" class="form-control" id="password2" name="password2">
+                                            <input type="password" class="form-control" id="password2" name="password2" required>
+                                            <small id="passwordError" class="text-danger" style="display: none;">Password tidak cocok!</small>
                                         </div>
+
+                                        <script>
+                                            document.getElementById('password2').addEventListener('input', function() {
+                                                const password = document.getElementById('password').value;
+                                                const password2 = this.value;
+                                                const error = document.getElementById('passwordError');
+
+                                                if (password2 !== password) {
+                                                    this.classList.add('is-invalid');
+                                                    error.style.display = 'block';
+                                                } else {
+                                                    this.classList.remove('is-invalid');
+                                                    error.style.display = 'none';
+                                                }
+                                            });
+                                        </script>
+
                                     </div>
                                 </div>
                                 <hr>
                                 <!-- Tombol Aksi -->
                                 <div class="d-flex justify-content-between mt-4">
-                                    <button type="reset" class="btn btn-danger" id="resetButton">Reset</button>
+                                    <a href='index.php' type="button" class="btn btn-danger">Kembali</a>
                                     <button type="submit" name="tambah_pegawai" class="btn btn-primary">Buat</button>
                                 </div>
                             </form>
 
                             <script>
-                            function toggleSupervisorSelect() {
-                                var jabatan = document.getElementById("jabatan").value;
-                                var supervisorSelectContainer = document.getElementById("supervisorSelectContainer");
-                                if (jabatan === "pegawai") {
-                                    supervisorSelectContainer.style.display = "block";
-                                } else {
-                                    supervisorSelectContainer.style.display = "none";
+                                function toggleSupervisorSelect() {
+                                    var jabatan = document.getElementById("jabatan").value;
+                                    var supervisorSelectContainer = document.getElementById("supervisorSelectContainer");
+                                    if (jabatan === "pegawai") {
+                                        supervisorSelectContainer.style.display = "block";
+                                    } else {
+                                        supervisorSelectContainer.style.display = "none";
+                                    }
                                 }
-                            }
                             </script>
 
                         </div>
                     </div>
                 </div>
-                <!-- /.container-fluid -->
 
                 <!-- Bootstrap JS -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -351,58 +363,6 @@ $get_supervisor = get_supervisor();
 
                 <!-- jQuery -->
                 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-                <script>
-                // Event listener untuk tombol Reset
-                $('#resetButton').on('click', function(event) {
-                    event.preventDefault(); // Mencegah form langsung di-reset
-
-                    // Tampilkan SweetAlert untuk konfirmasi reset
-                    Swal.fire({
-                        title: 'Apakah Anda yakin?',
-                        text: "Anda akan mereset semua data yang telah diisi!",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, reset',
-                        cancelButtonText: 'Batal',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Jika pengguna memilih "Ya", reset form
-                            $('#pengajuanForm')[0].reset(); // Reset form secara manual
-
-                            // Reset input file secara manual
-                            $('#fileLaporan').val(null); // Set input file ke null
-
-                            // Reset label file dan hapus kelas 'selected'
-                            var fileLabel = $('.custom-file-label');
-                            fileLabel.text('Pilih file'); // Mengembalikan teks label ke default
-                            fileLabel.removeClass('selected'); // Hapus kelas 'selected' jika ada
-
-                            // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
-                            Swal.fire({
-                                title: 'Direset!',
-                                text: 'Formulir telah direset.',
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
-                            });
-                        }
-                    });
-                });
-
-                // Event listener untuk perubahan file input
-                document.querySelector('.custom-file-input').addEventListener('change', function(e) {
-                    var fileName = e.target.files[0].name;
-                    var nextSibling = e.target.nextElementSibling;
-
-                    // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
-                    nextSibling.innerText = fileName;
-                    nextSibling.classList.add('selected');
-                });
-                </script>
-
-
 
                 <!-- Logout Modal-->
                 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
