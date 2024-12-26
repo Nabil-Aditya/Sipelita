@@ -94,7 +94,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Supervisor</title>
+    <title>SIPELITA | Data Pegawai</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template -->
@@ -171,8 +171,8 @@ if ($currentHour >= 0 && $currentHour < 12) {
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pilih Opsi:</h6>
-                        <a class="collapse-item" href="view_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
-                        <a class="collapse-item" href="view_pengajuan_lpj.php">Pengajuan LPJ</a>
+                        <a class="collapse-item" href="data_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
+                        <a class="collapse-item" href="data_pengajuan_lpj.php">Pengajuan LPJ</a>
                     </div>
                 </div>
             </li>
