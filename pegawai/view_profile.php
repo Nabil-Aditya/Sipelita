@@ -47,7 +47,7 @@ if (isset($_POST['edit_pegawai'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Add Pengajuan Pelatihan</title>
+    <title>SIPELITA | Profil Pegawai</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template-->
@@ -286,25 +286,13 @@ if (isset($_POST['edit_pegawai'])) {
                                                 value="<?=$get_pegawai_byId['nama']?>" placeholder="Masukkan Nama">
                                         </div>
                                         <div class="form-group">
-                                            <label for="jabatan" class="font-weight-bold">Jabatan</label>
-                                            <select class="form-control" id="jabatan" name="jabatan">
-                                                <option value="">Pilih Jabatan</option>
-                                                <option value="pegawai"
-                                                    <?= ($get_pegawai_byId['role'] == 'pegawai') ? 'selected' : '' ?>>
-                                                    Pegawai</option>
-                                                <option value="supervisor"
-                                                    <?= ($get_pegawai_byId['role'] == 'supervisor') ? 'selected' : '' ?>>
-                                                    Supervisor</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
                                             <label for="email" class="font-weight-bold">Email </label>
                                             <input type="email" class="form-control" id="email" name="email"
                                                 value="<?=$get_pegawai_byId['email']?>" placeholder="Masukkan Email">
                                         </div>
                                         <div class="form-group">
                                             <label for="telp" class="font-weight-bold">Telp </label>
-                                            <input type="text" class="form-control" id="telp" name="telp"
+                                            <input type="text" class="form-control" id="telp" name="telp" minlength="12"
                                                 value="<?=$get_pegawai_byId['telp']?>" placeholder="Masukkan Telp">
                                         </div>
                                         <div class="form-group">
@@ -364,8 +352,8 @@ if (isset($_POST['edit_pegawai'])) {
 
                                 <!-- Tombol Aksi -->
                                 <div class="d-flex justify-content-between mt-4">
-                                    <a href='index.php' type="button" class="btn btn-danger">Back</a>
-                                    <button type="submit" name="edit_pegawai" class="btn btn-primary">Buat</button>
+                                    <a href='index.php' type="button" class="btn btn-danger">Kembali</a>
+                                    <button type="submit" name="edit_pegawai" class="btn btn-primary">Simpan</button>
                                 </div>
                             </form>
                         </div>
