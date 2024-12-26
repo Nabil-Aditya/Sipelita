@@ -9,7 +9,13 @@ $login = get_data_user_login();
 $get_pelatihan =  get_pelatihan_supervisor();
 $get_pelaporan = getall_pelaporan_supervisor();
 
+$jumlah_pelatihan_diproses = count(total_pelatihan_supervisor_diproses());
+$jumlah_pelatihan_diterima = count(total_pelatihan_supervisor_diterima());
+$jumlah_pelatihan_ditolak = count(total_pelatihan_supervisor_ditolak());
 
+    $jumlah_pelaporan_diproses = count(total_pelaporan_supervisor_diproses());
+    $jumlah_pelaporan_ditolak = count(total_pelaporan_supervisor_ditolak());
+    $jumlah_pelaporan_diterima = count(total_pelaporan_supervisor_diterima());
 //notifikasi
 $notifikasi = get_notifikasi();
 
@@ -17,7 +23,6 @@ $notifikasi = get_notifikasi();
 $unread = count(array_filter($notifikasi, function ($notif) {
     return $notif['is_read'] == 0;
 }));
-
 
 
 // Read notikasi
@@ -91,7 +96,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Supervisor</title>
+    <title>SIPELITA | Beranda Supervisor</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template -->
@@ -375,7 +380,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 PENGAJUAN DIPROSES</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                1
+                                                <?=$jumlah_pelatihan_diproses?>
                                                 <!-- Mengambil jumlah pengajuan diproses dari PHP -->
                                             </div>
                                         </div>
@@ -398,7 +403,8 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        2
+                                                    <?=$jumlah_pelatihan_diterima?>
+
                                                         <!-- Mengambil jumlah pengajuan diterima dari PHP -->
                                                     </div>
                                                 </div>
@@ -421,7 +427,8 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 PENGAJUAN DITOLAK</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                0
+                                            <?=$jumlah_pelatihan_ditolak?>
+
                                                 <!-- Mengambil jumlah pengajuan ditolak dari PHP -->
                                             </div>
                                         </div>
@@ -442,7 +449,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 PELAPORAN DIPROSES</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                65
+                                                <?=$jumlah_pelaporan_diproses?>
                                                 <!-- Mengambil jumlah pengajuan diproses dari PHP -->
                                             </div>
                                         </div>
@@ -465,7 +472,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        23
+                                                    <?=$jumlah_pelaporan_diterima?>
                                                         <!-- Mengambil jumlah pengajuan diterima dari PHP -->
                                                     </div>
                                                 </div>
@@ -488,7 +495,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 PELAPORAN DITOLAK</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                65
+                                            <?=$jumlah_pelaporan_ditolak?>
                                                 <!-- Mengambil jumlah pengajuan ditolak dari PHP -->
                                             </div>
                                         </div>
