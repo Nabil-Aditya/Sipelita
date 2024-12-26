@@ -50,7 +50,7 @@ $get_supervisor_byId = get_data_user_login($_SESSION['id_user']);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Add Pengajuan Pelatihan</title>
+    <title>SIPELITA | Detail Pengajuan Pelatihan</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template-->
@@ -394,52 +394,17 @@ $get_supervisor_byId = get_data_user_login($_SESSION['id_user']);
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-end mt-4">
-                                        <button type="reset" class="btn btn-danger mr-2" id="resetButton">Reset</button>
-                                        <button type="submit" name="status_pelatihan"
-                                            class="btn btn-primary">Buat</button>
+                                
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <a href='index.php' type="button" class="btn btn-danger">Kembali</a>                                        
+                                        <button type="submit" name="status_pelatihan" class="btn btn-primary">Buat</button>
                                     </div>
                                 </form>
                             </div>
-
-
-
                         </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
-
-                <!-- Modal Konfirmasi Pengajuan -->
-                <div class="modal fade" id="konfirmasiModal" tabindex="-1" role="dialog"
-                    aria-labelledby="konfirmasiModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="m-0 font-weight-bold text-primary" id="konfirmasiModalLabel">Konfirmasi
-                                    Pengajuan Pelatihan</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p><strong>Lembaga / Institusi:</strong> <span id="confirmLembaga"></span></p>
-                                <p><strong>Program Studi:</strong> <span id="confirmProgramStudi"></span></p>
-                                <p><strong>Jurusan:</strong> <span id="confirmJurusan"></span></p>
-                                <p><strong>Nama Peserta:</strong> <span id="confirmNamaPeserta"></span></p>
-                                <p><strong>Alamat:</strong> <span id="confirmAlamat"></span></p>
-                                <p><strong>Tanggal Kegiatan:</strong> <span id="confirmTanggalKegiatan"></span></p>
-                                <p><strong>Tanggal Selesai:</strong> <span id="confirmTanggalSelesai"></span></p>
-                                <p><strong>Sumber Dana:</strong> <span id="confirmSumberDana"></span></p>
-                                <p><strong>Kompetensi:</strong> <span id="confirmKompetensi"></span></p>
-                                <p><strong>Target Kegiatan:</strong> <span id="confirmTargetKegiatan"></span></p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Kirim</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Bootstrap JS -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -449,125 +414,6 @@ $get_supervisor_byId = get_data_user_login($_SESSION['id_user']);
 
                 <!-- jQuery -->
                 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-                <script>
-                // Event listener untuk tombol Reset
-                $('#resetButton').on('click', function(event) {
-                    event.preventDefault(); // Mencegah form langsung di-reset
-
-                    // Tampilkan SweetAlert untuk konfirmasi reset
-                    Swal.fire({
-                        title: 'Apakah Anda yakin?',
-                        text: "Anda akan mereset semua data yang telah diisi!",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, reset',
-                        cancelButtonText: 'Batal',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Jika pengguna memilih "Ya", reset form
-                            $('#pengajuanForm')[0].reset(); // Reset form secara manual
-
-                            // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
-                            Swal.fire({
-                                title: 'Direset!',
-                                text: 'Formulir telah direset.',
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
-                            });
-                        }
-                    });
-                });
-                </script>
-
-                <script>
-                $(document).ready(function() {
-                    // Ketika tombol "Buat" ditekan, mencegah form submit otomatis dan munculkan modal
-                    $('#pengajuanForm').on('submit', function(event) {
-                        event.preventDefault(); // Mencegah submit form otomatis
-
-                        // Ambil data dari form
-                        const lembaga = $('#lembaga').val();
-                        const programStudi = $('#programStudi').val();
-                        const jurusan = $('#jurusan').val();
-                        const namaPeserta = $('#namaPeserta').val();
-                        const alamat = $('#alamat').val();
-                        const tanggalKegiatan = $('#tanggalKegiatan').val();
-                        const tanggalSelesai = $('#tanggalSelesai').val();
-                        const sumberDana = $('#sumberDana').val();
-                        const kompetensi = $('#kompetensi').val();
-                        const targetKegiatan = $('#targetKegiatan').val();
-
-                        // Cek apakah semua inputan tidak kosong
-                        if (!lembaga || !programStudi || !jurusan || !namaPeserta || !alamat || !
-                            tanggalKegiatan || !tanggalSelesai || !sumberDana || !kompetensi || !
-                            targetKegiatan) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Semua kolom harus diisi!'
-                            });
-                            return;
-                        }
-
-                        // Isi data di modal konfirmasi
-                        $('#confirmLembaga').text(lembaga);
-                        $('#confirmProgramStudi').text(programStudi);
-                        $('#confirmJurusan').text(jurusan);
-                        $('#confirmNamaPeserta').text(namaPeserta);
-                        $('#confirmAlamat').text(alamat);
-                        $('#confirmTanggalKegiatan').text(tanggalKegiatan);
-                        $('#confirmTanggalSelesai').text(tanggalSelesai);
-                        $('#confirmSumberDana').text(sumberDana);
-                        $('#confirmKompetensi').text(kompetensi);
-                        $('#confirmTargetKegiatan').text(targetKegiatan);
-
-                        // Munculkan modal
-                        $('#konfirmasiModal').modal('show');
-                    });
-
-                    // Ketika tombol "Kirim" di modal ditekan, tampilkan SweetAlert dan redirect ke halaman baru
-                    $('#submitPengajuan').on('click', function() {
-                        // Tutup modal
-                        $('#konfirmasiModal').modal('hide');
-
-                        // Ambil data dari form
-                        const formData = $('#pengajuanForm')
-                            .serialize(); // Serialisasi semua input form
-
-                        // Kirim data ke server
-                        $.ajax({
-                            url: 'proses_pengajuan.php', // Ganti dengan URL endpoint untuk proses data
-                            type: 'POST',
-                            data: formData,
-                            success: function(response) {
-                                // Tampilkan SweetAlert sukses jika berhasil
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Pengajuan Pelatihan Berhasil Diajukan',
-                                    showConfirmButton: false,
-                                    timer: 2500
-                                }).then(() => {
-                                    // Redirect ke halaman baru setelah sukses
-                                    window.location.href = 'index.php';
-                                });
-                            },
-                            error: function(error) {
-                                // Tampilkan SweetAlert jika terjadi error
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Pengajuan Gagal',
-                                    text: 'Terjadi kesalahan saat menyimpan data!'
-                                });
-                            }
-                        });
-                    });
-
-
-                });
-                </script>
 
                 <!-- Logout Modal-->
                 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
