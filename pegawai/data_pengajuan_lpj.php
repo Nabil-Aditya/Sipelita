@@ -18,8 +18,6 @@ $unread = count(array_filter($notifikasi, function ($notif) {
     return $notif['is_read'] == 0;
 }));
 
-
-
 // Read notikasi
 if (isset($_POST['read_notifikasi'])) {
     $id_notifikasi = $_POST['id_notifikasi']; // Get the ID from the form submission
@@ -36,51 +34,24 @@ if (isset($_POST['delete_notifikasi'])) {
 //get semua pelatihan
 $pelatihan = getall_pelatihan();
 $jumlah_pelatihan = count($pelatihan);
-$jumlah_pelatihan_diproses = 0;
-foreach ($pelatihan as $item) {
-    if ($item['status'] === 'Diproses') {
-        $jumlah_pelatihan_diproses++;
-    }
-}
-$jumlah_pelatihan_ditolak = 0;
-foreach ($pelatihan as $item) {
-    if ($item['status'] === 'Ditolak') {
-        $jumlah_pelatihan_diproses++;
-    }
-}
-$jumlah_pelatihan_diterima = 0;
-foreach ($pelatihan as $item) {
-    if ($item['status'] === 'Diterima') {
-        $jumlah_pelatihan_diproses++;
-    }
-}
+
+$jumlah_pelatihan_diproses = count(total_pelatihan_diproses());
+$jumlah_pelatihan_diterima = count(total_pelatihan_diterima());
+$jumlah_pelatihan_ditolak = count(total_pelatihan_ditolak());
 
 //get supervisor sendiri
 $supervisor = get_supervisor_byPegawai();
 
 
 
+
 //get pelaporan
 $pelaporan = getall_pelaporan();
 $jumlah_pelaporan = count($pelaporan);
-$jumlah_pelaporan_diproses = 0;
-foreach ($pelaporan as $item) {
-    if ($item['status'] === 'Diproses') {
-        $jumlah_pelaporan_diproses++;
-    }
-}
-$jumlah_pelaporan_ditolak = 0;
-foreach ($pelaporan as $item) {
-    if ($item['status'] === 'Ditolak') {
-        $jumlah_pelaporan_diproses++;
-    }
-}
-$jumlah_pelaporan_diterima = 0;
-foreach ($pelaporan as $item) {
-    if ($item['status'] === 'Diterima') {
-        $jumlah_pelaporan_diproses++;
-    }
-}
+
+$jumlah_pelaporan_diproses = count(total_pelaporan_diproses());
+$jumlah_pelaporan_diterima = count(total_pelaporan_diterima());
+$jumlah_pelaporan_ditolak = count(total_pelaporan_ditolak());
 
 //get data session login
 $login = get_data_user_login();
@@ -140,7 +111,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Pegawai</title>
+    <title>SIPELITA | Data Pengajuan LPJ</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Font khusus untuk templat ini -->
@@ -368,16 +339,12 @@ if ($currentHour >= 0 && $currentHour < 12) {
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Data Pengajuan LPJ</h1>
-                        <a href="add_pengajuan_pelatihan.php"
-                            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                            <i class="fas fa-plus fa-sm text-white-50"></i>&nbsp;Buat Pengajuan?
-                        </a>
                     </div>
 
                     <!-- Content Row -->
                     <div class="row">
 
-                        <!-- Earnings (Pengajuan Diproses) Card Example -->
+                       <!-- Earnings (Pengajuan Diproses) Card Example -->
                         <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
@@ -443,6 +410,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                 </div>
                             </div>
                         </div>
+
 
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
