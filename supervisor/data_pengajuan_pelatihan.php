@@ -93,7 +93,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Supervisor</title>
+    <title>SIPELITA | Data Pengajuan Pelatihan</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template -->
