@@ -72,7 +72,7 @@ $komentar = get_komentar_byPelatihan();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Add Pengajuan LPJ</title>
+    <title>SIPELITA | Pengajuan Pelatihan</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Font khusus untuk templat ini -->
@@ -724,8 +724,7 @@ $komentar = get_komentar_byPelatihan();
                                     <!-- Tombol Aksi -->
                                     <div class="d-flex justify-content-between mt-4">
 
-                                        <a href="index.php" class="btn btn-primary">Back</a>
-
+                                        <a href="index.php" class="btn btn-danger">Kembali</a>
 
                                     </div>
                                 </form>
