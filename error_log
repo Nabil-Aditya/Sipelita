@@ -1,0 +1,32 @@
+[17-Dec-2024 11:54:44 UTC] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/simplif1/sipelita.id/koneksi.php on line 2
+[17-Dec-2024 12:08:46 UTC] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/simplif1/sipelita.id/koneksi.php on line 2
+[17-Dec-2024 14:22:39 UTC] PHP Fatal error:  Uncaught TypeError: mysqli_prepare(): Argument #1 ($mysql) must be of type mysqli, null given in /home/simplif1/sipelita.id/function.php:49
+Stack trace:
+#0 /home/simplif1/sipelita.id/function.php(49): mysqli_prepare()
+#1 /home/simplif1/sipelita.id/login.php(36): login()
+#2 {main}
+  thrown in /home/simplif1/sipelita.id/function.php on line 49
+[17-Dec-2024 14:22:39 UTC] PHP Fatal error:  Uncaught TypeError: mysqli_prepare(): Argument #1 ($mysql) must be of type mysqli, null given in /home/simplif1/sipelita.id/function.php:49
+Stack trace:
+#0 /home/simplif1/sipelita.id/function.php(49): mysqli_prepare()
+#1 /home/simplif1/sipelita.id/login.php(36): login()
+#2 {main}
+  thrown in /home/simplif1/sipelita.id/function.php on line 49
+[17-Dec-2024 14:22:40 UTC] PHP Fatal error:  Uncaught TypeError: mysqli_prepare(): Argument #1 ($mysql) must be of type mysqli, null given in /home/simplif1/sipelita.id/function.php:49
+Stack trace:
+#0 /home/simplif1/sipelita.id/function.php(49): mysqli_prepare()
+#1 /home/simplif1/sipelita.id/login.php(36): login()
+#2 {main}
+  thrown in /home/simplif1/sipelita.id/function.php on line 49
+[17-Dec-2024 14:23:27 UTC] PHP Fatal error:  Uncaught TypeError: mysqli_prepare(): Argument #1 ($mysql) must be of type mysqli, null given in /home/simplif1/sipelita.id/function.php:49
+Stack trace:
+#0 /home/simplif1/sipelita.id/function.php(49): mysqli_prepare()
+#1 /home/simplif1/sipelita.id/login.php(36): login()
+#2 {main}
+  thrown in /home/simplif1/sipelita.id/function.php on line 49
+[17-Dec-2024 14:24:03 UTC] PHP Fatal error:  Uncaught TypeError: mysqli_prepare(): Argument #1 ($mysql) must be of type mysqli, null given in /home/simplif1/sipelita.id/function.php:49
+Stack trace:
+#0 /home/simplif1/sipelita.id/function.php(49): mysqli_prepare()
+#1 /home/simplif1/sipelita.id/login.php(36): login()
+#2 {main}
+  thrown in /home/simplif1/sipelita.id/function.php on line 49
