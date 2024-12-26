@@ -13,7 +13,7 @@ session_start();
 include 'koneksi.php';
 
 // Fungsi untuk membuat CAPTCHA
-if (!isset($_SESSION['captcha'])) {
+if (!isset($_POST['login'])) {
     $buat_captcha = rand(10000, 99999);
     $_SESSION['captcha'] = $buat_captcha;
 }
