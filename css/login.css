@@ -77,24 +77,31 @@ body {
     gap: 10px;
 }
 
-/* Styling for the CAPTCHA box */
 .captcha-box {
-    display: inline-block;
+    display: inline-flex; /* Menyusun angka secara horizontal */
+    justify-content: center; /* Konten di tengah secara horizontal */
+    align-items: center; /* Konten di tengah secara vertikal */
     padding: 10px;
     background-color: #E7F0FE;
     font-weight: bold;
     font-size: 18px;
-    border-radius: 20%;
+    border-radius: 8px; /* Membulatkan sudut */
     color: red;
-    width: 100px;
     text-align: center;
-
-    /* tidak bisa di copy */
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
+    letter-spacing: 3px; /* Jarak antar karakter */
+    user-select: none; /* Mencegah teks disalin */
+    min-width: 100px; /* Memberikan lebar minimum */
+    overflow: hidden; /* Menghindari teks keluar dari box */
+    white-space: nowrap; /* Memastikan teks tetap dalam satu baris */
 }
+
+@media (max-width: 768px) {
+    .captcha-box {
+        font-size: 16px; /* Ukuran font menyesuaikan layar kecil */
+        min-width: 80px; /* Lebar minimum menyesuaikan */
+    }
+}
+
 
 .captcha-input {
     flex-grow: 1;
