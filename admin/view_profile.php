@@ -9,8 +9,8 @@ $get_user_byId = get_admin_byId($_GET['id_user']);
 
 
 //edit pegawai
-if (isset($_POST['edit_pegawai'])) {
-    edit_pegawai($_POST, $_GET['id_user']);
+if (isset($_POST['edit_admin'])) {
+    edit_admin($_POST, $_GET['id_user']);
 }
 
 //get data session login
@@ -41,7 +41,7 @@ $get_supervisor = get_supervisor();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Add Pengajuan Pelatihan</title>
+    <title>SIPELITA | Profil Admin</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template-->
@@ -217,7 +217,8 @@ $get_supervisor = get_supervisor();
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $login['username'] ?></span>
+                                <span
+                                    class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $login['username'] ?></span>
                                 <img class="img-profile rounded-circle" src="../img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -257,7 +258,7 @@ $get_supervisor = get_supervisor();
                                         <div class="form-group">
                                             <label for="username" class="font-weight-bold">Username</label>
                                             <input type="text" class="form-control" id="username" name="username"
-                                                value="<?= $get_user_byId['username'] ?>">
+                                                value="<?= $get_user_byId['username'] ?>" required>
                                         </div>
                                         <div class="form-group">
                                             <button type="button" id="ubahPasswordBtn" class="btn btn-secondary">Ubah
@@ -280,9 +281,30 @@ $get_supervisor = get_supervisor();
                                                     Baru</label>
                                                 <input type="password" class="form-control" id="password2"
                                                     name="password2" placeholder="Konfirmasi Password Baru">
+                                                <small id="passwordError" class="text-danger"
+                                                    style="display: none;">Password tidak cocok!</small>
                                             </div>
-                                        </div>
 
+                                            <script>
+                                            document.getElementById('password2').addEventListener('input', function() {
+                                                const password = document.getElementById('password').value;
+                                                const password2 = this.value;
+                                                const error = document.getElementById('passwordError');
+
+                                                if (password2 !== password) {
+                                                    this.classList.add(
+                                                    'is-invalid'); // Menambahkan kelas untuk menampilkan border merah
+                                                    error.style.display =
+                                                    'block'; // Menampilkan pesan kesalahan
+                                                } else {
+                                                    this.classList.remove(
+                                                    'is-invalid'); // Menghapus kelas jika cocok
+                                                    error.style.display =
+                                                    'none'; // Menyembunyikan pesan kesalahan
+                                                }
+                                            });
+                                            </script>
+                                        </div>
                                     </div>
                                 </div>
                                 <hr>
@@ -290,9 +312,11 @@ $get_supervisor = get_supervisor();
                                 <!-- Tombol Aksi -->
                                 <div class="d-flex justify-content-between mt-4">
                                     <a href='index.php' type="button" class="btn btn-danger">Back</a>
-                                    <button type="submit" name="edit_pegawai" class="btn btn-primary">Buat</button>
+                                    <button type="submit" name="edit_admin" class="btn btn-primary">Buat</button>
                                 </div>
                             </form>
+
+
                         </div>
                     </div>
                 </div>
@@ -310,35 +334,35 @@ $get_supervisor = get_supervisor();
                 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
                 <script>
-                    // Event listener untuk tombol Reset
-                    $('#resetButton').on('click', function(event) {
-                        event.preventDefault(); // Mencegah form langsung di-reset
+                // Event listener untuk tombol Reset
+                $('#resetButton').on('click', function(event) {
+                    event.preventDefault(); // Mencegah form langsung di-reset
 
-                        // Tampilkan SweetAlert untuk konfirmasi reset
-                        Swal.fire({
-                            title: 'Apakah Anda yakin?',
-                            text: "Anda akan mereset semua data yang telah diisi!",
-                            icon: 'question',
-                            showCancelButton: true,
-                            confirmButtonText: 'Ya, reset',
-                            cancelButtonText: 'Batal',
-                            reverseButtons: true
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                // Jika pengguna memilih "Ya", reset form
-                                $('#pengajuanForm')[0].reset(); // Reset form secara manual
+                    // Tampilkan SweetAlert untuk konfirmasi reset
+                    Swal.fire({
+                        title: 'Apakah Anda yakin?',
+                        text: "Anda akan mereset semua data yang telah diisi!",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, reset',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Jika pengguna memilih "Ya", reset form
+                            $('#pengajuanForm')[0].reset(); // Reset form secara manual
 
-                                // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
-                                Swal.fire({
-                                    title: 'Direset!',
-                                    text: 'Formulir telah direset.',
-                                    icon: 'success',
-                                    showConfirmButton: false,
-                                    timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
-                                });
-                            }
-                        });
+                            // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
+                            Swal.fire({
+                                title: 'Direset!',
+                                text: 'Formulir telah direset.',
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
+                            });
+                        }
                     });
+                });
                 </script>
 
 
@@ -383,35 +407,35 @@ $get_supervisor = get_supervisor();
 
 
                 <script>
-                    // Update nama file pada label ketika file dipilih
-                    document.getElementById('fileLaporan').addEventListener('change', function() {
-                        const fileName = this.files[0] ? this.files[0].name : "Pilih file";
-                        this.nextElementSibling.textContent = fileName;
-                    });
+                // Update nama file pada label ketika file dipilih
+                document.getElementById('fileLaporan').addEventListener('change', function() {
+                    const fileName = this.files[0] ? this.files[0].name : "Pilih file";
+                    this.nextElementSibling.textContent = fileName;
+                });
                 </script>
 
 
                 <script>
-                    document.getElementById('ubahPasswordBtn').addEventListener('click', function() {
-                        const passwordFields = document.getElementById('passwordFields');
-                        if (passwordFields.style.display === 'none' || passwordFields.style
-                            .display === '') {
-                            passwordFields.style.display = 'block';
-                            this.textContent = 'Batal Ubah Password';
-                            this.classList.remove('btn-secondary');
-                            this.classList.add('btn-danger');
-                        } else {
-                            passwordFields.style.display = 'none';
-                            this.textContent = 'Ubah Password';
-                            this.classList.remove('btn-danger');
-                            this.classList.add('btn-secondary');
+                document.getElementById('ubahPasswordBtn').addEventListener('click', function() {
+                    const passwordFields = document.getElementById('passwordFields');
+                    if (passwordFields.style.display === 'none' || passwordFields.style
+                        .display === '') {
+                        passwordFields.style.display = 'block';
+                        this.textContent = 'Batal Ubah Password';
+                        this.classList.remove('btn-secondary');
+                        this.classList.add('btn-danger');
+                    } else {
+                        passwordFields.style.display = 'none';
+                        this.textContent = 'Ubah Password';
+                        this.classList.remove('btn-danger');
+                        this.classList.add('btn-secondary');
 
-                            // Reset nilai input saat dibatalkan
-                            document.getElementById('old_password').value = '';
-                            document.getElementById('password').value = '';
-                            document.getElementById('password2').value = '';
-                        }
-                    });
+                        // Reset nilai input saat dibatalkan
+                        document.getElementById('old_password').value = '';
+                        document.getElementById('password').value = '';
+                        document.getElementById('password2').value = '';
+                    }
+                });
                 </script>
 </body>
 
