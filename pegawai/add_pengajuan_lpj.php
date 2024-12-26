@@ -102,7 +102,7 @@ $komentar = get_komentar_byPelaporan();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Add Pengajuan LPJ</title>
+    <title>SIPELITA | Pengajuan LPJ</title>
     <link rel="icon" type="image/x-icon" href="./img/icon-tittle-sipelita.jpg">
 
     <!-- Font khusus untuk templat ini -->
@@ -513,7 +513,7 @@ $komentar = get_komentar_byPelaporan();
                                     <a href='index.php' type="button" class="btn btn-danger">Kembali</a>
                                     <button type="submit" class="btn btn-primary" name="buat_lpj">Buat</button>
                                     <?php } else { ?>
-                                    <a href="index.php" class="btn btn-primary">Back</a>
+                                    <a href="index.php" class="btn btn-danger">Kembali</a>
                                     <?php } ?>
                                 </div>
 
@@ -525,173 +525,6 @@ $komentar = get_komentar_byPelaporan();
                     </div>
                 </div>
                 <!-- /.container-fluid -->
-
-                <!-- Modal Konfirmasi Pengajuan -->
-                <div class="modal fade" id="konfirmasiModal" tabindex="-1" role="dialog"
-                    aria-labelledby="konfirmasiModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="m-0 font-weight-bold text-primary" id="konfirmasiModalLabel">Konfirmasi
-                                    Pengajuan Pelatihan</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p><strong>Lembaga / Institusi:</strong> <span id="confirmLembaga"></span></p>
-                                <p><strong>Program Studi:</strong> <span id="confirmProgramStudi"></span></p>
-                                <p><strong>Jurusan:</strong> <span id="confirmJurusan"></span></p>
-                                <p><strong>Nama Peserta:</strong> <span id="confirmNamaPeserta"></span></p>
-                                <p><strong>Alamat:</strong> <span id="confirmAlamat"></span></p>
-                                <p><strong>Tanggal Kegiatan:</strong> <span id="confirmTanggalKegiatan"></span></p>
-                                <p><strong>Tanggal Selesai:</strong> <span id="confirmTanggalSelesai"></span></p>
-                                <p><strong>Sumber Dana:</strong> <span id="confirmSumberDana"></span></p>
-                                <p><strong>Kompetensi:</strong> <span id="confirmKompetensi"></span></p>
-                                <p><strong>Target Kegiatan:</strong> <span id="confirmTargetKegiatan"></span></p>
-                                <p><strong>File Laporan:</strong> <a href="#" target="_blank"
-                                        id="confirmFileLaporan">Lihat Laporan</a></p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                                <button type="button" class="btn btn-primary" id="submitPengajuan">Kirim</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bootstrap JS -->
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-                <!-- SweetAlert2 JS -->
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-                <!-- jQuery -->
-                <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-                <script>
-                // Event listener untuk tombol Reset
-                $('#resetButton').on('click', function(event) {
-                    event.preventDefault(); // Mencegah form langsung di-reset
-
-                    // Tampilkan SweetAlert untuk konfirmasi reset
-                    Swal.fire({
-                        title: 'Apakah Anda yakin?',
-                        text: "Anda akan mereset semua data yang telah diisi!",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, reset',
-                        cancelButtonText: 'Batal',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Jika pengguna memilih "Ya", reset form
-                            $('#pengajuanForm')[0].reset(); // Reset form secara manual
-
-                            // Reset input file secara manual
-                            $('#fileLaporan').val(null); // Set input file ke null
-
-                            // Reset label file dan hapus kelas 'selected'
-                            var fileLabel = $('.custom-file-label');
-                            fileLabel.text('Pilih file'); // Mengembalikan teks label ke default
-                            fileLabel.removeClass('selected'); // Hapus kelas 'selected' jika ada
-
-                            // SweetAlert otomatis tutup setelah 2500ms tanpa tombol OK
-                            Swal.fire({
-                                title: 'Direset!',
-                                text: 'Formulir telah direset.',
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 2500 // Tutup otomatis setelah 2500ms (2.5 detik)
-                            });
-                        }
-                    });
-                });
-
-                // Event listener untuk perubahan file input
-                document.querySelector('.custom-file-input').addEventListener('change', function(e) {
-                    var fileName = e.target.files[0].name;
-                    var nextSibling = e.target.nextElementSibling;
-
-                    // Ubah teks label dengan nama file dan tambahkan kelas 'selected'
-                    nextSibling.innerText = fileName;
-                    nextSibling.classList.add('selected');
-                });
-                </script>
-
-                <script>
-                $('#pengajuanForm').on('submit', function(event) {
-                    event.preventDefault(); // Mencegah submit form otomatis
-
-                    // Ambil data dari form
-                    const lembaga = $('#lembaga').val();
-                    const programStudi = $('#programStudi').val();
-                    const jurusan = $('#jurusan').val();
-                    const namaPeserta = $('#namaPeserta').val();
-                    const alamat = $('#alamat').val();
-                    const tanggalKegiatan = $('#tanggalKegiatan').val();
-                    const tanggalSelesai = $('#tanggalSelesai').val();
-                    const sumberDana = $('#sumberDana').val();
-                    const kompetensi = $('#kompetensi').val();
-                    const targetKegiatan = $('#targetKegiatan').val();
-                    const fileLaporan = $('#fileLaporan')[0].files[0]; // Ambil file yang diunggah
-
-                    // Validasi jika ada kolom yang kosong
-                    if (!lembaga || !programStudi || !jurusan || !namaPeserta || !alamat ||
-                        !tanggalKegiatan || !tanggalSelesai || !sumberDana || !kompetensi ||
-                        !targetKegiatan || !fileLaporan) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Semua kolom harus diisi, termasuk file laporan!'
-                        });
-                        return;
-                    }
-
-                    // Validasi format file PDF
-                    if (fileLaporan.type !== 'application/pdf') {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'File laporan harus berformat PDF!'
-                        });
-                        return;
-                    }
-
-                    // Buat URL untuk file yang diunggah agar bisa ditampilkan
-                    const fileUrl = URL.createObjectURL(fileLaporan);
-
-                    // Isi data di modal konfirmasi
-                    $('#confirmLembaga').text(lembaga);
-                    $('#confirmProgramStudi').text(programStudi);
-                    $('#confirmJurusan').text(jurusan);
-                    $('#confirmNamaPeserta').text(namaPeserta);
-                    $('#confirmAlamat').text(alamat);
-                    $('#confirmTanggalKegiatan').text(tanggalKegiatan);
-                    $('#confirmTanggalSelesai').text(tanggalSelesai);
-                    $('#confirmSumberDana').text(sumberDana);
-                    $('#confirmKompetensi').text(kompetensi);
-                    $('#confirmTargetKegiatan').text(targetKegiatan);
-                    $('#confirmFileLaporan').attr('href', fileUrl); // Set href untuk link file
-
-                    // Munculkan modal konfirmasi
-                    $('#konfirmasiModal').modal('show');
-                });
-
-                // Ketika tombol "Kirim" ditekan, tampilkan notifikasi dan redirect
-                $('#submitPengajuan').on('click', function() {
-                    $('#konfirmasiModal').modal('hide');
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Pengajuan Pelatihan Berhasil Diajukan',
-                        showConfirmButton: false,
-                        timer: 2500
-                    }).then(() => {
-                        window.location.href = 'index.php'; // Redirect setelah sukses
-                    });
-                });
-                </script>
 
                 <!-- Logout Modal-->
                 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
