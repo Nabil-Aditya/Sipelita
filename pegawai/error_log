@@ -1,0 +1,26 @@
+[17-Dec-2024 12:38:39 UTC] PHP Warning:  move_uploaded_file(/home/simplif1/sipelita.id/SIPELITA-PROJECT/assets/foto_pegawai/1000233712.jpg): Failed to open stream: No such file or directory in /home/simplif1/sipelita.id/pegawai/function.php on line 93
+[17-Dec-2024 12:38:39 UTC] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpfGyIMF' to '/home/simplif1/sipelita.id/SIPELITA-PROJECT/assets/foto_pegawai/1000233712.jpg' in /home/simplif1/sipelita.id/pegawai/function.php on line 93
+[17-Dec-2024 12:38:55 UTC] PHP Warning:  move_uploaded_file(/home/simplif1/sipelita.id/SIPELITA-PROJECT/assets/foto_pegawai/Group 141.jpg): Failed to open stream: No such file or directory in /home/simplif1/sipelita.id/pegawai/function.php on line 93
+[17-Dec-2024 12:38:55 UTC] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phprVlCCm' to '/home/simplif1/sipelita.id/SIPELITA-PROJECT/assets/foto_pegawai/Group 141.jpg' in /home/simplif1/sipelita.id/pegawai/function.php on line 93
+[17-Dec-2024 12:40:50 UTC] PHP Warning:  move_uploaded_file(/home/simplif1/sipelita.id/SIPELITA-PROJECT/assets/foto_pegawai/Group 141.jpg): Failed to open stream: No such file or directory in /home/simplif1/sipelita.id/pegawai/function.php on line 93
+[17-Dec-2024 12:40:50 UTC] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpxmfilG' to '/home/simplif1/sipelita.id/SIPELITA-PROJECT/assets/foto_pegawai/Group 141.jpg' in /home/simplif1/sipelita.id/pegawai/function.php on line 93
+[17-Dec-2024 12:40:50 UTC] PHP Warning:  move_uploaded_file(/home/simplif1/sipelita.id/SIPELITA-PROJECT/assets/foto_pegawai/Group 141.jpg): Failed to open stream: No such file or directory in /home/simplif1/sipelita.id/pegawai/function.php on line 93
+[17-Dec-2024 12:40:50 UTC] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/php8G6af4' to '/home/simplif1/sipelita.id/SIPELITA-PROJECT/assets/foto_pegawai/Group 141.jpg' in /home/simplif1/sipelita.id/pegawai/function.php on line 93
+[17-Dec-2024 12:40:50 UTC] PHP Warning:  move_uploaded_file(/home/simplif1/sipelita.id/SIPELITA-PROJECT/assets/foto_pegawai/Group 141.jpg): Failed to open stream: No such file or directory in /home/simplif1/sipelita.id/pegawai/function.php on line 93
+[17-Dec-2024 12:40:50 UTC] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpRm7DOi' to '/home/simplif1/sipelita.id/SIPELITA-PROJECT/assets/foto_pegawai/Group 141.jpg' in /home/simplif1/sipelita.id/pegawai/function.php on line 93
+[17-Dec-2024 13:03:34 UTC] PHP Warning:  Undefined array key "id_user" in /home/simplif1/sipelita.id/pegawai/function.php on line 638
+[17-Dec-2024 13:03:34 UTC] PHP Warning:  Undefined array key "id_user" in /home/simplif1/sipelita.id/pegawai/function.php on line 341
+[17-Dec-2024 13:03:34 UTC] PHP Fatal error:  Uncaught TypeError: mysqli_fetch_assoc(): Argument #1 ($result) must be of type mysqli_result, bool given in /home/simplif1/sipelita.id/pegawai/function.php:345
+Stack trace:
+#0 /home/simplif1/sipelita.id/pegawai/function.php(345): mysqli_fetch_assoc()
+#1 /home/simplif1/sipelita.id/pegawai/index.php(35): getall_pelatihan()
+#2 {main}
+  thrown in /home/simplif1/sipelita.id/pegawai/function.php on line 345
+[17-Dec-2024 13:11:22 UTC] PHP Warning:  Undefined array key "id_user" in /home/simplif1/sipelita.id/pegawai/function.php on line 638
+[17-Dec-2024 13:11:22 UTC] PHP Warning:  Undefined array key "id_user" in /home/simplif1/sipelita.id/pegawai/function.php on line 341
+[17-Dec-2024 13:11:22 UTC] PHP Fatal error:  Uncaught TypeError: mysqli_fetch_assoc(): Argument #1 ($result) must be of type mysqli_result, bool given in /home/simplif1/sipelita.id/pegawai/function.php:345
+Stack trace:
+#0 /home/simplif1/sipelita.id/pegawai/function.php(345): mysqli_fetch_assoc()
+#1 /home/simplif1/sipelita.id/pegawai/index.php(35): getall_pelatihan()
+#2 {main}
+  thrown in /home/simplif1/sipelita.id/pegawai/function.php on line 345
