@@ -9,7 +9,13 @@ $login = get_data_user_login();
 $get_pelatihan =  get_pelatihan_supervisor();
 $get_pelaporan = getall_pelaporan_supervisor();
 
+$jumlah_pelatihan_diproses = count(total_pelatihan_supervisor_diproses());
+$jumlah_pelatihan_diterima = count(total_pelatihan_supervisor_diterima());
+$jumlah_pelatihan_ditolak = count(total_pelatihan_supervisor_ditolak());
 
+    $jumlah_pelaporan_diproses = count(total_pelaporan_supervisor_diproses());
+    $jumlah_pelaporan_ditolak = count(total_pelaporan_supervisor_ditolak());
+    $jumlah_pelaporan_diterima = count(total_pelaporan_supervisor_diterima());
 //notifikasi
 $notifikasi = get_notifikasi();
 
@@ -17,7 +23,6 @@ $notifikasi = get_notifikasi();
 $unread = count(array_filter($notifikasi, function ($notif) {
     return $notif['is_read'] == 0;
 }));
-
 
 
 // Read notikasi
@@ -42,9 +47,7 @@ if ($_SESSION['role'] === 'admin') {
     echo "<script>window.location.href = '../pegawai/index.php';</script>";
 }
 
-
 ?>
-
 
 <?php
 date_default_timezone_set('Asia/Jakarta'); // Sesuaikan timezone jika diperlukan
@@ -81,7 +84,6 @@ if ($currentHour >= 0 && $currentHour < 12) {
 ?>
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,7 +95,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Supervisor</title>
+    <title>SIPELITA | Rekapitulasi LPJ</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template -->
@@ -313,35 +315,14 @@ if ($currentHour >= 0 && $currentHour < 12) {
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Data Pengajuan LPJ</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Rekapitulasi LPJ</h1>
                     </div>
 
                     <!-- Content Row -->
                     <div class="row">
 
-                        <!-- Earnings (Pengajuan Diproses) Card Example -->
-                        <div class="col-xl-4 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                PELAPORAN DIPROSES</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                65
-                                                <!-- Mengambil jumlah pengajuan diproses dari PHP -->
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-file-import fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Earnings (Pengajuan Diterima) Card Example -->
-                        <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="col-xl-12 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -351,7 +332,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        23
+                                                    <?=$jumlah_pelaporan_diterima?>
                                                         <!-- Mengambil jumlah pengajuan diterima dari PHP -->
                                                     </div>
                                                 </div>
@@ -365,38 +346,14 @@ if ($currentHour >= 0 && $currentHour < 12) {
                             </div>
                         </div>
 
-                        <!-- Pending Requests (Pengajuan Ditolak) Card Example -->
-                        <div class="col-xl-4 col-md-6 mb-4">
-                            <div class="card border-left-danger shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                PELAPORAN DITOLAK</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                65
-                                                <!-- Mengambil jumlah pengajuan ditolak dari PHP -->
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-times fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
 
                             <!-- Page Heading -->
-                            <h1 class="h3 mt-4 mb-2 text-gray-800">Riwayat</h1>
+                            <h1 class="h3 mt-4 mb-2 text-gray-800">Data Rekapitulasi LPJ</h1>
 
                             <!-- DataTales Example -->
                             <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                                </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -436,34 +393,35 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                                         </tr>
                                                 <?php }
                                                 } ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                      </tbody>
+                                   </table>
                                 </div>
                             </div>
                         </div>
-                        <!-- End of Main Content -->
-
-                        <!-- Footer -->
-                        <footer class="sticky-footer bg-white">
-                            <div class="container my-auto">
-                                <div class="copyright text-center my-auto">
-                                    <span>Hak Cipta &copy;Sipelita 2024</span>
-                                </div>
-                            </div>
-                        </footer>
-                        <!-- End of Footer -->
                     </div>
-                    <!-- End of Content Wrapper -->
-
                 </div>
-                <!-- End of Page Wrapper -->
+            </div>
+            <!-- End of Main Content -->
 
-                <!-- Scroll to Top Button-->
-                <a class="scroll-to-top rounded" href="#page-top">
-                    <i class="fas fa-angle-up"></i>
-                </a>
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Hak Cipta &copy;Sipelita 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
 
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
                 <!-- Logout Modal-->
                 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
