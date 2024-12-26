@@ -76,7 +76,7 @@ function tambah_pegawai($data)
     $tmpname = $_FILES['foto_profil']['tmp_name'];
 
     // Tentukan folder penyimpanan berdasarkan jabatan
-    $folder = $_SERVER['DOCUMENT_ROOT'] . '/SIPELITA-PROJECT/assets/';
+    $folder = $_SERVER['DOCUMENT_ROOT'] . '/assets/';
     $folder .= ($jabatan == 'supervisor') ? 'foto_supervisor/' : 'foto_pegawai/';
     $folder .= $foto_profil;
 
@@ -215,7 +215,68 @@ function edit_pegawai($data, $id_user) {
     }
 }
 
+function edit_admin($data, $id_user) {
+    global $koneksi;
 
+    // Sanitasi dan validasi input
+    $username = mysqli_real_escape_string($koneksi, $data['username']);
+    $password = mysqli_real_escape_string($koneksi, $data['password']);
+    $password2 = mysqli_real_escape_string($koneksi, $data['password2']);
+    $old_password = mysqli_real_escape_string($koneksi, $data['old_password']);
+
+    // Ambil data user lama dari database
+    $result = mysqli_query($koneksi, "SELECT username, password FROM user WHERE id_user = '$id_user'");
+    if (!$result || mysqli_num_rows($result) === 0) {
+        echo "<script>alert('User tidak ditemukan.');</script>";
+        return false;
+    }
+
+    $currentData = mysqli_fetch_assoc($result);
+    $currentUsername = $currentData['username'];
+    $currentPassword = $currentData['password'];
+
+    // Cek apakah username diubah dan sudah ada yang memakai username baru
+    if ($username !== $currentUsername) {
+        $cek_username = mysqli_query($koneksi, "SELECT id_user FROM user WHERE username = '$username'");
+        if (mysqli_num_rows($cek_username) > 0) {
+            echo "<script>alert('Username sudah digunakan.');</script>";
+            return false;
+        }
+    }
+
+    // Validasi password lama jika ada perubahan password
+    if (!empty($password) && !empty($old_password)) {
+        if (!password_verify($old_password, $currentPassword)) {
+            echo "<script>alert('Password lama tidak sesuai!');</script>";
+            return false;
+        }
+    }
+
+    // Cek konfirmasi password jika ada perubahan password
+    if (!empty($password) && $password !== $password2) {
+        echo "<script>alert('Konfirmasi password tidak sesuai.');</script>";
+        return false;
+    }
+
+    // Update tabel user
+    if (!empty($password)) {
+        $password_hashed = password_hash($password, PASSWORD_DEFAULT);
+        $updateUser = mysqli_query($koneksi, 
+            "UPDATE user SET username = '$username', password = '$password_hashed', role = 'admin' WHERE id_user = '$id_user'");
+    } else {
+        $updateUser = mysqli_query($koneksi, 
+            "UPDATE user SET username = '$username', role = 'admin' WHERE id_user = '$id_user'");
+    }
+
+    // Cek apakah query berhasil
+    if ($updateUser) {
+        echo "<script>alert('Data berhasil diupdate.'); window.location.href=location.href</script>";
+        return true;
+    } else {
+        echo "<script>alert('Terjadi kesalahan saat mengupdate data.');</script>";
+        return false;
+    }
+}
 
 // Fungsi edit supervisor
 function edit_supervisor($data, $id_user) {
