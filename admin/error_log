@@ -1,0 +1,6 @@
+[17-Dec-2024 14:23:49 UTC] PHP Fatal error:  Uncaught TypeError: mysqli_query(): Argument #1 ($mysql) must be of type mysqli, null given in /home/simplif1/sipelita.id/admin/function.php:378
+Stack trace:
+#0 /home/simplif1/sipelita.id/admin/function.php(378): mysqli_query()
+#1 /home/simplif1/sipelita.id/admin/index.php(17): get_pegawai()
+#2 {main}
+  thrown in /home/simplif1/sipelita.id/admin/function.php on line 378
