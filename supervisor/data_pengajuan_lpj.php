@@ -9,7 +9,13 @@ $login = get_data_user_login();
 $get_pelatihan =  get_pelatihan_supervisor();
 $get_pelaporan = getall_pelaporan_supervisor();
 
+$jumlah_pelatihan_diproses = count(total_pelatihan_supervisor_diproses());
+$jumlah_pelatihan_diterima = count(total_pelatihan_supervisor_diterima());
+$jumlah_pelatihan_ditolak = count(total_pelatihan_supervisor_ditolak());
 
+    $jumlah_pelaporan_diproses = count(total_pelaporan_supervisor_diproses());
+    $jumlah_pelaporan_ditolak = count(total_pelaporan_supervisor_ditolak());
+    $jumlah_pelaporan_diterima = count(total_pelaporan_supervisor_diterima());
 //notifikasi
 $notifikasi = get_notifikasi();
 
@@ -17,7 +23,6 @@ $notifikasi = get_notifikasi();
 $unread = count(array_filter($notifikasi, function ($notif) {
     return $notif['is_read'] == 0;
 }));
-
 
 
 // Read notikasi
@@ -42,9 +47,7 @@ if ($_SESSION['role'] === 'admin') {
     echo "<script>window.location.href = '../pegawai/index.php';</script>";
 }
 
-
 ?>
-
 
 <?php
 date_default_timezone_set('Asia/Jakarta'); // Sesuaikan timezone jika diperlukan
@@ -81,7 +84,6 @@ if ($currentHour >= 0 && $currentHour < 12) {
 ?>
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,7 +95,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Supervisor</title>
+    <title>SIPELITA | Data Pengajuan LPJ</title>
     <link rel="icon" type="image/x-icon" href="../img/icon-tittle-sipelita.jpg">
 
     <!-- Custom fonts for this template -->
@@ -138,7 +140,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Beranda</span></a>
@@ -160,7 +162,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
             </li>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-file-alt"></i>
@@ -170,7 +172,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pilih Opsi:</h6>
                         <a class="collapse-item" href="data_pengajuan_pelatihan.php">Pengajuan Pelatihan</a>
-                        <a class="collapse-item" href="data_pengajuan_lpj.php">Pengajuan LPJ</a>
+                        <a class="collapse-item active" href="data_pengajuan_lpj.php">Pengajuan LPJ</a>
                     </div>
                 </div>
             </li>
@@ -319,7 +321,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                     <!-- Content Row -->
                     <div class="row">
 
-                        <!-- Earnings (Pengajuan Diproses) Card Example -->
+                    <!-- Earnings (Pengajuan Diproses) Card Example -->
                         <div class="col-xl-4 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
@@ -328,7 +330,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 PELAPORAN DIPROSES</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                65
+                                                <?=$jumlah_pelaporan_diproses?>
                                                 <!-- Mengambil jumlah pengajuan diproses dari PHP -->
                                             </div>
                                         </div>
@@ -351,7 +353,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        23
+                                                    <?=$jumlah_pelaporan_diterima?>
                                                         <!-- Mengambil jumlah pengajuan diterima dari PHP -->
                                                     </div>
                                                 </div>
@@ -374,7 +376,7 @@ if ($currentHour >= 0 && $currentHour < 12) {
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 PELAPORAN DITOLAK</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                65
+                                            <?=$jumlah_pelaporan_ditolak?>
                                                 <!-- Mengambil jumlah pengajuan ditolak dari PHP -->
                                             </div>
                                         </div>
